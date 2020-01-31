@@ -1,4 +1,8 @@
-package pl.coderslab.rentier.entity;
+package pl.coderslab.rentier.repository;
 
-public interface OrderStatusRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import pl.coderslab.rentier.entity.OrderStatus;
+
+public interface OrderStatusRepository extends JpaRepository<OrderStatus, Long> {
+
 }

@@ -1,4 +1,8 @@
 package pl.coderslab.rentier.repository;
 
-public interface UserRoleRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import pl.coderslab.rentier.entity.UserRole;
+
+public interface UserRoleRepository extends JpaRepository<UserRole, Long> {
+
 }

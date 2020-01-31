@@ -4,7 +4,7 @@ CREATE TABLE brands
     name VARCHAR(255) NOT NULL,
     logo_file_name VARCHAR(255),
     email VARCHAR(255),
-    active BIT,
+    active BIT NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -12,7 +12,7 @@ CREATE TABLE product_categories
 (
     id BIGINT AUTO_INCREMENT NOT NULL,
     category_name VARCHAR(255) NOT NULL,
-    active BIT,
+    active BIT NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -21,6 +21,7 @@ CREATE TABLE product_sizes
     id BIGINT AUTO_INCREMENT NOT NULL,
     size_name VARCHAR(255) NOT NULL,
     product_category_id BIGINT NOT NULL,
+    active BIT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY  (product_category_id) REFERENCES product_categories(id)
 );
@@ -36,13 +37,13 @@ CREATE TABLE products
     product_category_id BIGINT NOT NULL,
     created_date DATETIME NOT NULL,
     updated_date DATETIME,
-    active BIT,
+    active BIT NOT NULL,
     price_net DECIMAL NOT NULL,
     vat_prc DECIMAL(2,0) NOT NULL,
     price_gross DECIMAL NOT NULL,
-    promoted BIT,
+    promoted BIT NOT NULL,
     discount_prc DECIMAL(2,0),
-    available_online BIT,
+    available_online BIT NOT NULL,
     image_file_name VARCHAR(255),
     PRIMARY KEY (id),
     FOREIGN KEY (brand_id) REFERENCES brands(id),
@@ -56,7 +57,7 @@ CREATE TABLE addresses
     city VARCHAR(255) NOT NULL,
     street VARCHAR(255) NOT NULL,
     street_number VARCHAR(255) NOT NULL,
-    active BIT,
+    active BIT NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -125,7 +126,7 @@ CREATE TABLE payment_methods
 (
     id BIGINT AUTO_INCREMENT NOT NULL,
     payment_method_name VARCHAR(255) NOT NULL,
-    active BIT,
+    active BIT NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -134,7 +135,7 @@ CREATE TABLE delivery_methods
     id BIGINT AUTO_INCREMENT NOT NULL,
     delivery_method_name VARCHAR(255) NOT NULL,
     delivery_method_cost DECIMAL(5,2) NOT NULL,
-    active BIT,
+    active BIT NOT NULL,
     PRIMARY KEY (id)
 );
 

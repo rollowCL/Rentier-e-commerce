@@ -24,6 +24,8 @@ public class ProductSize {
     @JoinColumn(name = "product_category_id")
     private ProductCategory productCategory;
 
+    private boolean active;
+
     public Long getId() {
         return id;
     }

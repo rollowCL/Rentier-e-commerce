@@ -1,4 +1,8 @@
 package pl.coderslab.rentier.repository;
 
-public class ProductSizeRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import pl.coderslab.rentier.entity.ProductSize;
+
+public interface ProductSizeRepository extends JpaRepository<ProductSize, Long> {
+
 }

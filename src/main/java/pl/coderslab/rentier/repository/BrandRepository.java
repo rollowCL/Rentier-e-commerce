@@ -1,4 +1,8 @@
 package pl.coderslab.rentier.repository;
 
-public interface BrandRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import pl.coderslab.rentier.entity.Brand;
+
+public interface BrandRepository extends JpaRepository<Brand, Long> {
+
 }
