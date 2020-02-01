@@ -87,7 +87,7 @@ public class Product {
     @Column(name = "image_file_name")
     private String imageFileName;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<ProductShop> productShops = new ArrayList<>();
 
     public Long getId() {

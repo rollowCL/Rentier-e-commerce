@@ -17,7 +17,7 @@
             <!-- Logo
             ============================================= -->
             <div id="logo">
-                <div id="myLogo">
+                <div class="myLogo">
                     <a href="${pageContext.request.contextPath}/" class="standard-logo"><img src="${pageContext.request.contextPath}/images/logo.png" alt="Rentier Logo"></a>
                 </div>
 

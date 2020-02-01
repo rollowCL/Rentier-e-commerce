@@ -42,7 +42,7 @@ public class Shop {
     @NotNull
     private boolean active;
 
-    @OneToMany(mappedBy = "shop")
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.REMOVE)
     private List<ProductShop> productShops = new ArrayList<>();
 
     public Long getId() {

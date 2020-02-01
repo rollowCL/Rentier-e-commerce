@@ -10,7 +10,6 @@ public class RentierApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(RentierApplication.class, args);
-        System.out.println(Charset.defaultCharset().displayName());
 
     }
 

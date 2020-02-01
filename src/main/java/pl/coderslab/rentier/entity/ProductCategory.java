@@ -3,6 +3,7 @@ package pl.coderslab.rentier.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
@@ -19,6 +20,7 @@ public class ProductCategory {
     @Column(name = "category_name")
     private String categoryName;
 
+    @NotNull
     private boolean active;
 
     public Long getId() {

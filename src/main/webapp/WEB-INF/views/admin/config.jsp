@@ -96,8 +96,7 @@ To change this template use File | Settings | File Templates.
                                     <div class="card">
 
                                         <div class="card-body">
-                                            <%--                                            <h4 class="card-title"></h4>--%>
-                                            <p class="card-text">
+
                                             <table class="table table-bordered">
                                                 <thead>
                                                 <th scope="col">Nazwa sklepu</th>
@@ -123,16 +122,12 @@ To change this template use File | Settings | File Templates.
                                                                     class="icon-line-square-cross"></i></c:if>
                                                         </td>
                                                         <td>
-                                                            <button class="button button-mini button-red button-3d">
-                                                                <a href="/admin/config/del?shopId=${shop.id}">Usuń</a>
-                                                            </button>
-                                                            <button class="button button-mini button-blue button-3d">
-                                                                <a href="/admin/config?shopId=${shop.id}">Edytuj</a>
-                                                            </button>
-                                                            <button class="button button-mini button-blue button-3d">
-                                                                <c:if test="${shop.active}">Wyłącz</c:if>
-                                                                <c:if test="${!shop.active}">Włącz</c:if>
-                                                            </button>
+                                                            <a class="button button-mini button-red button-3d"
+                                                                    href="/admin/config/del?shopId=${shop.id}">Usuń
+                                                            </a>
+                                                            <a class="button button-mini button-blue button-3d"
+                                                                    href="/admin/config?shopId=${shop.id}">Edytuj
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>
@@ -144,11 +139,12 @@ To change this template use File | Settings | File Templates.
                                                 <c:if test="${not empty shop.id}">Edytuj sklep</c:if>
                                             </h4>
                                             <form:form class="row" method="post" action="/admin/config/shop/add"
-                                                       id="shopAddForm" modelAttribute="shop">
+                                                       id="addForm" modelAttribute="shop">
                                                 <form:hidden path="id"/>
                                                 <div class="col-md-6 form-group">
                                                     <label for="shopName">Nazwa sklepu </label>
-                                                    <form:input path="shopName" id="shopName" class="form-control" maxlength="100"/>
+                                                    <form:input path="shopName" id="shopName" class="form-control"
+                                                                maxlength="100"/>
                                                     <form:errors path="shopName" cssClass="error"/>
                                                 </div>
                                                 <div class="col-md-12 form-group"></div>
@@ -160,12 +156,14 @@ To change this template use File | Settings | File Templates.
                                                 </div>
                                                 <div class="col-md-4 form-group">
                                                     <label for="city">Miasto </label>
-                                                    <form:input path="address.city" id="city" class="form-control" maxlength="50"/>
+                                                    <form:input path="address.city" id="city" class="form-control"
+                                                                maxlength="50"/>
                                                     <form:errors path="address.city" cssClass="error"/>
                                                 </div>
                                                 <div class="col-md-4 form-group">
                                                     <label for="street">Ulica </label>
-                                                    <form:input path="address.street" id="street" class="form-control" maxlength="50"/>
+                                                    <form:input path="address.street" id="street" class="form-control"
+                                                                maxlength="50"/>
                                                     <form:errors path="address.street" cssClass="error"/>
                                                 </div>
                                                 <div class="col-md-2 form-group">
@@ -176,12 +174,14 @@ To change this template use File | Settings | File Templates.
                                                 </div>
                                                 <div class="col-md-4 form-group">
                                                     <label for="phone">Telefon </label>
-                                                    <form:input path="phone" id="phone" class="form-control" maxlength="9"/>
+                                                    <form:input path="phone" id="phone" class="form-control"
+                                                                maxlength="9"/>
                                                     <form:errors path="phone" cssClass="error"/>
                                                 </div>
                                                 <div class="col-md-4 form-group">
                                                     <label for="email">Email </label>
-                                                    <form:input path="email" id="email" class="form-control" maxlength="50"/>
+                                                    <form:input path="email" id="email" class="form-control"
+                                                                maxlength="50"/>
                                                     <form:errors path="email" cssClass="error"/>
                                                 </div>
                                                 <div class="col-md-4 form-group" align="center">
@@ -196,10 +196,10 @@ To change this template use File | Settings | File Templates.
                                                     </button>
                                                 </div>
 
-
                                             </form:form>
 
                                         </div>
+
                                     </div>
                                 </div>
 
@@ -207,77 +207,145 @@ To change this template use File | Settings | File Templates.
                                     <div class="card">
 
                                         <div class="card-body">
-                                            <h4 class="card-title">${employee.firstName}
-                                                ${employee.lastName}</h4>
-                                            <p class="card-text">
-                                            <table class="table table-borderless">
-                                                <tbody>
-                                                <tr>
-                                                    <td><strong>Imię</strong></td>
-                                                    <td>${employee.zipCode}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>Nazwisko</strong></td>
-                                                    <td>${employee.city}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>Adres email</strong></td>
-                                                    <td>${employee.street}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>Telefon</strong></td>
-                                                    <td>${employee.building}</td>
-                                                </tr>
 
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                <th scope="col">Logo</th>
+                                                <th scope="col">Marka</th>
+                                                <th scope="col">Email</th>
+                                                <th scope="col">Aktywny</th>
+                                                <th scope="col">Akcje</th>
+                                                </thead>
+                                                <tbody>
+                                                <c:forEach items="${brands}" var="brand">
+                                                    <tr>
+                                                        <td>
+                                                            <c:if test="${not empty brand.logoFileName}">
+                                                            <img height="90" width="380" src="<c:out value="${brand.logoFileName}"/>"
+                                                                 alt="BrandLogo"/>
+                                                            </c:if>
+                                                        </td>
+                                                        <td><c:out value="${brand.name}"/></td>
+                                                        <td><c:out value="${brand.email}"/></td>
+                                                        <td style="align-content: center">
+                                                            <c:if test="${brand.active}"><i
+                                                                    class="icon-line-square-check"></i></c:if>
+                                                            <c:if test="${!brand.active}"><i
+                                                                    class="icon-line-square-cross"></i></c:if>
+                                                        </td>
+                                                        <td>
+                                                            <a class="button button-mini button-red button-3d"
+                                                                    href="/admin/config/del?brandId=${brand.id}">Usuń
+                                                            </a>
+                                                            <a class="button button-mini button-blue button-3d"
+                                                                    href="/admin/config?brandId=${brand.id}">Edytuj
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
                                                 </tbody>
                                             </table>
+                                            <div class="w-100 line divider-line"></div>
+                                            <h4 class="card-title">
+                                                <c:if test="${empty brand.id}">Dodaj nową markę</c:if>
+                                                <c:if test="${not empty brand.id}">Edytuj markę</c:if>
+                                            </h4>
+                                            <form:form class="row" method="post" action="/admin/config/brand/add"
+                                                       id="brandAddForm" modelAttribute="brand" enctype="multipart/form-data">
+                                                <form:hidden path="id"/>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="name">Nazwa </label>
+                                                    <form:input path="name" id="name" class="form-control"
+                                                                maxlength="100"/>
+                                                    <form:errors path="name" cssClass="error"/>
+                                                </div>
+                                                <div class="col-md-4 form-group">
+                                                    <label for="email">Email </label>
+                                                    <form:input path="email" id="email" class="form-control"
+                                                                maxlength="50"/>
+                                                    <form:errors path="email" cssClass="error"/>
+                                                </div>
+                                                <div class="col-md-2 form-group" align="center">
+                                                    <label for="active">Aktywny </label>
+                                                    <form:checkbox path="active" id="active" class="form-control"/>
+                                                    <form:errors path="active" cssClass="error"/>
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="fileName">Plik logo <small></small></label>
+                                                    <input accept="image/png, image/jpeg" type="file" id="fileName"
+                                                           name="fileName" class="form-control required" />
+                                                </div>
+                                                <div class="col-12">
+                                                    <button type="submit"
+                                                            class="button button-mini button-blue button-3d"
+                                                            value="Submit">Zapisz
+                                                    </button>
+                                                </div>
 
+                                            </form:form>
 
-                                            </p>
-                                            <a href="${pageContext.request.contextPath}/updateavatar?employeeId=${employee.id}"
-                                               class="button button-mini button-blue button-3d">Zmień email</a>
-                                            <a href="/editemployee?employeeId=${employee.id}"
-                                               class="button button-mini button-blue button-3d">Zmień hasło</a>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="tab-content clearfix" id="tab-admin-categories">
                                     <div class="card-body">
-                                        <p class="card-text">
-                                        <table class="table table-borderless">
-                                            <tbody>
-                                            <tr>
-                                                <td><strong>Kod pocztowy</strong></td>
-                                                <td>${employee.zipCode}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Miasto</strong></td>
-                                                <td>${employee.city}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Ulica</strong></td>
-                                                <td>${employee.street}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Nr budynku</strong></td>
-                                                <td>${employee.building}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Nr mieszkania</strong></td>
-                                                <td>${employee.apartment}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Telefon</strong></td>
-                                                <td>${employee.phone}</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-
-
-                                        </p>
-                                        <a href="${pageContext.request.contextPath}/updateavatar?employeeId=${employee.id}"
-                                           class="button button-mini button-blue button-3d">Aktualizuj</a>
+                                        <div class="col-md-7">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                    <th scope="col">Nazwa</th>
+                                                    <th scope="col">Aktywny</th>
+                                                    <th scope="col">Akcje</th>
+                                                    </thead>
+                                                <tbody>
+                                                <c:forEach items="${productCategories}" var="productCategory">
+                                                    <tr>
+                                                        <td><c:out value="${productCategory.categoryName}"/></td>
+                                                        <td style="align-content: center">
+                                                            <c:if test="${productCategory.active}"><i
+                                                                    class="icon-line-square-check"></i></c:if>
+                                                            <c:if test="${!productCategory.active}"><i
+                                                                    class="icon-line-square-cross"></i></c:if>
+                                                        </td>
+                                                        <td>
+                                                            <a class="button button-mini button-red button-3d"
+                                                               href="/admin/config/del?productCategoryId=${productCategory.id}">Usuń
+                                                            </a>
+                                                            <a class="button button-mini button-blue button-3d"
+                                                               href="/admin/config?productCategoryId=${productCategory.id}">Edytuj
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                                </tbody>
+                                            </table>
+                                            <div class="w-100 line divider-line"></div>
+                                            <h4 class="card-title">
+                                                <c:if test="${empty brand.id}">Dodaj nową kategorię</c:if>
+                                                <c:if test="${not empty brand.id}">Edytuj kategorię</c:if>
+                                            </h4>
+                                            <form:form class="row" method="post" action="/admin/config/productCategory/add"
+                                                       id="categoryAddForm" modelAttribute="productCategory">
+                                                <form:hidden path="id"/>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="categoryName">Nazwa </label>
+                                                    <form:input path="categoryName" id="categoryName" class="form-control"
+                                                                maxlength="100"/>
+                                                    <form:errors path="categoryName" cssClass="error"/>
+                                                </div>
+                                                <div class="col-md-2 form-group" align="center">
+                                                    <label for="active">Aktywny </label>
+                                                    <form:checkbox path="active" id="active" class="form-control"/>
+                                                    <form:errors path="active" cssClass="error"/>
+                                                </div>
+                                                <div class="col-12">
+                                                    <button type="submit"
+                                                            class="button button-mini button-blue button-3d"
+                                                            value="Submit">Zapisz
+                                                    </button>
+                                                </div>
+                                            </form:form>
+                                        </div>
                                     </div>
                                 </div>
 

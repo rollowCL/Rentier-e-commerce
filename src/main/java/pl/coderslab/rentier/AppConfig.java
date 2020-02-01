@@ -12,7 +12,6 @@ import pl.coderslab.rentier.converter.*;
 @ComponentScan(basePackages = "pl.coderslab.rentier")
 public class AppConfig implements WebMvcConfigurer {
 
-
     @Override
     public void addFormatters(FormatterRegistry registry)
     {
