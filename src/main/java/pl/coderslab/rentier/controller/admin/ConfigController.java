@@ -4,11 +4,13 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.rentier.RentierProperties;
 import pl.coderslab.rentier.entity.*;
 import pl.coderslab.rentier.repository.*;
 import pl.coderslab.rentier.service.ConfigService;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +24,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -56,8 +59,10 @@ public class ConfigController extends HttpServlet {
                              @RequestParam(required = false) Long shopId,
                              @RequestParam(required = false) Long brandId,
                              @RequestParam(required = false) Long productCategoryId,
-                             @RequestParam(required = false) Long productSizeId
-                             ) {
+                             @RequestParam(required = false) Long productSizeId,
+                             @RequestParam(required = false) Long paymentMethodId,
+                             @RequestParam(required = false) Long deliveryMethodId
+    ) {
         Shop shop = null;
 
         if (shopId == null) {
@@ -102,20 +107,46 @@ public class ConfigController extends HttpServlet {
 
         }
 
+        PaymentMethod paymentMethod = null;
+
+        if (paymentMethodId == null) {
+            paymentMethod = new PaymentMethod();
+        } else {
+            if (paymentMethodRepository.findById(paymentMethodId).isPresent()) {
+                paymentMethod = paymentMethodRepository.findById(paymentMethodId).get();
+            }
+
+        }
+
+        DeliveryMethod deliveryMethod = null;
+
+        if (deliveryMethodId == null) {
+            deliveryMethod = new DeliveryMethod();
+        } else {
+            if (deliveryMethodRepository.findById(deliveryMethodId).isPresent()) {
+                deliveryMethod = deliveryMethodRepository.findById(deliveryMethodId).get();
+            }
+
+        }
+
         model.addAttribute("shop", shop);
         model.addAttribute("brand", brand);
         model.addAttribute("productCategory", productCategory);
         model.addAttribute("productSize", productSize);
+        model.addAttribute("paymentMethod", paymentMethod);
+        model.addAttribute("deliveryMethod", deliveryMethod);
 
         return "/admin/config";
     }
 
     @GetMapping("/config/del")
     public String confirmDelete(Model model, @RequestParam(required = false) Long shopId,
-                                             @RequestParam(required = false) Long brandId,
-                                             @RequestParam(required = false) Long productCategoryId,
-                                             @RequestParam(required = false) Long productSizeId
-                                ) {
+                                @RequestParam(required = false) Long brandId,
+                                @RequestParam(required = false) Long productCategoryId,
+                                @RequestParam(required = false) Long productSizeId,
+                                @RequestParam(required = false) Long paymentMethodId,
+                                @RequestParam(required = false) Long deliveryMethodId
+    ) {
 
         if (shopId != null) {
             if (shopRepository.findById(shopId).isPresent()) {
@@ -145,6 +176,20 @@ public class ConfigController extends HttpServlet {
             }
         }
 
+        if (paymentMethodId != null) {
+            if (paymentMethodRepository.findById(paymentMethodId).isPresent()) {
+                PaymentMethod paymentMethod = paymentMethodRepository.findById(paymentMethodId).get();
+                model.addAttribute("paymentMethod", paymentMethod);
+            }
+        }
+
+        if (deliveryMethodId != null) {
+            if (deliveryMethodRepository.findById(deliveryMethodId).isPresent()) {
+                DeliveryMethod deliveryMethod = deliveryMethodRepository.findById(deliveryMethodId).get();
+                model.addAttribute("deliveryMethod", deliveryMethod);
+            }
+        }
+
         return "/admin/del";
     }
 
@@ -152,7 +197,10 @@ public class ConfigController extends HttpServlet {
     public String deleteAuthor(@RequestParam(required = false) Long shopId,
                                @RequestParam(required = false) Long brandId,
                                @RequestParam(required = false) Long productCategoryId,
-                               @RequestParam(required = false) Long productSizeId) {
+                               @RequestParam(required = false) Long productSizeId,
+                               @RequestParam(required = false) Long paymentMethodId,
+                               @RequestParam(required = false) Long deliveryMethodId
+                                ) {
 
         if (shopId != null) {
             if (shopRepository.findById(shopId).isPresent()) {
@@ -170,15 +218,43 @@ public class ConfigController extends HttpServlet {
 
         if (productCategoryId != null) {
             if (productCategoryRepository.findById(productCategoryId).isPresent()) {
+
                 ProductCategory productCategory = productCategoryRepository.findById(productCategoryId).get();
+
+                List<ProductSize> productSizes = productSizeRepository.findAll();
+                ListIterator<ProductSize> listIterator = productSizes.listIterator();
+
+                while (listIterator.hasNext()) {
+                    ProductSize currentProductSize = listIterator.next();
+                    if (currentProductSize.getProductCategory().equals(productCategory)) {
+                        productSizeRepository.delete(currentProductSize);
+                    }
+                }
                 productCategoryRepository.delete(productCategory);
             }
         }
 
         if (productSizeId != null) {
             if (productSizeRepository.findById(productSizeId).isPresent()) {
+
                 ProductSize productSize = productSizeRepository.findById(productSizeId).get();
                 productSizeRepository.delete(productSize);
+            }
+        }
+
+        if (paymentMethodId != null) {
+            if (paymentMethodRepository.findById(paymentMethodId).isPresent()) {
+
+                PaymentMethod paymentMethod = paymentMethodRepository.findById(paymentMethodId).get();
+                paymentMethodRepository.delete(paymentMethod);
+            }
+        }
+
+        if (deliveryMethodId != null) {
+            if (deliveryMethodRepository.findById(deliveryMethodId).isPresent()) {
+
+                DeliveryMethod deliveryMethod = deliveryMethodRepository.findById(deliveryMethodId).get();
+                deliveryMethodRepository.delete(deliveryMethod);
             }
         }
 
@@ -186,14 +262,14 @@ public class ConfigController extends HttpServlet {
     }
 
 
-
-
     @PostMapping("/config/shop/add")
     public String addShop(@ModelAttribute @Valid Shop shop, BindingResult resultShop,
                           @ModelAttribute(binding = false) Brand brand, BindingResult resultBrand,
                           @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,
-                          @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize
-                                                                                                    ) {
+                          @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
+                          @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
+                          @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod
+    ) {
 
         if (resultShop.hasErrors()) {
 
@@ -212,6 +288,8 @@ public class ConfigController extends HttpServlet {
                           @ModelAttribute @Valid Brand brand, BindingResult resultBrand,
                           @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,
                           @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
+                          @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
+                          @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod,
                           HttpServletRequest request) throws IOException, ServletException {
 
         if (resultBrand.hasErrors()) {
@@ -250,7 +328,9 @@ public class ConfigController extends HttpServlet {
     public String addProductCategory(@ModelAttribute(binding = false) Shop shop, BindingResult resultShop,
                                      @ModelAttribute(binding = false) Brand brand, BindingResult resultBrand,
                                      @ModelAttribute @Valid ProductCategory productCategory, BindingResult resultProductCategory,
-                                     @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize) {
+                                     @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
+                                     @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
+                                     @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod) {
 
         if (resultProductCategory.hasErrors()) {
 
@@ -266,9 +346,11 @@ public class ConfigController extends HttpServlet {
 
     @PostMapping("/config/productSize/add")
     public String addProductSize(@ModelAttribute(binding = false) Shop shop, BindingResult resultShop,
-                                     @ModelAttribute(binding = false) Brand brand, BindingResult resultBrand,
-                                     @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,
-                                     @ModelAttribute @Valid ProductSize productSize, BindingResult resultProductSize) {
+                                 @ModelAttribute(binding = false) Brand brand, BindingResult resultBrand,
+                                 @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,
+                                 @ModelAttribute @Valid ProductSize productSize, BindingResult resultProductSize,
+                                 @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
+                                 @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod) {
 
         if (resultProductSize.hasErrors()) {
 
@@ -277,6 +359,51 @@ public class ConfigController extends HttpServlet {
         } else {
 
             productSizeRepository.save(productSize);
+            return "redirect:/admin/config";
+        }
+
+    }
+
+    @PostMapping("/config/paymentMethod/add")
+    public String addPaymentMethod(@ModelAttribute(binding = false) Shop shop, BindingResult resultShop,
+                                 @ModelAttribute(binding = false) Brand brand, BindingResult resultBrand,
+                                 @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,
+                                 @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
+                                 @ModelAttribute @Valid PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
+                                 @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod) {
+
+        if (resultPaymentMethod.hasErrors()) {
+
+            return "/admin/config";
+
+        } else {
+
+            paymentMethodRepository.save(paymentMethod);
+            return "redirect:/admin/config";
+        }
+
+    }
+
+    @PostMapping("/config/deliveryMethod/add")
+    public String addDeliveryMethod(@ModelAttribute(binding = false) Shop shop, BindingResult resultShop,
+                                   @ModelAttribute(binding = false) Brand brand, BindingResult resultBrand,
+                                   @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,
+                                   @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
+                                   @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
+                                   @ModelAttribute @Valid DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod) {
+
+
+        if (deliveryMethodRepository.existsByDeliveryMethodName(deliveryMethod.getDeliveryMethodName())) {
+            resultDeliveryMethod.rejectValue("deliveryMethodName", "error.name", "Taka metoda już istnieje");
+
+        }
+
+        if (resultDeliveryMethod.hasErrors()) {
+            return "/admin/config";
+
+        } else {
+
+            deliveryMethodRepository.save(deliveryMethod);
             return "redirect:/admin/config";
         }
 

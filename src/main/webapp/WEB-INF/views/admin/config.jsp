@@ -10,6 +10,7 @@ To change this template use File | Settings | File Templates.
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <html dir="ltr" lang="en-US">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -113,7 +114,7 @@ To change this template use File | Settings | File Templates.
                                                         <td><c:out value="${shop.address.city}"/></td>
                                                         <td><c:out value="${shop.address.street}"/></td>
                                                         <td><c:out value="${shop.address.streetNumber}"/></td>
-                                                        <td style="align-content: center">
+                                                        <td>
                                                             <c:if test="${shop.active}"><i
                                                                     class="icon-line-square-check"></i></c:if>
                                                             <c:if test="${!shop.active}"><i
@@ -182,7 +183,7 @@ To change this template use File | Settings | File Templates.
                                                                 maxlength="50"/>
                                                     <form:errors path="email" cssClass="error"/>
                                                 </div>
-                                                <div class="col-md-4 form-group" align="center">
+                                                <div class="col-md-4 form-group">
                                                     <label for="active">Aktywny </label>
                                                     <form:checkbox path="active" id="active" class="form-control"/>
                                                     <form:errors path="active" cssClass="error"/>
@@ -225,7 +226,7 @@ To change this template use File | Settings | File Templates.
                                                         </td>
                                                         <td><c:out value="${brand.name}"/></td>
                                                         <td><c:out value="${brand.email}"/></td>
-                                                        <td style="align-content: center">
+                                                        <td>
                                                             <c:if test="${brand.active}"><i
                                                                     class="icon-line-square-check"></i></c:if>
                                                             <c:if test="${!brand.active}"><i
@@ -263,7 +264,7 @@ To change this template use File | Settings | File Templates.
                                                                 maxlength="50"/>
                                                     <form:errors path="email" cssClass="error"/>
                                                 </div>
-                                                <div class="col-md-2 form-group" align="center">
+                                                <div class="col-md-2 form-group">
                                                     <label for="active">Aktywny </label>
                                                     <form:checkbox path="active" id="active" class="form-control"/>
                                                     <form:errors path="active" cssClass="error"/>
@@ -299,7 +300,7 @@ To change this template use File | Settings | File Templates.
                                                 <c:forEach items="${productCategories}" var="productCategory">
                                                     <tr>
                                                         <td><c:out value="${productCategory.categoryName}"/></td>
-                                                        <td style="align-content: center">
+                                                        <td>
                                                             <c:if test="${productCategory.active}"><i
                                                                     class="icon-line-square-check"></i></c:if>
                                                             <c:if test="${!productCategory.active}"><i
@@ -331,7 +332,7 @@ To change this template use File | Settings | File Templates.
                                                                 maxlength="100"/>
                                                     <form:errors path="categoryName" cssClass="error"/>
                                                 </div>
-                                                <div class="col-md-2 form-group" align="center">
+                                                <div class="col-md-2 form-group">
                                                     <label for="active">Aktywny </label>
                                                     <form:checkbox path="active" id="active" class="form-control"/>
                                                     <form:errors path="active" cssClass="error"/>
@@ -355,6 +356,7 @@ To change this template use File | Settings | File Templates.
                                                 <thead>
                                                 <th scope="col">Nazwa</th>
                                                 <th scope="col">Dotyczy kategorii</th>
+                                                <th scope="col">Aktywny</th>
                                                 <th scope="col">Akcje</th>
                                                 </thead>
                                                 <tbody>
@@ -362,7 +364,7 @@ To change this template use File | Settings | File Templates.
                                                     <tr>
                                                         <td><c:out value="${productSize.sizeName}"/></td>
                                                         <td><c:out value="${productSize.productCategory.categoryName}"/></td>
-                                                        <td style="align-content: center">
+                                                        <td>
                                                             <c:if test="${productSize.active}"><i
                                                                     class="icon-line-square-check"></i></c:if>
                                                             <c:if test="${!productSize.active}"><i
@@ -402,7 +404,7 @@ To change this template use File | Settings | File Templates.
                                                     </form:select>
                                                     <form:errors path="productCategory" cssClass="error"/>
                                                 </div>
-                                                <div class="col-md-2 form-group" align="center">
+                                                <div class="col-md-2 form-group">
                                                     <label for="active">Aktywny </label>
                                                     <form:checkbox path="active" id="active" class="form-control"/>
                                                     <form:errors path="active" cssClass="error"/>
@@ -421,41 +423,140 @@ To change this template use File | Settings | File Templates.
                                 </div>
 
                                 <div class="tab-content clearfix" id="tab-admin-pay-methods">
-                                    <table class="table table-bordered table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>Data i godzina zamówienia</th>
-                                            <th>Numer zamówienia</th>
-                                            <th>Status</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>2020-01-01 20:20:20</td>
-                                            <td><a href="#">000/0000</a></td>
-                                            <td>Nowe</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                    <div class="card-body">
+
+                                        <div class="col-md-7">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                <th scope="col">Nazwa</th>
+                                                <th scope="col">Aktywny</th>
+                                                <th scope="col">Akcje</th>
+                                                </thead>
+                                                <tbody>
+                                                <c:forEach items="${paymentMethods}" var="paymentMethod">
+                                                    <tr>
+                                                        <td><c:out value="${paymentMethod.paymentMethodName}"/></td>
+                                                        <td>
+                                                            <c:if test="${paymentMethod.active}"><i
+                                                                    class="icon-line-square-check"></i></c:if>
+                                                            <c:if test="${!paymentMethod.active}"><i
+                                                                    class="icon-line-square-cross"></i></c:if>
+                                                        </td>
+                                                        <td>
+                                                            <a class="button button-mini button-red button-3d"
+                                                               href="/admin/config/del?paymentMethodId=${paymentMethod.id}">Usuń
+                                                            </a>
+                                                            <a class="button button-mini button-blue button-3d"
+                                                               href="/admin/config?paymentMethodId=${paymentMethod.id}">Edytuj
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                                </tbody>
+                                            </table>
+                                            <div class="w-100 line divider-line"></div>
+                                            <h4 class="card-title">
+                                                <c:if test="${empty paymentMethod.id}">Dodaj nową metodę płatności</c:if>
+                                                <c:if test="${not empty paymentMethod.id}">Edytuj metodę płatności</c:if>
+                                            </h4>
+                                            <form:form class="row" method="post" action="/admin/config/paymentMethod/add"
+                                                       id="paymentMethodAddForm" modelAttribute="paymentMethod">
+                                                <form:hidden path="id"/>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="paymentMethodName">Nazwa </label>
+                                                    <form:input path="paymentMethodName" id="paymentMethodName" class="form-control"
+                                                                maxlength="50"/>
+                                                    <form:errors path="paymentMethodName" cssClass="error"/>
+                                                </div>
+                                                <div class="col-md-2 form-group">
+                                                    <label for="active">Aktywny </label>
+                                                    <form:checkbox path="active" id="active" class="form-control"/>
+                                                    <form:errors path="active" cssClass="error"/>
+                                                </div>
+                                                <div class="col-12">
+                                                    <button type="submit"
+                                                            class="button button-mini button-blue button-3d"
+                                                            value="Submit">Zapisz
+                                                    </button>
+                                                </div>
+                                            </form:form>
+                                        </div>
+
+
+                                    </div>
                                 </div>
 
                                 <div class="tab-content clearfix" id="tab-admin-ship-methods">
-                                    <table class="table table-bordered table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>Data i godzina zamówienia</th>
-                                            <th>Numer zamówienia</th>
-                                            <th>Status</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>2020-01-01 20:20:20</td>
-                                            <td><a href="#">000/0000</a></td>
-                                            <td>Nowe</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                    <div class="card-body">
+
+                                        <div class="col-md-7">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                <th scope="col">Nazwa</th>
+                                                <th scope="col">Koszt</th>
+                                                <th scope="col">Aktywny</th>
+                                                <th scope="col">Akcje</th>
+                                                </thead>
+                                                <tbody>
+                                                <c:forEach items="${deliveryMethods}" var="deliveryMethod">
+                                                    <tr>
+                                                        <td><c:out value="${deliveryMethod.deliveryMethodName}"/></td>
+                                                        <td><c:out value="${fn:replace(deliveryMethod.deliveryMethodCost, '.', ',')}"/> zł</td>
+                                                        <td>
+                                                            <c:if test="${deliveryMethod.active}"><i
+                                                                    class="icon-line-square-check"></i></c:if>
+                                                            <c:if test="${!deliveryMethod.active}"><i
+                                                                    class="icon-line-square-cross"></i></c:if>
+                                                        </td>
+                                                        <td>
+                                                            <a class="button button-mini button-red button-3d"
+                                                               href="/admin/config/del?deliveryMethodId=${deliveryMethod.id}">Usuń
+                                                            </a>
+                                                            <a class="button button-mini button-blue button-3d"
+                                                               href="/admin/config?deliveryMethodId=${deliveryMethod.id}">Edytuj
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                                </tbody>
+                                            </table>
+                                            <div class="w-100 line divider-line"></div>
+                                            <h4 class="card-title">
+                                                <c:if test="${empty deliveryMethod.id}">Dodaj nowy sposób dostawy</c:if>
+                                                <c:if test="${not empty deliveryMethod.id}">Edytuj sposób dostawy</c:if>
+                                            </h4>
+                                            <form:form class="row" method="post" action="/admin/config/deliveryMethod/add"
+                                                       id="deliveryMethodAddForm" modelAttribute="deliveryMethod">
+                                                <form:hidden path="id"/>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="deliveryMethodName">Nazwa </label>
+                                                    <form:input path="deliveryMethodName" id="deliveryMethodName" class="form-control"
+                                                                maxlength="50"/>
+                                                    <form:errors path="deliveryMethodName" cssClass="error"/>
+                                                </div>
+                                                <div class="col-md-2 form-group">
+                                                    <label for="deliveryMethodCost">Koszt </label>
+                                                    <form:input path="deliveryMethodCost" id="deliveryMethodCost" class="form-control"
+                                                                maxlength="50"/>
+                                                    <form:errors path="deliveryMethodCost" cssClass="error"/>
+                                                </div>
+                                                <div class="col-md-2 form-group">
+                                                    <label for="active">Aktywny </label>
+                                                    <form:checkbox path="active" id="active" class="form-control"/>
+                                                    <form:errors path="active" cssClass="error"/>
+                                                    <form:errors path="*" cssClass="error"/>
+                                                </div>
+                                                <div class="col-12">
+                                                    <button type="submit"
+                                                            class="button button-mini button-blue button-3d"
+                                                            value="Submit">Zapisz
+                                                    </button>
+                                                </div>
+                                            </form:form>
+                                        </div>
+
+
+                                    </div>
                                 </div>
 
                             </div>

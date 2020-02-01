@@ -1,10 +1,7 @@
 package pl.coderslab.rentier.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -21,11 +18,13 @@ public class DeliveryMethod {
     @Column(name = "delivery_method_name")
     private String deliveryMethodName;
 
+    @NotNull
     @DecimalMin(value = "0.0")
     @Digits(integer = 10, fraction = 2)
     @Column(name = "delivery_method_cost")
     private BigDecimal deliveryMethodCost;
 
+    @NotNull
     private boolean active;
 
     public Long getId() {

@@ -5,6 +5,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -46,6 +47,7 @@ public class ProductCategory {
     public void setActive(boolean active) {
         this.active = active;
     }
+
 
     @Override
     public boolean equals(Object o) {
