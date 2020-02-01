@@ -24,6 +24,7 @@ public class ProductSize {
     @JoinColumn(name = "product_category_id")
     private ProductCategory productCategory;
 
+    @NotNull
     private boolean active;
 
     public Long getId() {
@@ -48,6 +49,14 @@ public class ProductSize {
 
     public void setProductCategory(ProductCategory productCategory) {
         this.productCategory = productCategory;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     @Override

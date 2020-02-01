@@ -55,7 +55,9 @@ public class ConfigController extends HttpServlet {
     public String showConfig(Model model,
                              @RequestParam(required = false) Long shopId,
                              @RequestParam(required = false) Long brandId,
-                             @RequestParam(required = false) Long productCategoryId) {
+                             @RequestParam(required = false) Long productCategoryId,
+                             @RequestParam(required = false) Long productSizeId
+                             ) {
         Shop shop = null;
 
         if (shopId == null) {
@@ -89,9 +91,21 @@ public class ConfigController extends HttpServlet {
 
         }
 
+        ProductSize productSize = null;
+
+        if (productSizeId == null) {
+            productSize = new ProductSize();
+        } else {
+            if (productSizeRepository.findById(productSizeId).isPresent()) {
+                productSize = productSizeRepository.findById(productSizeId).get();
+            }
+
+        }
+
         model.addAttribute("shop", shop);
         model.addAttribute("brand", brand);
         model.addAttribute("productCategory", productCategory);
+        model.addAttribute("productSize", productSize);
 
         return "/admin/config";
     }
@@ -99,7 +113,8 @@ public class ConfigController extends HttpServlet {
     @GetMapping("/config/del")
     public String confirmDelete(Model model, @RequestParam(required = false) Long shopId,
                                              @RequestParam(required = false) Long brandId,
-                                             @RequestParam(required = false) Long productCategoryId
+                                             @RequestParam(required = false) Long productCategoryId,
+                                             @RequestParam(required = false) Long productSizeId
                                 ) {
 
         if (shopId != null) {
@@ -123,13 +138,21 @@ public class ConfigController extends HttpServlet {
             }
         }
 
+        if (productSizeId != null) {
+            if (productSizeRepository.findById(productSizeId).isPresent()) {
+                ProductSize productSize = productSizeRepository.findById(productSizeId).get();
+                model.addAttribute("productSize", productSize);
+            }
+        }
+
         return "/admin/del";
     }
 
     @PostMapping("/config/del")
     public String deleteAuthor(@RequestParam(required = false) Long shopId,
                                @RequestParam(required = false) Long brandId,
-                               @RequestParam(required = false) Long productCategoryId) {
+                               @RequestParam(required = false) Long productCategoryId,
+                               @RequestParam(required = false) Long productSizeId) {
 
         if (shopId != null) {
             if (shopRepository.findById(shopId).isPresent()) {
@@ -152,6 +175,13 @@ public class ConfigController extends HttpServlet {
             }
         }
 
+        if (productSizeId != null) {
+            if (productSizeRepository.findById(productSizeId).isPresent()) {
+                ProductSize productSize = productSizeRepository.findById(productSizeId).get();
+                productSizeRepository.delete(productSize);
+            }
+        }
+
         return "redirect:/admin/config";
     }
 
@@ -160,8 +190,10 @@ public class ConfigController extends HttpServlet {
 
     @PostMapping("/config/shop/add")
     public String addShop(@ModelAttribute @Valid Shop shop, BindingResult resultShop,
-                          @ModelAttribute Brand brand, BindingResult resultBrand,
-                          @ModelAttribute ProductCategory productCategory, BindingResult resultProductCategory) {
+                          @ModelAttribute(binding = false) Brand brand, BindingResult resultBrand,
+                          @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,
+                          @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize
+                                                                                                    ) {
 
         if (resultShop.hasErrors()) {
 
@@ -176,9 +208,10 @@ public class ConfigController extends HttpServlet {
     }
 
     @PostMapping("/config/brand/add")
-    public String adBrand(@ModelAttribute Shop shop, BindingResult resultShop,
+    public String adBrand(@ModelAttribute(binding = false) Shop shop, BindingResult resultShop,
                           @ModelAttribute @Valid Brand brand, BindingResult resultBrand,
-                          @ModelAttribute ProductCategory productCategory, BindingResult resultProductCategory,
+                          @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,
+                          @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
                           HttpServletRequest request) throws IOException, ServletException {
 
         if (resultBrand.hasErrors()) {
@@ -214,9 +247,10 @@ public class ConfigController extends HttpServlet {
     }
 
     @PostMapping("/config/productCategory/add")
-    public String addProductCategory(@ModelAttribute Shop shop, BindingResult resultShop,
-                          @ModelAttribute Brand brand, BindingResult resultBrand,
-                          @ModelAttribute @Valid ProductCategory productCategory, BindingResult resultProductCategory) {
+    public String addProductCategory(@ModelAttribute(binding = false) Shop shop, BindingResult resultShop,
+                                     @ModelAttribute(binding = false) Brand brand, BindingResult resultBrand,
+                                     @ModelAttribute @Valid ProductCategory productCategory, BindingResult resultProductCategory,
+                                     @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize) {
 
         if (resultProductCategory.hasErrors()) {
 
@@ -230,6 +264,23 @@ public class ConfigController extends HttpServlet {
 
     }
 
+    @PostMapping("/config/productSize/add")
+    public String addProductSize(@ModelAttribute(binding = false) Shop shop, BindingResult resultShop,
+                                     @ModelAttribute(binding = false) Brand brand, BindingResult resultBrand,
+                                     @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,
+                                     @ModelAttribute @Valid ProductSize productSize, BindingResult resultProductSize) {
+
+        if (resultProductSize.hasErrors()) {
+
+            return "/admin/config";
+
+        } else {
+
+            productSizeRepository.save(productSize);
+            return "redirect:/admin/config";
+        }
+
+    }
 
     @ModelAttribute("productCategories")
     public List<ProductCategory> getProductCategories() {

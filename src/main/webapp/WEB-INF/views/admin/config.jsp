@@ -85,9 +85,7 @@ To change this template use File | Settings | File Templates.
                                     <a href="#tab-admin-ship-methods"><i class="icon-luggage-cart"></i> Metody
                                         dostawy</a>
                                 </li>
-                                <li>
-                                    <a href="#tab-admin-email"><i class="icon-mail"></i> Ustawienia Email</a>
-                                </li>
+
                             </ul>
 
                             <div class="tab-container">
@@ -351,40 +349,74 @@ To change this template use File | Settings | File Templates.
 
                                 <div class="tab-content clearfix" id="tab-admin-sizes">
                                     <div class="card-body">
-                                        <p class="card-text">
-                                        <table class="table table-borderless">
-                                            <tbody>
-                                            <tr>
-                                                <td><strong>Kod pocztowy</strong></td>
-                                                <td>${employee.zipCode}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Miasto</strong></td>
-                                                <td>${employee.city}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Ulica</strong></td>
-                                                <td>${employee.street}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Nr budynku</strong></td>
-                                                <td>${employee.building}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Nr mieszkania</strong></td>
-                                                <td>${employee.apartment}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Telefon</strong></td>
-                                                <td>${employee.phone}</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+
+                                        <div class="col-md-7">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                <th scope="col">Nazwa</th>
+                                                <th scope="col">Dotyczy kategorii</th>
+                                                <th scope="col">Akcje</th>
+                                                </thead>
+                                                <tbody>
+                                                <c:forEach items="${productSizes}" var="productSize">
+                                                    <tr>
+                                                        <td><c:out value="${productSize.sizeName}"/></td>
+                                                        <td><c:out value="${productSize.productCategory.categoryName}"/></td>
+                                                        <td style="align-content: center">
+                                                            <c:if test="${productSize.active}"><i
+                                                                    class="icon-line-square-check"></i></c:if>
+                                                            <c:if test="${!productSize.active}"><i
+                                                                    class="icon-line-square-cross"></i></c:if>
+                                                        </td>
+                                                        <td>
+                                                            <a class="button button-mini button-red button-3d"
+                                                               href="/admin/config/del?productSizeId=${productSize.id}">Usuń
+                                                            </a>
+                                                            <a class="button button-mini button-blue button-3d"
+                                                               href="/admin/config?productSizeId=${productSize.id}">Edytuj
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                                </tbody>
+                                            </table>
+                                            <div class="w-100 line divider-line"></div>
+                                            <h4 class="card-title">
+                                                <c:if test="${empty productSize.id}">Dodaj nowy rozmiar</c:if>
+                                                <c:if test="${not empty productSize.id}">Edytuj rozmiar</c:if>
+                                            </h4>
+                                            <form:form class="row" method="post" action="/admin/config/productSize/add"
+                                                       id="sizeAddForm" modelAttribute="productSize">
+                                                <form:hidden path="id"/>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="sizeName">Nazwa </label>
+                                                    <form:input path="sizeName" id="sizeName" class="form-control"
+                                                                maxlength="50"/>
+                                                    <form:errors path="sizeName" cssClass="error"/>
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="active">Wybierz kategorię </label>
+                                                    <form:select path="productCategory" class="formElement">
+                                                        <form:option value="0" label="wybierz..."/>
+                                                        <form:options items="${productCategories}" itemValue="id" itemLabel="categoryName"/>
+                                                    </form:select>
+                                                    <form:errors path="productCategory" cssClass="error"/>
+                                                </div>
+                                                <div class="col-md-2 form-group" align="center">
+                                                    <label for="active">Aktywny </label>
+                                                    <form:checkbox path="active" id="active" class="form-control"/>
+                                                    <form:errors path="active" cssClass="error"/>
+                                                </div>
+                                                <div class="col-12">
+                                                    <button type="submit"
+                                                            class="button button-mini button-blue button-3d"
+                                                            value="Submit">Zapisz
+                                                    </button>
+                                                </div>
+                                            </form:form>
+                                        </div>
 
 
-                                        </p>
-                                        <a href="${pageContext.request.contextPath}/updateavatar?employeeId=${employee.id}"
-                                           class="button button-mini button-blue button-3d">Aktualizuj</a>
                                     </div>
                                 </div>
 
@@ -408,25 +440,6 @@ To change this template use File | Settings | File Templates.
                                 </div>
 
                                 <div class="tab-content clearfix" id="tab-admin-ship-methods">
-                                    <table class="table table-bordered table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>Data i godzina zamówienia</th>
-                                            <th>Numer zamówienia</th>
-                                            <th>Status</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>2020-01-01 20:20:20</td>
-                                            <td><a href="#">000/0000</a></td>
-                                            <td>Nowe</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div class="tab-content clearfix" id="tab-admin-email">
                                     <table class="table table-bordered table-striped">
                                         <thead>
                                         <tr>
