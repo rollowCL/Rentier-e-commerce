@@ -22,7 +22,7 @@ public class Shop {
 
     @Valid
     @NotNull
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
 
@@ -32,12 +32,14 @@ public class Shop {
 
     @NotEmpty
     @Email
+    @Size(max = 50)
     private String email;
 
     @Size(max = 255)
     @Column(name = "photo_file_name")
     private String photoFileName;
 
+    @NotNull
     private boolean active;
 
     @OneToMany(mappedBy = "shop")

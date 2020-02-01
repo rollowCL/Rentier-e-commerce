@@ -20,7 +20,7 @@ public class ProductSize {
     private String sizeName;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_category_id")
     private ProductCategory productCategory;
 

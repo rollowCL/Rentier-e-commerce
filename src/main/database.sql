@@ -1,3 +1,6 @@
+CREATE DATABASE rentier CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER DATABASE rentier CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 CREATE TABLE brands
 (
     id BIGINT AUTO_INCREMENT NOT NULL,
@@ -57,7 +60,7 @@ CREATE TABLE addresses
     city VARCHAR(255) NOT NULL,
     street VARCHAR(255) NOT NULL,
     street_number VARCHAR(255) NOT NULL,
-    active BIT NOT NULL,
+    active BIT NOT NULL DEFAULT TRUE,
     PRIMARY KEY (id)
 );
 

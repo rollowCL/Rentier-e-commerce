@@ -36,12 +36,12 @@ public class Product {
     private String productBrandText;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_category_id")
     private ProductCategory productCategory;
 
@@ -87,7 +87,7 @@ public class Product {
     @Column(name = "image_file_name")
     private String imageFileName;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private List<ProductShop> productShops = new ArrayList<>();
 
     public Long getId() {

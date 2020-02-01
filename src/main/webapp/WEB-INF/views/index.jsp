@@ -9,23 +9,16 @@ To change this template use File | Settings | File Templates.
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
 <html dir="ltr" lang="en-US">
 <head>
-
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta name="author" content="SemiColonWeb" />
 
 	<!-- Stylesheets
 	============================================= -->
-	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Raleway:300,400,500,600,700|Crete+Round:400i" rel="stylesheet" type="text/css" />
-	<link href='<spring:url value="/css/bootstrap.css"/>' rel="stylesheet"/>
-	<link href='<spring:url value="/css/style.css"/>' rel="stylesheet"/>
-	<link href='<spring:url value="/css/font-icons.css"/>' rel="stylesheet"/>
-	<link href='<spring:url value="/css/animate.css"/>' rel="stylesheet"/>
-	<link href='<spring:url value="/css/custom.css"/>' rel="stylesheet"/>
-	<link href='<spring:url value="/css/responsive.css"/>' rel="stylesheet"/>
-	<link href='<spring:url value="/css/colors.css"/>' rel="stylesheet"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<jsp:include page="styles.jsp"/>
 
 	<!-- Document Title
 	============================================= -->
@@ -97,14 +90,9 @@ To change this template use File | Settings | File Templates.
 	============================================= -->
 	<div id="gotoTop" class="icon-angle-up"></div>
 
-	<!-- External JavaScripts
-	============================================= -->
-	<script src="js/jquery.js"></script>
-	<script src="js/plugins.js"></script>
-
-	<!-- Footer Scripts
-	============================================= -->
-	<script src="js/functions.js"></script>
+	<!--  JavaScripts
+    ============================================= -->
+	<jsp:include page="scripts.jsp"/>
 
 </body>
 </html>
