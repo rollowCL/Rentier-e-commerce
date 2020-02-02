@@ -72,6 +72,12 @@ public class AppConfig implements WebMvcConfigurer {
         return new UserRoleConverter();
     }
 
+    @Bean
+    public BCrypt passwordEncoder() {
+        return new BCrypt();
+    }
+
+
 
 
 //    @Bean

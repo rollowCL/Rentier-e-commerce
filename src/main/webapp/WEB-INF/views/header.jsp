@@ -18,7 +18,7 @@
             ============================================= -->
             <div id="logo">
                 <div class="myLogo">
-                    <a href="/" class="standard-logo"><img src="images/logo.png" alt="Rentier Logo"></a>
+                    <a href="/" class="standard-logo"><img src="/images/logo.png" alt="Rentier Logo"></a>
                 </div>
 
             </div><!-- #logo end -->

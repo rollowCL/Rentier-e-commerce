@@ -27,7 +27,7 @@ public class Shop {
     private Address address;
 
     @NotBlank
-    @Size(max = 9)
+    @Size(min = 9, max = 9)
     private String phone;
 
     @NotEmpty

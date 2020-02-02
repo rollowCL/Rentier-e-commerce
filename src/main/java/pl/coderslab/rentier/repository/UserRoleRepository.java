@@ -5,4 +5,5 @@ import pl.coderslab.rentier.entity.UserRole;
 
 public interface UserRoleRepository extends JpaRepository<UserRole, Long> {
 
+    UserRole findByOrderTypeId(Long id);
 }

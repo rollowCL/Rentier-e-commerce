@@ -1,6 +1,10 @@
 package pl.coderslab.rentier.entity;
 
 
+import pl.coderslab.rentier.BCrypt;
+import pl.coderslab.rentier.validation.UserBasicValidation;
+import pl.coderslab.rentier.validation.UserExtendedValidation;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
@@ -16,51 +20,53 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "user_role_id")
     private UserRole userRole;
 
-    @NotEmpty
-    @Email
+    @NotEmpty(groups = {UserBasicValidation.class})
+    @Email(groups = {UserBasicValidation.class})
+    @Size(min = 5, max = 50, groups = {UserBasicValidation.class})
     private String email;
 
-    @NotBlank
+    @NotBlank(groups = {UserBasicValidation.class})
+    @Size(min = 8, max = 100, groups = {UserBasicValidation.class})
     private String password;
 
-    @NotBlank
     @Transient
+    @NotBlank(groups = {UserBasicValidation.class})
+    @Size(min = 8, max = 100, groups = {UserBasicValidation.class})
     private String password2;
 
-    @NotBlank
-    @Size(max = 255)
+    @NotBlank(groups = {UserBasicValidation.class})
+    @Size(min = 3, max = 50, groups = {UserBasicValidation.class})
     @Column(name = "first_name")
     private String firstName;
 
-    @NotBlank
-    @Size(max = 255)
+    @NotBlank(groups = {UserBasicValidation.class})
+    @Size(min = 3, max = 50, groups = {UserBasicValidation.class})
     @Column(name = "last_name")
     private String lastName;
 
-    @NotBlank
-    @Size(max = 9)
+    @NotBlank(groups = {UserBasicValidation.class})
+    @Size(min = 9, max = 9, groups = {UserBasicValidation.class})
     private String phone;
 
-    @PastOrPresent
+    @PastOrPresent(groups = {UserExtendedValidation.class})
     @Column(name = "register_date")
     private LocalDateTime registerDate;
 
+    @NotNull(groups = {UserBasicValidation.class})
     private boolean active;
 
+    @NotNull(groups = {UserBasicValidation.class})
     private boolean verified;
 
-    @NotNull
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "bill_address_id")
     private Address billAddress;
 
-    @NotNull
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "ship_address_id")
     private Address shipAddress;
 
@@ -173,6 +179,15 @@ public class User {
     public void setShops(List<Shop> shops) {
         this.shops = shops;
     }
+
+    public String getPassword2() {
+        return password2;
+    }
+
+    public void setPassword2(String password2) {
+        this.password2 = password2;
+    }
+
 
     @Override
     public boolean equals(Object o) {

@@ -106,10 +106,6 @@ To change this template use File | Settings | File Templates.
 
 </div><!-- #wrapper end -->
 
-<!-- Go To Top
-============================================= -->
-<div id="gotoTop" class="icon-angle-up"></div>
-
 <!-- JavaScripts
     <jsp:include page="../scripts.jsp"/>
 

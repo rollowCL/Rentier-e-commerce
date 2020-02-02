@@ -5,4 +5,5 @@ import pl.coderslab.rentier.entity.OrderType;
 
 public interface OrderTypeRepository extends JpaRepository<OrderType, Long> {
 
+        OrderType findExternalOrderTypeIdByOrderTypeNameEquals(String name);
 }

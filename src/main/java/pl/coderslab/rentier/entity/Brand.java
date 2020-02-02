@@ -17,7 +17,6 @@ public class Brand {
     @Size(max = 50)
     private String name;
 
-//    @NotBlank
     @Size(max = 255)
     @Column(name = "logo_file_name")
     private String logoFileName;
