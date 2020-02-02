@@ -25,9 +25,9 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 @Controller
 @RequestMapping("/admin")
@@ -61,7 +61,8 @@ public class ConfigController extends HttpServlet {
                              @RequestParam(required = false) Long productCategoryId,
                              @RequestParam(required = false) Long productSizeId,
                              @RequestParam(required = false) Long paymentMethodId,
-                             @RequestParam(required = false) Long deliveryMethodId
+                             @RequestParam(required = false) Long deliveryMethodId,
+                             @SessionAttribute("loggedUser") User loggedUser
     ) {
         Shop shop = null;
 

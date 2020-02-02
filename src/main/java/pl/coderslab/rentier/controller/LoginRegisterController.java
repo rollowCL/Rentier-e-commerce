@@ -4,9 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import pl.coderslab.rentier.BCrypt;
 import pl.coderslab.rentier.Login;
 import pl.coderslab.rentier.entity.OrderType;
@@ -17,10 +15,12 @@ import pl.coderslab.rentier.repository.UserRepository;
 import pl.coderslab.rentier.repository.UserRoleRepository;
 import pl.coderslab.rentier.validation.UserBasicValidation;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+@SessionAttributes({"loggedUser"})
 @Controller
 public class LoginRegisterController {
 
@@ -102,7 +102,9 @@ public class LoginRegisterController {
 
             if (checkedUser.isPresent() && BCrypt.checkpw(login.getPassword(), checkedUser.get().getPassword())) {
 
-                return "/loginSuccess";
+                model.addAttribute("loggedUser", checkedUser.get());
+
+                return "redirect:/loginSuccess";
 
 
             } else {
@@ -114,6 +116,21 @@ public class LoginRegisterController {
 
         }
 
+    }
+
+    @GetMapping("/loginSuccess")
+    public String showLoginSuccess(@SessionAttribute("loggedUser") User user) {
+
+
+
+        return "/loginSuccess";
+    }
+
+
+
+    @ModelAttribute("loggedUser")
+    public User setUpLoggedUser() {
+        return new User();
     }
 
 }
