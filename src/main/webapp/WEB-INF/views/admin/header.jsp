@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <header id="header">
 
     <div id="header-wrap">
@@ -34,13 +35,13 @@
 
                     </li>
 
-                    <li><a href="#">
+                    <li><a href="/admin/config">
                         <div>Konfiguracja</div>
                     </a>
 
                     </li>
 
-                    <li><a href="#">
+                    <li><a href="/admin/users">
                         <div>Użytkownicy</div>
                     </a>
 
@@ -62,6 +63,11 @@
                     </a>
                     </li>
                 </ul>
+
+                <div id="top-search">
+                    <c:if test="${loggedUser.id == null}"><a href="/login"><i class="icon-user-alt"></i></a></c:if>
+                    <c:if test="${loggedUser.id != null}"><a href="/logout"><i class="icon-user-slash"></i></a></c:if>
+                </div>
 
             </nav><!-- #primary-menu end -->
 

@@ -61,8 +61,7 @@ public class ConfigController extends HttpServlet {
                              @RequestParam(required = false) Long productCategoryId,
                              @RequestParam(required = false) Long productSizeId,
                              @RequestParam(required = false) Long paymentMethodId,
-                             @RequestParam(required = false) Long deliveryMethodId,
-                             @SessionAttribute("loggedUser") User loggedUser
+                             @RequestParam(required = false) Long deliveryMethodId
     ) {
         Shop shop = null;
 
