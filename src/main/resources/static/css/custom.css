@@ -1,0 +1,43 @@
+/* ----------------------------------------------------------------
+	Custom CSS
+
+	Add all your Custom Styled CSS here for New Styles or
+	Overwriting Default Theme Styles for Better Handling Updates
+-----------------------------------------------------------------*/
+.myLogo{
+    zoom: 0.5;
+    -moz-transform: scale(0.5);
+}
+
+.error {
+    display: inline-block;
+    color: red;
+}
+
+.product-image-admin {
+    position: relative;
+    width: 50%;
+    height: auto;
+    overflow: hidden;
+}
+
+.product-image-admin > a,
+.product-image-admin .slide a,
+.product-image-admin img {
+    display: block;
+    width: 50%;
+    height: 50%;
+}
+
+.product-image-admin > a:nth-of-type(2) {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+}
+
+.product-edit {
+    background-color: snow;
+}
+
