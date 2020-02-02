@@ -9,6 +9,11 @@
     -moz-transform: scale(0.5);
 }
 
+.filterForm {
+    background-color: snow;
+
+}
+
 .error {
     display: inline-block;
     color: red;

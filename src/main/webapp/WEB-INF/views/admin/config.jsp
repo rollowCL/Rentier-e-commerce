@@ -60,7 +60,6 @@ To change this template use File | Settings | File Templates.
 
                 <div class="row clearfix">
 
-
                     <div class="col-lg-12">
 
                         <div class="tabs tabs-alt clearfix" id="tabs-profile">
