@@ -100,7 +100,7 @@ public class LoginRegisterController {
 
         } else {
 
-            Optional<User> checkedUser = userRepository.findByEmail(login.getEmail());
+            Optional<User> checkedUser = userRepository.findByEmailAndActiveTrue(login.getEmail());
 
             if (checkedUser.isPresent() && BCrypt.checkpw(login.getPassword(), checkedUser.get().getPassword())) {
 

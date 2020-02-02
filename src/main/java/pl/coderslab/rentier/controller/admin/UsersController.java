@@ -75,7 +75,28 @@ public class UsersController {
 
         }
 
-        return "forward:/admin/users/filterUsers";
+        return "redirect:/admin/users";
+
+    }
+
+    @GetMapping("/changeRole")
+    public String changeUserRoleForm(Model model, @RequestParam Long userId) {
+
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            model.addAttribute("user", user.get());
+        }
+
+        return "/admin/changeRole";
+
+    }
+
+    @PostMapping("/changeRole")
+    public String changeUserRole(@RequestParam String userId, @RequestParam String newRoleId) {
+
+            userRepository.customUpdateUserRole(Long.parseLong(userId), Long.parseLong(newRoleId));
+            return "redirect:/admin/users";
+
 
     }
 

@@ -63,7 +63,6 @@ To change this template use File | Settings | File Templates.
 
                     <div class="col-lg-12">
                         <div class="filterForm">
-                            <h6>Wybierz klasę użytkowników</h6>
                             <form:form action="/admin/users/filterUsers" method="post" modelAttribute="userRoleFilter">
                                 <form:radiobutton path="id" value="0" label="Wszystkie"/>
                                 <form:radiobuttons path="id" items="${userRoles}" itemLabel="roleName" itemValue="id"/>
@@ -85,74 +84,37 @@ To change this template use File | Settings | File Templates.
                                 <th scope="col"></th>
                             </thead>
                             <tbody>
-                            <c:forEach items="${users}" var="user">
-                                <tr>
-                                    <td>${user.firstName}</td>
-                                    <td>${user.lastName}</td>
-                                    <td>${user.phone}</td>
-                                    <td>${user.email}</td>
-                                    <td>${user.userRole.roleName}</td>
-                                    <td>${user.registerDate}</td>
-                                    <td>
-                                        <c:if test="${user.active}"><i
-                                                class="icon-line-square-check"></i></c:if>
-                                        <c:if test="${!user.active}"><i
-                                                class="icon-line-square-cross"></i></c:if>
-                                    </td>
-                                    <td>
-                                        <a class="button button-mini button-red button-3d"
-                                           href="">Usuń
-                                        </a>
-                                        <a class="button button-mini button-blue button-3d"
-                                           href="/admin/users/change?userId=${user.id}">
-                                            <c:if test="${user.active}">Dezaktywuj</c:if>
-                                            <c:if test="${!user.active}">Aktywuj</c:if>
-                                        </a>
-
-                                    </td>
-                                </tr>
-
-                            </c:forEach>
-
-                            <div id="user-edit-1">
-                                <tr class="product-edit">
-                                    <form class="row">
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                <c:forEach items="${users}" var="user">
+                                    <tr>
+                                        <td>${user.firstName}</td>
+                                        <td>${user.lastName}</td>
+                                        <td>${user.phone}</td>
+                                        <td>${user.email}</td>
+                                        <td>${user.userRole.roleName}</td>
+                                        <td>${user.registerDate}</td>
                                         <td>
-                                            <select name="userRole"
-                                                    class="form-control required">
-                                                <option value="1">Klient</option>
-                                                <option value="2" selected>Sprzedawca
-                                                </option>
-                                                <option value="3">Administrator</option>
-                                            </select>
-                                        </td>
-                                        <td></td>
-                                        <td><input type="checkbox" name="userActive"
-                                                   checked/></td>
-                                        <td>
-                                            <select multiple name="userShops">
-                                                <option value="1" selected>Zawiercie,
-                                                    Marszałkowska
-                                                </option>
-                                                <option value="2">Zawiercie, Powstańców
-                                                </option>
-                                                <option value="3" selected>Zawiercie,
-                                                    Żabki
-                                                </option>
-                                            </select>
+                                            <c:if test="${user.active}"><i
+                                                    class="icon-line-square-check"></i></c:if>
+                                            <c:if test="${!user.active}"><i
+                                                    class="icon-line-square-cross"></i></c:if>
                                         </td>
                                         <td>
-                                            <button class="button button-mini noborder button-green button-3d">
-                                                Zapisz
-                                            </button>
+                                            <a class="button button-mini button-red button-3d"
+                                               href="/admin/users/changeRole?userId=${user.id}">Zmień rolę
+                                            </a>
+                                            <a class="button button-mini button-blue button-3d"
+                                               href="/admin/users/change?userId=${user.id}">
+                                                <c:if test="${user.active}">Dezaktywuj</c:if>
+                                                <c:if test="${!user.active}">Aktywuj</c:if>
+                                            </a>
+                                            <c:if test="${user.userRole.orderType.orderTypeName eq 'internal'}">
+                                                <a class="button button-mini button-blue button-3d"
+                                                   href="/admin/users/shops?userId=${user.id}">Sklepy</a>
+                                            </c:if>
                                         </td>
-                                    </form>
-                                </tr>
-                            </div>
+                                    </tr>
+
+                                </c:forEach>
                             </tbody>
                         </table>
 
