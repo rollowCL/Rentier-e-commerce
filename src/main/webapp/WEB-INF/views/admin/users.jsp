@@ -63,13 +63,20 @@ To change this template use File | Settings | File Templates.
 
                     <div class="col-lg-12">
                         <div class="filterForm">
-                            <form:form action="/admin/users/filterUsers" method="post" modelAttribute="userRoleFilter">
+                            <form:form class="myFormLeft" action="/admin/users/filterUsers" method="post" modelAttribute="userRoleFilter">
                                 <form:radiobutton path="id" value="0" label="Wszystkie"/>
                                 <form:radiobuttons path="id" items="${userRoles}" itemLabel="roleName" itemValue="id"/>
                                 <button type="submit" class="button button-mini button-blue button-3d"
                                         value="Submit">Filtruj
                                 </button>
                             </form:form>
+                            <form class="myFormRight" action="/admin/users/filterUsersName" method="post">
+                                <label for="userNameSearch">Szukaj</label>
+                                <input type="text" minlength="3" name="userNameSearch" id="userNameSearch" maxlength="20"/>
+                                <button type="submit" class="button button-mini button-blue button-3d"
+                                        value="Submit">Szukaj
+                                </button>
+                            </form>
                         </div>
 
                         <table class="table table-bordered">

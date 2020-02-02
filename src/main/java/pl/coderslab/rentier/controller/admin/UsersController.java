@@ -56,6 +56,20 @@ public class UsersController {
         return "/admin/users";
     }
 
+    @PostMapping("/filterUsersName")
+    public String showFilteredUsersByName(Model model, @RequestParam String userNameSearch,
+                                          @ModelAttribute(binding = false, name = "userRoleFilter") UserRole userRoleFilter,
+                                          BindingResult result) {
+
+        List<User> foundUsers = userRepository.findByLastNameContainingIgnoreCase(userNameSearch);
+        System.out.println(userNameSearch);
+        System.out.println(foundUsers.toString());
+
+        model.addAttribute("users", foundUsers);
+
+        return "/admin/users";
+    }
+
 
     @GetMapping("/change")
     public String changeUserStatus(Model model, @RequestParam Long userId) {
@@ -148,8 +162,6 @@ public class UsersController {
             userRepository.save(user.get());
 
         }
-
-
 
         return "redirect:/admin/users";
     }
