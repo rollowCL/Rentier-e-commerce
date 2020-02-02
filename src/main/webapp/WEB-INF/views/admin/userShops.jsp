@@ -43,7 +43,7 @@ To change this template use File | Settings | File Templates.
     <section id="page-title">
 
         <div class="container clearfix">
-            <h1>Użytkownicy</h1>
+            <h1>Sklepy sprzedawców</h1>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Admin</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Użytkownicy</li>
@@ -63,14 +63,14 @@ To change this template use File | Settings | File Templates.
 
                     <div class="col-lg-12">
 
-                        <h4>Zmiana roli dla użytkownika ${user.firstName} ${user.lastName}</h4>
+                        <h4>Sklepy dostęþne dla użytkownika ${user.firstName} ${user.lastName}</h4>
 
-                        <form action="/admin/users/changeRole" method="post">
+                        <form action="/admin/users/shops" method="post">
                             <input type="hidden" value="${user.id}" name="userId"/>
-                            <select name="newRoleId">
-                                <c:forEach items="${userRoles}" var="userRole">
-                                    <option value="${userRole.id}"
-                                            <c:if test="${user.userRole.id == userRole.id}">selected</c:if>>${userRole.roleName}</option>
+                            <select name="userShops" multiple="multiple">
+                                <c:forEach items="${shops}" var="shop">
+                                    <option value="${shop.id}"
+                                            <c:if test="${user.shops.contains(shop)}">selected</c:if>>${shop.shopName}</option>
                                 </c:forEach>
                             </select>
                             <button type="submit" class="button button-mini button-blue button-3d"

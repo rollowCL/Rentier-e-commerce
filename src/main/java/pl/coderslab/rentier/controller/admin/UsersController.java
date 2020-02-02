@@ -4,7 +4,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.rentier.entity.ProductSize;
 import pl.coderslab.rentier.entity.Shop;
 import pl.coderslab.rentier.entity.User;
 import pl.coderslab.rentier.entity.UserRole;
@@ -12,7 +11,7 @@ import pl.coderslab.rentier.repository.ShopRepository;
 import pl.coderslab.rentier.repository.UserRepository;
 import pl.coderslab.rentier.repository.UserRoleRepository;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,6 +97,61 @@ public class UsersController {
             return "redirect:/admin/users";
 
 
+    }
+
+    @GetMapping("/shops")
+    public String showUserShops(Model model, @RequestParam Long userId) {
+
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+
+            if (!user.get().getUserRole().getOrderType().getOrderTypeName().equals("internal")) {
+
+                return "redirect:/admin/users";
+
+            } else {
+
+                model.addAttribute("user", user.get());
+                return "/admin/userShops";
+
+            }
+
+        } else {
+
+            return "redirect:/admin/users";
+        }
+
+    }
+
+    @PostMapping("/shops")
+    public String updateUserShops(Model model, @RequestParam Long userId, @RequestParam List<Long> userShops) {
+
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+
+            user.get().setShops(new ArrayList<>());
+
+            if (userShops.size() > 0) {
+                List<Shop> userNewShops = user.get().getShops();
+
+                for (Long shopId: userShops) {
+                    Optional<Shop> shop = shopRepository.findById(shopId);
+
+                    if (shop.isPresent()) {
+                        userNewShops.add(shop.get());
+                    }
+
+                }
+
+            }
+
+            userRepository.save(user.get());
+
+        }
+
+
+
+        return "redirect:/admin/users";
     }
 
 
