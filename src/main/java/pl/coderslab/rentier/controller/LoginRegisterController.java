@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import pl.coderslab.rentier.BCrypt;
 import pl.coderslab.rentier.Login;
 import pl.coderslab.rentier.entity.OrderType;
@@ -16,6 +17,7 @@ import pl.coderslab.rentier.repository.UserRoleRepository;
 import pl.coderslab.rentier.validation.UserBasicValidation;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -125,6 +127,7 @@ public class LoginRegisterController {
 
         return "/loginSuccess";
     }
+
 
 
 
