@@ -5,4 +5,6 @@ import pl.coderslab.rentier.entity.PaymentMethod;
 
 public interface PaymentMethodRepository extends JpaRepository<PaymentMethod, Long> {
 
+    boolean existsByPaymentMethodName(String name);
+
 }

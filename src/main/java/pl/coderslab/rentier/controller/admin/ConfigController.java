@@ -212,6 +212,10 @@ public class ConfigController extends HttpServlet {
         if (brandId != null) {
             if (brandRepository.findById(brandId).isPresent()) {
                 Brand brand = brandRepository.findById(brandId).get();
+                File file = new File(rentierProperties.getUploadPathBrandsForDelete() + brand.getLogoFileName());
+                if (file.exists()) {
+                    file.delete();
+                }
                 brandRepository.delete(brand);
             }
         }
@@ -292,31 +296,45 @@ public class ConfigController extends HttpServlet {
                           @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod,
                           HttpServletRequest request) throws IOException, ServletException {
 
+
+        if (brand.getId() == null && brandRepository.existsByName(brand.getName())) {
+            resultBrand.rejectValue("name", "error.name", "Taka marka już istnieje");
+
+        }
+
+        Part filePart = request.getPart("fileName");
+        String fileName = getFileName(filePart);
+
+        if (!"".equals(fileName)) {
+
+            if (isValidFile(filePart)) {
+
+                String suffix = "." + FilenameUtils.getExtension(fileName);
+                String prefix = "brand-";
+                File uploads = new File(rentierProperties.getUploadPathBrands());
+                File file = File.createTempFile(prefix, suffix, uploads);
+                String logoFileName = rentierProperties.getUploadPathBrandsForView() + file.getName();
+
+                try (InputStream input = filePart.getInputStream()) {
+                    Files.copy(input, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    brand.setLogoFileName(logoFileName);
+
+                } catch (FileNotFoundException e) {
+                    resultBrand.rejectValue("fileName", "error.fileName", "Błąd zapisu pliku");
+                }
+
+            } else {
+
+                resultBrand.rejectValue("fileName", "error.fileName", "Niepoprawny plik");
+            }
+
+        }
+
         if (resultBrand.hasErrors()) {
 
             return "/admin/config";
 
         } else {
-
-            Part filePart = request.getPart("fileName");
-            String fileName = getFileName(filePart);
-            String logoFileName = null;
-
-            if (!"".equals(fileName) && isValidFile(filePart)) {
-                String suffix = "." + FilenameUtils.getExtension(fileName);
-                String prefix = "brand-";
-                File uploads = new File(rentierProperties.getUploadPathBrands());
-                File file = File.createTempFile(prefix, suffix, uploads);
-                logoFileName = rentierProperties.getUploadPathBrandsForView() + file.getName();
-
-                try (InputStream input = filePart.getInputStream()) {
-                    Files.copy(input, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                } catch (FileNotFoundException e) {
-                    System.out.println("Błąd zapisu pliku");
-                }
-                brand.setLogoFileName(logoFileName);
-            }
-
 
             brandRepository.save(brand);
             return "redirect:/admin/config";
@@ -331,6 +349,11 @@ public class ConfigController extends HttpServlet {
                                      @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
                                      @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
                                      @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod) {
+
+        if (productCategory.getId() == null && productCategoryRepository.existsByCategoryName(productCategory.getCategoryName())) {
+            resultProductCategory.rejectValue("categoryName", "error.name", "Taka kategoria już istnieje");
+
+        }
 
         if (resultProductCategory.hasErrors()) {
 
@@ -352,6 +375,14 @@ public class ConfigController extends HttpServlet {
                                  @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
                                  @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod) {
 
+
+        if (productSize.getId() == null &&productSizeRepository.existsBySizeNameAndProductCategory(
+                productSize.getSizeName(), productSize.getProductCategory())) {
+            resultProductSize.rejectValue("sizeName", "error.name", "Takai rozmiar dla kategorii już istnieje");
+
+        }
+
+
         if (resultProductSize.hasErrors()) {
 
             return "/admin/config";
@@ -371,6 +402,11 @@ public class ConfigController extends HttpServlet {
                                  @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
                                  @ModelAttribute @Valid PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
                                  @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod) {
+
+        if (paymentMethod.getId() == null && paymentMethodRepository.existsByPaymentMethodName(paymentMethod.getPaymentMethodName())) {
+            resultPaymentMethod.rejectValue("paymentMethodName", "error.name", "Taka metoda już istnieje");
+
+        }
 
         if (resultPaymentMethod.hasErrors()) {
 
@@ -393,7 +429,7 @@ public class ConfigController extends HttpServlet {
                                    @ModelAttribute @Valid DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod) {
 
 
-        if (deliveryMethodRepository.existsByDeliveryMethodName(deliveryMethod.getDeliveryMethodName())) {
+        if (deliveryMethod.getId() == null && deliveryMethodRepository.existsByDeliveryMethodName(deliveryMethod.getDeliveryMethodName())) {
             resultDeliveryMethod.rejectValue("deliveryMethodName", "error.name", "Taka metoda już istnieje");
 
         }

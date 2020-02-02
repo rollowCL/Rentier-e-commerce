@@ -7,7 +7,9 @@ import org.springframework.context.annotation.Configuration;
 public class RentierProperties {
 
     private String uploadPathBrands = "/home/osint/Documents/Repos/CodersLab/Rentier/src/main/resources/static/images/brands/";
+    private String uploadPathBrandsForDelete = "/home/osint/Documents/Repos/CodersLab/Rentier/src/main/resources/static";
     private String uploadPathBrandsForView = "/images/brands/";
+
     private String uploadPathProducts = "/home/osint/Documents/Repos/CodersLab/Rentier/src/main/resources/static/images/products/";
     private String uploadPathProdutsForView = "/images/products/";
 
@@ -27,4 +29,7 @@ public class RentierProperties {
         return uploadPathProdutsForView;
     }
 
+    public String getUploadPathBrandsForDelete() {
+        return uploadPathBrandsForDelete;
+    }
 }

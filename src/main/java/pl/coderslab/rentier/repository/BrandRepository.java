@@ -5,4 +5,6 @@ import pl.coderslab.rentier.entity.Brand;
 
 public interface BrandRepository extends JpaRepository<Brand, Long> {
 
+    boolean existsByName(String name);
+
 }

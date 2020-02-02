@@ -63,7 +63,6 @@ To change this template use File | Settings | File Templates.
                     <div class="col-lg-12">
 
                         <div class="heading-block nobottomborder">
-                            <h4>Powtierdź usunięcie</h4>
                         </div>
                         <div>
                             <h3>Czy na pewno chesz usunąć

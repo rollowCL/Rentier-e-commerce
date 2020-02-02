@@ -5,4 +5,6 @@ import pl.coderslab.rentier.entity.ProductCategory;
 
 public interface ProductCategoryRepository extends JpaRepository<ProductCategory, Long> {
 
+    boolean existsByCategoryName(String name);
+
 }
