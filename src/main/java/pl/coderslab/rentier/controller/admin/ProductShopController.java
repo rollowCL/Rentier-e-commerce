@@ -115,7 +115,7 @@ public class ProductShopController {
     @ModelAttribute("productShops")
     public List<ProductShop> getProductShops() {
 
-        return productShopRepository.customFinAllOrderByShopProductSize();
+        return productShopRepository.customFindAllOrderByShopProductSize();
     }
 
     @ModelAttribute("products")

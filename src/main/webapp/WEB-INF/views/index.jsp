@@ -62,10 +62,6 @@ To change this template use File | Settings | File Templates.
 						<div class="col-md-12">
 
 <!--							conent-->
-							<c:forEach items="${productCategories}" var="productCategory">
-                                <c:out value="${productCategory.id} - ${productCategory.categoryName} - ${productCategory.active}"/><br/>
-							</c:forEach>
-
 
 						</div>
 

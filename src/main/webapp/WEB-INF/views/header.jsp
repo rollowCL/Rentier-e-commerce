@@ -30,37 +30,14 @@
 
                 <ul>
 
-                    <li><a href="#">
-                        <div>Kurtki / Płaszcze</div>
-                    </a>
+                    <c:forEach items="${productCategories}" var="productCategory">
+                        <li>
+                            <a href="/?categoryId=<c:out value="${productCategory.id}"/>">
+                                <div><c:out value="${productCategory.categoryName}"/></div>
+                            </a>
+                        </li>
+                    </c:forEach>
 
-                    </li>
-
-                    <li><a href="#">
-                        <div>Marynarki</div>
-                    </a>
-
-                    </li>
-
-                    <li><a href="#">
-                        <div>Kamizelki</div>
-                    </a>
-
-                    </li>
-
-                    <li><a href="#">
-                        <div>Spodnie</div>
-                    </a>
-                    </li>
-
-                    <li><a href="#">
-                        <div>Koszule</div>
-                    </a>
-                    </li>
-                    <li><a href="#">
-                        <div>Garnitury</div>
-                    </a>
-                    </li>
 
                 </ul>
 

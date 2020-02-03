@@ -300,6 +300,7 @@ To change this template use File | Settings | File Templates.
                                                     <thead>
                                                         <tr>
                                                             <th scope="col">Nazwa</th>
+                                                            <th scope="col">Pozycja</th>
                                                             <th scope="col">Aktywny</th>
                                                             <th scope="col">Akcje</th>
                                                         </tr>
@@ -308,6 +309,7 @@ To change this template use File | Settings | File Templates.
                                                 <c:forEach items="${productCategories}" var="productCategory">
                                                     <tr>
                                                         <td><c:out value="${productCategory.categoryName}"/></td>
+                                                        <td><c:out value="${productCategory.categoryOrder}"/></td>
                                                         <td>
                                                             <c:if test="${productCategory.active}"><i
                                                                     class="icon-line-square-check"></i></c:if>
@@ -340,9 +342,15 @@ To change this template use File | Settings | File Templates.
                                                                 maxlength="100"/>
                                                     <form:errors path="categoryName" cssClass="error"/>
                                                 </div>
+                                                <div class="col-md-4 form-group">
+                                                    <label for="categoryOrder">Pozycja </label>
+                                                    <form:input path="categoryOrder" id="categoryOrder" class="form-control"
+                                                                maxlength="100"/>
+                                                    <form:errors path="categoryOrder" cssClass="error"/>
+                                                </div>
                                                 <div class="col-md-2 form-group">
                                                     <label for="active">Aktywny </label>
-                                                    <form:checkbox path="active" id="active" class="form-control"/>
+                                                    <form:checkbox path="active" checked="checked" id="active" class="form-control"/>
                                                     <form:errors path="active" cssClass="error"/>
                                                 </div>
                                                 <div class="col-12">

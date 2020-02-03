@@ -2,6 +2,7 @@ package pl.coderslab.rentier.entity;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -23,6 +24,11 @@ public class ProductCategory {
 
     @NotNull
     private boolean active;
+
+    @NotNull
+    @Min(0)
+    @Column(name = "category_order")
+    private int categoryOrder;
 
     public Long getId() {
         return id;
@@ -48,6 +54,13 @@ public class ProductCategory {
         this.active = active;
     }
 
+    public int getCategoryOrder() {
+        return categoryOrder;
+    }
+
+    public void setCategoryOrder(int categoryOrder) {
+        this.categoryOrder = categoryOrder;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -68,6 +81,7 @@ public class ProductCategory {
                 "id=" + id +
                 ", categoryName='" + categoryName + '\'' +
                 ", active=" + active +
+                ", categoryOrder=" + categoryOrder +
                 '}';
     }
 }

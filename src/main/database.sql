@@ -16,6 +16,7 @@ CREATE TABLE product_categories
     id BIGINT AUTO_INCREMENT NOT NULL,
     category_name VARCHAR(255) NOT NULL,
     active BIT NOT NULL,
+    category_Order TINYINT NOT NULL UNIQUE,
     PRIMARY KEY (id)
 );
 

@@ -15,7 +15,14 @@ public interface ProductShopRepository extends JpaRepository<ProductShop, Long> 
 
     @Query(value = "SELECT * FROM products_shops ps JOIN product_sizes p on ps.product_size_id = p.id JOIN products p2 on ps.product_id = p2.id " +
             "JOIN shops s on ps.shop_id = s.id ORDER BY s.shop_name, p2.product_name, p.size_name", nativeQuery = true)
-    List<ProductShop> customFinAllOrderByShopProductSize();
+    List<ProductShop> customFindAllOrderByShopProductSize();
+
+
+    @Query(value = "SELECT * FROM products_shops ps JOIN product_sizes p on ps.product_size_id = p.id JOIN products p2 on ps.product_id = p2.id " +
+            "JOIN shops s on ps.shop_id = s.id JOIN brands b on p2.brand_id = b.id " +
+            "WHERE p.active = true AND p2.active = true AND p2.available_online = true AND b.active = true", nativeQuery = true)
+    List<ProductShop> customFindAllActiveForShop();
+
 
 
 }

@@ -347,6 +347,11 @@ public class ConfigController extends HttpServlet {
                                      @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
                                      @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod) {
 
+        if (productCategory.getId() == null && productCategoryRepository.existsByCategoryOrder(productCategory.getCategoryOrder())) {
+            resultProductCategory.rejectValue("categoryOrder", "error.order", "Taka pozycja już istnieje, wybierz mniejszą lub większą");
+
+        }
+
         if (productCategory.getId() == null && productCategoryRepository.existsByCategoryName(productCategory.getCategoryName())) {
             resultProductCategory.rejectValue("categoryName", "error.name", "Taka kategoria już istnieje");
 
@@ -445,7 +450,7 @@ public class ConfigController extends HttpServlet {
     @ModelAttribute("productCategories")
     public List<ProductCategory> getProductCategories() {
 
-        return productCategoryRepository.findAll();
+        return productCategoryRepository.findAllByOrderByCategoryOrder();
     }
 
     @ModelAttribute("brands")
