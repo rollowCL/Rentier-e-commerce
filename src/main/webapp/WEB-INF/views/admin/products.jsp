@@ -11,7 +11,6 @@ To change this template use File | Settings | File Templates.
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html dir="ltr" lang="en-US">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -43,10 +42,10 @@ To change this template use File | Settings | File Templates.
     <section id="page-title">
 
         <div class="container clearfix">
-            <h1>Użytkownicy</h1>
+            <h1>Produkty</h1>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Admin</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Użytkownicy</li>
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Konfiguracja</li>
             </ol>
         </div>
 
@@ -63,72 +62,75 @@ To change this template use File | Settings | File Templates.
 
                     <div class="col-lg-12">
                         <div class="filterForm">
-                            <form:form class="myFormLeft" action="/admin/users/filterUsers" method="post" modelAttribute="userRoleFilter">
-                                <form:radiobutton path="id" value="0" label="Wszystkie"/>
-                                <form:radiobuttons path="id" items="${userRoles}" itemLabel="roleName" itemValue="id"/>
+                            <form class="myFormLeft" action="/admin/products/filterProductsCategory" method="post">
+
                                 <button type="submit" class="button button-mini button-blue button-3d"
-                                        value="Submit">Filtruj
+                                        value="Submit">Filruj
                                 </button>
-                            </form:form>
-                            <form class="myFormRight" action="/admin/users/filterUsersName" method="post">
-                                <label for="userNameSearch">Szukaj</label>
-                                <input type="text" placeholder="podaj fragment nazwiska" minlength="3" name="userNameSearch" id="userNameSearch" maxlength="20"/>
+                            </form>
+                        </div>
+                        <div class="filterForm">
+                            <form class="myFormRight" action="/admin/products/filterProductsName" method="post">
+                                <label for="productNameSearch">Szukaj</label>
+                                <input type="text" minlength="3" name="productNameSearch" id="productNameSearch" maxlength="50"/>
                                 <button type="submit" class="button button-mini button-blue button-3d"
                                         value="Submit">Szukaj
                                 </button>
                             </form>
                         </div>
-
-                        <table class="table table-bordered">
+                        <a href="/admin/products/form" class="button button-mini button-blue button-3d">Dodaj nowy</a>
+                        <table class="table">
                             <thead>
-                                <th scope="col">Imię</th>
-                                <th scope="col">Nazwisko</th>
-                                <th scope="col">Telefon</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Rola</th>
-                                <th scope="col">Data rejestracji</th>
-                                <th scope="col">Aktywny</th>
-                                <th scope="col"></th>
+                            <th scope="col">Zdjęcie</th>
+                            <th scope="col">Marka</th>
+                            <th scope="col">Kategoria</th>
+                            <th scope="col">Nazwa produktu</th>
+                            <th scope="col">Opis produktu</th>
+                            <th scope="col">Cena brutto</th>
+                            <th scope="col">Dostępny na www</th>
+                            <th scope="col">Aktywny</th>
+                            <th scope="col">Akcje</th>
                             </thead>
                             <tbody>
-                                <c:forEach items="${users}" var="user">
+                                <c:forEach items="${products}" var="product">
                                     <tr>
-                                        <td>${user.firstName}</td>
-                                        <td>${user.lastName}</td>
-                                        <td>${user.phone}</td>
-                                        <td>${user.email}</td>
-                                        <td>${user.userRole.roleName}</td>
-                                        <td>${user.registerDate}</td>
                                         <td>
-                                            <c:if test="${user.active}"><i
+                                            <c:if test="${not empty product.imageFileName}">
+                                                <img height="90" width="380" src="<c:out value="${product.imageFileName}"/>"
+                                                     alt="ProductImage"/>
+                                            </c:if>
+                                        </td>
+                                        <td><c:out value="${product.brand.name}"/></td>
+                                        <td><c:out value="${product.productCategory.categoryName}"/></td>
+                                        <td><c:out value="${product.productName}"/></td>
+                                        <td><c:out value="${product.productDesc}"/></td>
+                                        <td><c:out value="${product.priceGross}"/></td>
+                                        <td>
+                                            <c:if test="${product.availableOnline}"><i
                                                     class="icon-line-square-check"></i></c:if>
-                                            <c:if test="${!user.active}"><i
+                                            <c:if test="${!product.availableOnline}"><i
+                                                    class="icon-line-square-cross"></i></c:if>
+                                        </td>
+                                        <td>
+                                            <c:if test="${product.active}"><i
+                                                    class="icon-line-square-check"></i></c:if>
+                                            <c:if test="${!product.active}"><i
                                                     class="icon-line-square-cross"></i></c:if>
                                         </td>
                                         <td>
                                             <a class="button button-mini button-red button-3d"
-                                               href="/admin/users/changeRole?userId=${user.id}">Zmień rolę
+                                               href="/admin/products/del?productId=${product.id}">Usuń
                                             </a>
                                             <a class="button button-mini button-blue button-3d"
-                                               href="/admin/users/change?userId=${user.id}">
-                                                <c:if test="${user.active}">Dezaktywuj</c:if>
-                                                <c:if test="${!user.active}">Aktywuj</c:if>
+                                               href="/admin/products/form?productId=${product.id}">Edytuj
                                             </a>
-                                            <c:if test="${user.userRole.orderType.orderTypeName eq 'internal'}">
-                                                <a class="button button-mini button-blue button-3d"
-                                                   href="/admin/users/shops?userId=${user.id}">Sklepy</a>
-                                            </c:if>
                                         </td>
                                     </tr>
-
                                 </c:forEach>
                             </tbody>
+
                         </table>
-
                     </div>
-
-                    <div class="w-100 line d-block d-md-none"></div>
-
                 </div>
 
             </div>

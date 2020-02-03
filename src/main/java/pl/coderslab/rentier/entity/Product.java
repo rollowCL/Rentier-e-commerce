@@ -26,15 +26,6 @@ public class Product {
     @Column(name = "product_desc")
     private String productDesc;
 
-    @Size(max = 100)
-    @Column(name = "product_text")
-    private String productText;
-
-    @NotBlank
-    @Size(max = 100)
-    @Column(name = "product_brand_text")
-    private String productBrandText;
-
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "brand_id")
@@ -45,44 +36,25 @@ public class Product {
     @JoinColumn(name = "product_category_id")
     private ProductCategory productCategory;
 
-    @NotNull
-    @PastOrPresent
     @Column(name = "created_date")
     private LocalDate createdDate;
 
-    @NotNull
-    @PastOrPresent
     @Column(name = "updated_date")
     private LocalDate updatedDate;
 
+    @NotNull
     private boolean active;
 
-    @DecimalMin(value = "0.0")
-    @Digits(integer = 10, fraction = 2)
-    @Column(name = "price_net")
-    private BigDecimal priceNet;
+    @NotNull
+    @Column(name = "available_online")
+    private boolean availableOnline;
 
-    @DecimalMin(value = "0.0")
-    @Digits(integer = 4, fraction = 2)
-    @Column(name = "vat_prc")
-    private BigDecimal vatPrc;
-
+    @NotNull
     @DecimalMin(value = "0.0")
     @Digits(integer = 10, fraction = 2)
     @Column(name = "price_gross")
     private BigDecimal priceGross;
 
-    private boolean promoted;
-
-    @DecimalMin(value = "0.0")
-    @Digits(integer = 4, fraction = 2)
-    @Column(name = "discount_prc")
-    private BigDecimal discountPrc;
-
-    @Column(name = "available_online")
-    private boolean availableOnline;
-
-    @NotBlank
     @Size(max = 255)
     @Column(name = "image_file_name")
     private String imageFileName;
@@ -112,22 +84,6 @@ public class Product {
 
     public void setProductDesc(String productDesc) {
         this.productDesc = productDesc;
-    }
-
-    public String getProductText() {
-        return productText;
-    }
-
-    public void setProductText(String productText) {
-        this.productText = productText;
-    }
-
-    public String getProductBrandText() {
-        return productBrandText;
-    }
-
-    public void setProductBrandText(String productBrandText) {
-        this.productBrandText = productBrandText;
     }
 
     public Brand getBrand() {
@@ -170,44 +126,12 @@ public class Product {
         this.active = active;
     }
 
-    public BigDecimal getPriceNet() {
-        return priceNet;
-    }
-
-    public void setPriceNet(BigDecimal priceNet) {
-        this.priceNet = priceNet;
-    }
-
-    public BigDecimal getVatPrc() {
-        return vatPrc;
-    }
-
-    public void setVatPrc(BigDecimal vatPrc) {
-        this.vatPrc = vatPrc;
-    }
-
     public BigDecimal getPriceGross() {
         return priceGross;
     }
 
     public void setPriceGross(BigDecimal priceGross) {
         this.priceGross = priceGross;
-    }
-
-    public boolean isPromoted() {
-        return promoted;
-    }
-
-    public void setPromoted(boolean promoted) {
-        this.promoted = promoted;
-    }
-
-    public BigDecimal getDiscountPrc() {
-        return discountPrc;
-    }
-
-    public void setDiscountPrc(BigDecimal discountPrc) {
-        this.discountPrc = discountPrc;
     }
 
     public boolean isAvailableOnline() {
@@ -253,18 +177,12 @@ public class Product {
                 "id=" + id +
                 ", productName='" + productName + '\'' +
                 ", productDesc='" + productDesc + '\'' +
-                ", productText='" + productText + '\'' +
-                ", productBrandText='" + productBrandText + '\'' +
                 ", brand=" + brand +
                 ", productCategory=" + productCategory +
                 ", createdDate=" + createdDate +
                 ", updatedDate=" + updatedDate +
                 ", active=" + active +
-                ", priceNet=" + priceNet +
-                ", vatPrc=" + vatPrc +
                 ", priceGross=" + priceGross +
-                ", promoted=" + promoted +
-                ", discountPrc=" + discountPrc +
                 ", availableOnline=" + availableOnline +
                 ", imageFileName='" + imageFileName + '\'' +
                 ", productShops=" + productShops +

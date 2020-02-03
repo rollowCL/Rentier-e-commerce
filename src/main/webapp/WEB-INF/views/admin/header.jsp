@@ -47,7 +47,7 @@
 
                     </li>
 
-                    <li><a href="#">
+                    <li><a href="/admin/products/">
                         <div>Produkty</div>
                     </a>
 

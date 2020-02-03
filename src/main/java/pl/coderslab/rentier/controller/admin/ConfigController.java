@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import pl.coderslab.rentier.RentierProperties;
 import pl.coderslab.rentier.entity.*;
 import pl.coderslab.rentier.repository.*;
-import pl.coderslab.rentier.service.ConfigService;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -37,9 +36,11 @@ public class ConfigController extends HttpServlet {
     private final PaymentMethodRepository paymentMethodRepository;
     private final ShopRepository shopRepository;
     private final ProductSizeRepository productSizeRepository;
-    private final ConfigService configService;
 
-    public ConfigController(RentierProperties rentierProperties, ProductCategoryRepository productCategoryRepository, BrandRepository brandRepository, DeliveryMethodRepository deliveryMethodRepository, PaymentMethodRepository paymentMethodRepository, ShopRepository shopRepository, ProductSizeRepository productSizeRepository, ConfigService configService) {
+    public ConfigController(RentierProperties rentierProperties, ProductCategoryRepository productCategoryRepository,
+                            BrandRepository brandRepository, DeliveryMethodRepository deliveryMethodRepository,
+                            PaymentMethodRepository paymentMethodRepository, ShopRepository shopRepository,
+                            ProductSizeRepository productSizeRepository) {
         this.rentierProperties = rentierProperties;
         this.productCategoryRepository = productCategoryRepository;
         this.brandRepository = brandRepository;
@@ -47,7 +48,6 @@ public class ConfigController extends HttpServlet {
         this.paymentMethodRepository = paymentMethodRepository;
         this.shopRepository = shopRepository;
         this.productSizeRepository = productSizeRepository;
-        this.configService = configService;
     }
 
 
@@ -187,7 +187,7 @@ public class ConfigController extends HttpServlet {
             }
         }
 
-        return "/admin/del";
+        return "/admin/configDel";
     }
 
     @PostMapping("/del")
@@ -317,12 +317,12 @@ public class ConfigController extends HttpServlet {
                     brand.setLogoFileName(logoFileName);
 
                 } catch (FileNotFoundException e) {
-                    resultBrand.rejectValue("fileName", "error.fileName", "Błąd zapisu pliku");
+                    resultBrand.rejectValue("name", "error.fileName", "Błąd zapisu pliku");
                 }
 
             } else {
 
-                resultBrand.rejectValue("fileName", "error.fileName", "Niepoprawny plik");
+                resultBrand.rejectValue("name", "error.fileName", "Niepoprawny plik");
             }
 
         }

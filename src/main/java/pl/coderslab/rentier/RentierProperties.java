@@ -11,6 +11,7 @@ public class RentierProperties {
     private String uploadPathBrandsForView = "/images/brands/";
 
     private String uploadPathProducts = "/home/osint/Documents/Repos/CodersLab/Rentier/src/main/resources/static/images/products/";
+    private String uploadPathProductsForDelete = "/home/osint/Documents/Repos/CodersLab/Rentier/src/main/resources/static";
     private String uploadPathProdutsForView = "/images/products/";
 
     public String getUploadPathBrands() {
