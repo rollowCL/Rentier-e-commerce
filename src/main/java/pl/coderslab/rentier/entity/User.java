@@ -188,7 +188,6 @@ public class User {
         this.password2 = password2;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

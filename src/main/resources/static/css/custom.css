@@ -17,12 +17,10 @@
 
 .myFormLeft {
     float: left;
-    border: 1px solid grey;
 }
 
 .myFormRight {
     float: right;
-    border: 1px solid grey;
 }
 
 .error {

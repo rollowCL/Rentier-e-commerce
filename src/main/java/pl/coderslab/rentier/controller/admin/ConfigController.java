@@ -4,19 +4,16 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.rentier.RentierProperties;
 import pl.coderslab.rentier.entity.*;
 import pl.coderslab.rentier.repository.*;
 import pl.coderslab.rentier.service.ConfigService;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import javax.validation.Valid;
-import java.awt.print.Book;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -30,7 +27,7 @@ import java.util.regex.Pattern;
 
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/admin/config")
 public class ConfigController extends HttpServlet {
 
     private final RentierProperties rentierProperties;
@@ -54,7 +51,7 @@ public class ConfigController extends HttpServlet {
     }
 
 
-    @GetMapping("/config")
+    @GetMapping("")
     public String showConfig(Model model,
                              @RequestParam(required = false) Long shopId,
                              @RequestParam(required = false) Long brandId,
@@ -139,7 +136,7 @@ public class ConfigController extends HttpServlet {
         return "/admin/config";
     }
 
-    @GetMapping("/config/del")
+    @GetMapping("/del")
     public String confirmDelete(Model model, @RequestParam(required = false) Long shopId,
                                 @RequestParam(required = false) Long brandId,
                                 @RequestParam(required = false) Long productCategoryId,
@@ -193,7 +190,7 @@ public class ConfigController extends HttpServlet {
         return "/admin/del";
     }
 
-    @PostMapping("/config/del")
+    @PostMapping("/del")
     public String deleteAuthor(@RequestParam(required = false) Long shopId,
                                @RequestParam(required = false) Long brandId,
                                @RequestParam(required = false) Long productCategoryId,
@@ -266,7 +263,7 @@ public class ConfigController extends HttpServlet {
     }
 
 
-    @PostMapping("/config/shop/add")
+    @PostMapping("/shop/add")
     public String addShop(@ModelAttribute @Valid Shop shop, BindingResult resultShop,
                           @ModelAttribute(binding = false) Brand brand, BindingResult resultBrand,
                           @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,
@@ -287,7 +284,7 @@ public class ConfigController extends HttpServlet {
 
     }
 
-    @PostMapping("/config/brand/add")
+    @PostMapping("/brand/add")
     public String adBrand(@ModelAttribute(binding = false) Shop shop, BindingResult resultShop,
                           @ModelAttribute @Valid Brand brand, BindingResult resultBrand,
                           @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,
@@ -342,7 +339,7 @@ public class ConfigController extends HttpServlet {
 
     }
 
-    @PostMapping("/config/productCategory/add")
+    @PostMapping("/productCategory/add")
     public String addProductCategory(@ModelAttribute(binding = false) Shop shop, BindingResult resultShop,
                                      @ModelAttribute(binding = false) Brand brand, BindingResult resultBrand,
                                      @ModelAttribute @Valid ProductCategory productCategory, BindingResult resultProductCategory,
@@ -367,7 +364,7 @@ public class ConfigController extends HttpServlet {
 
     }
 
-    @PostMapping("/config/productSize/add")
+    @PostMapping("/productSize/add")
     public String addProductSize(@ModelAttribute(binding = false) Shop shop, BindingResult resultShop,
                                  @ModelAttribute(binding = false) Brand brand, BindingResult resultBrand,
                                  @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,
@@ -395,7 +392,7 @@ public class ConfigController extends HttpServlet {
 
     }
 
-    @PostMapping("/config/paymentMethod/add")
+    @PostMapping("/paymentMethod/add")
     public String addPaymentMethod(@ModelAttribute(binding = false) Shop shop, BindingResult resultShop,
                                  @ModelAttribute(binding = false) Brand brand, BindingResult resultBrand,
                                  @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,
@@ -420,7 +417,7 @@ public class ConfigController extends HttpServlet {
 
     }
 
-    @PostMapping("/config/deliveryMethod/add")
+    @PostMapping("/deliveryMethod/add")
     public String addDeliveryMethod(@ModelAttribute(binding = false) Shop shop, BindingResult resultShop,
                                    @ModelAttribute(binding = false) Brand brand, BindingResult resultBrand,
                                    @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,

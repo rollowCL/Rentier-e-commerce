@@ -62,8 +62,6 @@ public class UsersController {
                                           BindingResult result) {
 
         List<User> foundUsers = userRepository.findByLastNameContainingIgnoreCase(userNameSearch);
-        System.out.println(userNameSearch);
-        System.out.println(foundUsers.toString());
 
         model.addAttribute("users", foundUsers);
 
