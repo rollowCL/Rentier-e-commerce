@@ -187,7 +187,7 @@ public class ConfigController extends HttpServlet {
             }
         }
 
-        return "/admin/configDel";
+        return "/admin/del";
     }
 
     @PostMapping("/del")

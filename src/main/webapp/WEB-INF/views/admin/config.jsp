@@ -126,6 +126,9 @@ To change this template use File | Settings | File Templates.
                                                             <a class="button button-mini button-blue button-3d"
                                                                     href="/admin/config?shopId=${shop.id}">Edytuj
                                                             </a>
+                                                            <a class="button button-mini button-blue button-3d"
+                                                               href="/admin/productShops?shopId=${shop.id}">Magazyn
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>

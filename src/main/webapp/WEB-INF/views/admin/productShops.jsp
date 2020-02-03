@@ -10,6 +10,7 @@ To change this template use File | Settings | File Templates.
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <html dir="ltr" lang="en-US">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -41,10 +42,10 @@ To change this template use File | Settings | File Templates.
     <section id="page-title">
 
         <div class="container clearfix">
-            <h1>Konfiguracja</h1>
+            <h1>Stan magazynowy</h1>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Konfiguracja</li>
+                <li class="breadcrumb-item active" aria-current="page">Produkty</li>
             </ol>
         </div>
 
@@ -59,29 +60,39 @@ To change this template use File | Settings | File Templates.
 
                 <div class="row clearfix">
 
-
                     <div class="col-lg-12">
+                        <a href="/admin/productShops/form" class="button button-mini button-blue button-3d">Dodaj nowy</a>
 
-                        <div class="heading-block nobottomborder">
-                        </div>
-                        <div>
-                            <h3>Czy na pewno chesz usunąć
-                            <c:if test="${not empty product.id}"> product <strong><c:out value="${product.productName}"/></strong> z całym stanem magazynowym?</c:if>
-                              </h3>
-                            <form method="post">
-                                <c:if test="${not empty product.id}"> <input type="hidden" name="shopId" <c:out value="${product.id}"/>></c:if>
-                                <input class="button button-mini button-red button-3d" type="submit" value="Tak, usuń">
-                                <button class="button button-mini button-blue button-3d" type="button" onClick="javascript:document.location.href='/admin/config'">Anuluj</button>
-                            </form>
+                        <table class="table">
+                            <thead>
+                            <th scope="col">Sklep</th>
+                            <th scope="col">Produkt</th>
+                            <th scope="col">Rozmiar</th>
+                            <th scope="col">Dostępna ilość</th>
+                            <th scope="col">Akcje</th>
+                            </thead>
+                            <tbody>
+                            <c:forEach items="${productShops}" var="productShop">
+                                <tr>
+                                    <td><c:out value="${productShop.shop.shopName}"/></td>
+                                    <td><c:out value="${productShop.product.productName}"/></td>
+                                    <td><c:out value="${productShop.productSize.sizeName}"/></td>
+                                    <td><c:out value="${productShop.quantity}"/></td>
+                                    <td>
+                                        <a class="button button-mini button-red button-3d"
+                                           href="/admin/productShops/del?productShopId=${productShop.id}">Usuń
+                                        </a>
+                                        <a class="button button-mini button-blue button-3d"
+                                           href="/admin/productShops/form?productShopId=${productShop.id}">Edytuj
+                                        </a>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
 
-                        </div>
+                        </table>
 
                     </div>
-
-
-                    <div class="w-100 line d-block d-md-none"></div>
-
-
                 </div>
 
             </div>

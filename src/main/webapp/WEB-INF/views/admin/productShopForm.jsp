@@ -42,7 +42,7 @@ To change this template use File | Settings | File Templates.
     <section id="page-title">
 
         <div class="container clearfix">
-            <h1>Produkty</h1>
+            <h1>Stan magazynowy</h1>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Produkty</li>
@@ -62,59 +62,39 @@ To change this template use File | Settings | File Templates.
 
                     <div class="col-lg-12">
                         <form:form class="row" method="post"
-                                   id="productAddForm" modelAttribute="product" enctype="multipart/form-data">
+                                   id="productAddForm" modelAttribute="productShop">
                             <form:hidden path="id"/>
-                            <form:hidden path="createdDate"/>
-                            <form:hidden path="updatedDate"/>
-                            <div class="col-md-6 form-group">
-                                <label for="active">Wybierz kategorię </label>
-                                <form:select path="productCategory" class="formElement">
-                                    <form:option value="0" label="wybierz..."/>
-                                    <form:options items="${productCategories}" itemValue="id" itemLabel="categoryName"/>
-                                </form:select>
-                                <form:errors path="productCategory" cssClass="error"/>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label for="active">Wybierz markę </label>
-                                <form:select path="brand" class="formElement">
-                                    <form:option value="0" label="wybierz..."/>
-                                    <form:options items="${brands}" itemValue="id" itemLabel="name"/>
-                                </form:select>
-                                <form:errors path="brand" cssClass="error"/>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label for="productName">Nazwa produktu</label>
-                                <form:input path="productName" id="productName" class="form-control"
-                                            maxlength="50"/>
-                                <form:errors path="productName" cssClass="error"/>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label for="fileName">Plik zdjęcia </label>
-                                <input accept="image/png, image/jpeg" type="file" id="fileName"
-                                       name="fileName" class="form-control required" />
-                            </div>
                             <div class="col-md-12 form-group">
-                                <label for="productDesc">Opis produktu </label>
-                                <form:textarea cols="20" rows="5" path="productDesc" id="productDesc" class="form-control"
-                                            maxlength="1000"/>
-                                <form:errors path="productDesc" cssClass="error"/>
+                                <label for="shop">Wybierz sklep </label>
+                                <form:select path="shop" class="formElement">
+                                    <form:option value="0" label="wybierz..."/>
+                                    <form:options items="${shops}" itemValue="id" itemLabel="shopName"/>
+                                </form:select>
+                                <form:errors path="shop" cssClass="error"/>
                             </div>
+                            <div class="col-md-4 form-group">
+                                <label for="product">Wybierz produkt </label>
+                                <form:select path="product" class="formElement">
+                                    <form:option value="0" label="wybierz..."/>
+                                    <form:options items="${products}" itemValue="id" itemLabel="productName"/>
+                                </form:select>
+                                <form:errors path="product" cssClass="error"/>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label for="productSize">Wybierz rozmiar </label>
+                                <form:select path="productSize" class="formElement">
+                                    <form:option value="0" label="wybierz..."/>
+                                    <form:options items="${productSizes}" itemValue="id" itemLabel="sizeName"/>
+                                </form:select>
+                                <form:errors path="productSize" cssClass="error"/>
+                            </div>
+
                             </div>
                             <div class="col-md-3 form-group">
-                                <label for="priceGross">Cena brutto</label>
-                                <form:input type="number" min="0.01" step="0.01" path="priceGross" id="priceGross" class="form-control"
+                                <label for="quantity">Dostępna ilość</label>
+                                <form:input type="number" min="1" step="1" path="quantity" id="quantity" class="form-control"
                                             maxlength="100"/>
-                                <form:errors path="priceGross" cssClass="error"/>
-                            </div>
-                            <div class="col-md-1 form-group">
-                                <label for="active">Aktywny </label>
-                                <form:checkbox path="active" id="active" class="form-control"/>
-                                <form:errors path="active" cssClass="error"/>
-                            </div>
-                            <div class="col-md-1 form-group">
-                                <label for="availableOnline">Dostępny na www </label>
-                                <form:checkbox path="availableOnline" id="availableOnline" class="form-control"/>
-                                <form:errors path="availableOnline" cssClass="error"/>
+                                <form:errors path="quantity" cssClass="error"/>
                             </div>
                             <div class="col-12">
                                 <button type="submit"
@@ -122,6 +102,7 @@ To change this template use File | Settings | File Templates.
                                         value="Submit">Zapisz
                                 </button>
                                 <button class="button button-mini button-blue button-3d" type="button" onClick="javascript:document.location.href='/admin/config'">Anuluj</button>
+
                             </div>
                         </form:form>
                     </div>

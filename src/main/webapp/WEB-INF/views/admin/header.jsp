@@ -53,15 +53,16 @@
 
                     </li>
 
+                    <li><a href="/admin/productShops/">
+                        <div>Stan magazynowy</div>
+                    </a>
+                    </li>
+
                     <li><a href="#">
                         <div>Zamówienia</div>
                     </a>
                     </li>
 
-                    <li><a href="#">
-                        <div>Stan magazynowy</div>
-                    </a>
-                    </li>
                 </ul>
 
                 <div id="top-search">

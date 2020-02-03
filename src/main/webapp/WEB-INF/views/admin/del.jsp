@@ -72,6 +72,8 @@ To change this template use File | Settings | File Templates.
                             <c:if test="${not empty productSize.id}"> rozmiar <strong><c:out value="${productSize.sizeName}"/></strong> z całym asortymentem i i stanem magazynowym?</c:if>
                             <c:if test="${not empty paymentMethod.id}"> metodę płatności <strong><c:out value="${paymentMethod.paymentMethodName}"/></strong>?</c:if>
                             <c:if test="${not empty deliveryMethod.id}"> sposób dostawy <strong><c:out value="${deliveryMethod.deliveryMethodName}"/></strong>?</c:if>
+                            <c:if test="${not empty product.id}"> produkt <strong><c:out value="${product.productName}"/></strong> z całym stanem magazynowym?</c:if>
+                            <c:if test="${not empty productShop.id}"> stan magazynowy <strong><c:out value="Sklep: ${productShop.shop.shopName}, produkt: ${productShop.product.productName}, rozmiar: ${productShop.productSize.sizeName}"/></strong>?</c:if>
                             </h3>
                             <form method="post">
                                 <c:if test="${not empty shop.id}"> <input type="hidden" name="shopId" <c:out value="${shop.id}"/>></c:if>
@@ -80,6 +82,8 @@ To change this template use File | Settings | File Templates.
                                 <c:if test="${not empty productSize.id}"> <input type="hidden" name="productSizeId" <c:out value="${productSize.id}"/>></c:if>
                                 <c:if test="${not empty paymentMethod.id}"> <input type="hidden" name="paymentMethodId" <c:out value="${paymentMethod.id}"/>></c:if>
                                 <c:if test="${not empty deliveryMethod.id}"> <input type="hidden" name="deliveryMethodId" <c:out value="${deliveryMethod.id}"/>></c:if>
+                                <c:if test="${not empty product.id}"> <input type="hidden" name="productId" <c:out value="${product.id}"/>></c:if>
+                                <c:if test="${not empty productShop.id}"> <input type="hidden" name="productShopId" <c:out value="${productShop.id}"/>></c:if>
                                 <input class="button button-mini button-red button-3d" type="submit" value="Tak, usuń">
                                 <button class="button button-mini button-blue button-3d" type="button" onClick="javascript:document.location.href='/admin/config'">Anuluj</button>
                             </form>

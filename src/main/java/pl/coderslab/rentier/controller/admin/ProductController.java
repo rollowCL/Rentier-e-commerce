@@ -112,7 +112,8 @@ public class ProductController {
 
             } else {
 
-                resultProduct.rejectValue("productName", "error.fileName", "Niepoprawny plik");
+                resultProduct.rejectValue("productName", "error.productName",
+                        "Niepoprawny plik");
             }
 
         }
@@ -147,11 +148,11 @@ public class ProductController {
             model.addAttribute("product", productRepository.findById(productId).get());
         }
 
-        return "/admin/productDel";
+        return "/admin/del";
     }
 
     @PostMapping("/del")
-    public String deleteAuthor(@RequestParam Long productId) {
+    public String deleteProduct(@RequestParam Long productId) {
 
 
         if (productRepository.findById(productId).isPresent()) {

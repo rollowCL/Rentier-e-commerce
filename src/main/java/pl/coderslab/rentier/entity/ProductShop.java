@@ -29,6 +29,7 @@ public class ProductShop {
     @JoinColumn(name = "shop_id")
     private Shop shop;
 
+    @NotNull
     @Min(1)
     private int quantity;
 
@@ -91,9 +92,6 @@ public class ProductShop {
     public String toString() {
         return "ProductShop{" +
                 "id=" + id +
-                ", product=" + product +
-                ", productSize=" + productSize +
-                ", shop=" + shop +
                 ", quantity=" + quantity +
                 '}';
     }
