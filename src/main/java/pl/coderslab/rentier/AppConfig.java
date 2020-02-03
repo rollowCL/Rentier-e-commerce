@@ -1,6 +1,5 @@
 package pl.coderslab.rentier;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -10,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import pl.coderslab.rentier.converter.*;
 import pl.coderslab.rentier.security.adminURLFilter;
 import pl.coderslab.rentier.security.userURLFilter;
+import pl.coderslab.rentier.utils.BCrypt;
 
 
 @Configuration

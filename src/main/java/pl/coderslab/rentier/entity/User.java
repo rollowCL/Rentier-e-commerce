@@ -1,7 +1,6 @@
 package pl.coderslab.rentier.entity;
 
 
-import pl.coderslab.rentier.BCrypt;
 import pl.coderslab.rentier.validation.UserBasicValidation;
 import pl.coderslab.rentier.validation.UserExtendedValidation;
 

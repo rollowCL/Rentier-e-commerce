@@ -1,4 +1,4 @@
-package pl.coderslab.rentier;
+package pl.coderslab.rentier.utils;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;

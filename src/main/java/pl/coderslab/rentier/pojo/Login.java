@@ -1,4 +1,4 @@
-package pl.coderslab.rentier;
+package pl.coderslab.rentier.pojo;
 
 
 import org.springframework.stereotype.Component;

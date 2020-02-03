@@ -1,4 +1,4 @@
-package pl.coderslab.rentier.controller;
+package pl.coderslab.rentier.controller.login;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +14,7 @@ public class LogoutController {
         HttpSession session = request.getSession();
         session.invalidate();
 
-        return "/logoutSuccess";
+        return "/login/logoutSuccess";
     }
 
 }

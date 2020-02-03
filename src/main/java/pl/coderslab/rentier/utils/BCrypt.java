@@ -1,4 +1,4 @@
-package pl.coderslab.rentier;// Copyright (c) 2006 Damien Miller <djm@mindrot.org>
+package pl.coderslab.rentier.utils;// Copyright (c) 2006 Damien Miller <djm@mindrot.org>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above

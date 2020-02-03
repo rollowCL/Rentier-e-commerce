@@ -18,7 +18,7 @@ To change this template use File | Settings | File Templates.
 
 	<!-- Stylesheets
 	============================================= -->
-	<jsp:include page="styles.jsp"/>
+	<jsp:include page="../styles.jsp"/>
 
 	<!-- Document Title
 	============================================= -->
@@ -34,14 +34,14 @@ To change this template use File | Settings | File Templates.
 
         <!-- Header
     ============================================= -->
-		<jsp:include page="header.jsp"/>
+		<jsp:include page="../header.jsp"/>
 
         <!-- Page Title
     ============================================= -->
         <section id="page-title">
 
             <div class="container clearfix">
-                <h1>Potwierdzenie zalogowania</h1>
+                <h1>Potwierdzenie rejestracji</h1>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Shop</li>
@@ -61,12 +61,10 @@ To change this template use File | Settings | File Templates.
 
 						<div>
 							<h3>
-								<strong>Jesteś zalogowany jako:</strong><c:out value="${loggedFirstName} ${loggedLastName}"/>
-<%--								<br/>--%>
+								Dziękujemy za rejestrację! Możesz się już <a href="/login" class="widget_links">zalogować</a><br/>
+								Adresy do faktury i wysyłki podasz przed pierwszym zamówieniem.
 							</h3>
-                            <h4>
-								<a href="/logout">Wyloguj</a>
-							</h4>
+
 						</div>
 
 					</div>
@@ -79,14 +77,14 @@ To change this template use File | Settings | File Templates.
 
 		<!-- Footer
 ============================================= -->
-		<jsp:include page="footer.jsp"/>
+		<jsp:include page="../footer.jsp"/>
 
 	</div><!-- #wrapper end -->
 
 
 	<!--  JavaScripts
     ============================================= -->
-	<jsp:include page="scripts.jsp"/>
+	<jsp:include page="../scripts.jsp"/>
 
 </body>
 </html>

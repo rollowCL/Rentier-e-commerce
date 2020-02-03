@@ -18,7 +18,7 @@ To change this template use File | Settings | File Templates.
 
     <!-- Stylesheets
     ============================================= -->
-    <jsp:include page="styles.jsp"/>
+    <jsp:include page="../styles.jsp"/>
 
     <!-- Document Title
     ============================================= -->
@@ -34,7 +34,7 @@ To change this template use File | Settings | File Templates.
 
     <!-- Header
 ============================================= -->
-    <jsp:include page="header.jsp"/>
+    <jsp:include page="../header.jsp"/>
 
     <!-- Page Title
 ============================================= -->
@@ -153,14 +153,14 @@ To change this template use File | Settings | File Templates.
 
     <!-- Footer
 ============================================= -->
-    <jsp:include page="footer.jsp"/>
+    <jsp:include page="../footer.jsp"/>
 
 </div><!-- #wrapper end -->
 
 
 <!--  JavaScripts
 ============================================= -->
-<jsp:include page="scripts.jsp"/>
+<jsp:include page="../scripts.jsp"/>
 
 </body>
 </html>

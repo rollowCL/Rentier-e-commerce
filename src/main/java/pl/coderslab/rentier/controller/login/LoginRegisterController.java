@@ -1,12 +1,12 @@
-package pl.coderslab.rentier.controller;
+package pl.coderslab.rentier.controller.login;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.rentier.BCrypt;
-import pl.coderslab.rentier.Login;
+import pl.coderslab.rentier.utils.BCrypt;
+import pl.coderslab.rentier.pojo.Login;
 import pl.coderslab.rentier.entity.OrderType;
 import pl.coderslab.rentier.entity.User;
 import pl.coderslab.rentier.entity.UserRole;
@@ -45,7 +45,7 @@ public class LoginRegisterController {
         model.addAttribute("user", user);
         model.addAttribute("login", login);
 
-        return "/login";
+        return "/login/login";
     }
 
     @PostMapping("/register")
@@ -72,14 +72,14 @@ public class LoginRegisterController {
 
         if (resultUser.hasErrors()) {
 
-            return "/login";
+            return "/login/login";
 
         } else {
 
             user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
             userRepository.save(user);
 
-            return "/registerSuccess";
+            return "/login/registerSuccess";
         }
 
 
@@ -91,7 +91,7 @@ public class LoginRegisterController {
 
         if (resultLogin.hasErrors()) {
 
-            return "/login";
+            return "/login/login";
 
         } else {
 
@@ -119,7 +119,7 @@ public class LoginRegisterController {
             } else {
 
                 model.addAttribute("message", "Nieprawidłowe dane logowania");
-                return "/login";
+                return "/login/login";
 
             }
 
@@ -130,7 +130,7 @@ public class LoginRegisterController {
     @GetMapping("/loginSuccess")
     public String showLoginSuccess(@SessionAttribute("loggedId") Long id) {
 
-        return "/loginSuccess";
+        return "/login/loginSuccess";
     }
 
 }

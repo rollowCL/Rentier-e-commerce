@@ -5822,12 +5822,13 @@ p.wp-caption-text {
 .shop .product {
 	float: left;
 	padding: 0 20px 20px 0;
+	background-color: snow;
 	width: 25%;
 }
 
 .product-image {
 	position: relative;
-	width: 100%;
+	width: 100%px;
 	height: auto;
 	overflow: hidden;
 }
