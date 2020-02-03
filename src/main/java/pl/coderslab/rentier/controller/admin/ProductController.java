@@ -157,7 +157,7 @@ public class ProductController {
 
         if (productRepository.findById(productId).isPresent()) {
             Product product = productRepository.findById(productId).get();
-            File file = new File(rentierProperties.getUploadPathBrandsForDelete() + product.getImageFileName());
+            File file = new File(rentierProperties.getUploadPathProductsForDelete() + product.getImageFileName());
             if (file.exists()) {
                 file.delete();
             }

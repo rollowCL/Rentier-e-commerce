@@ -68,8 +68,8 @@
                     <a href="cart.html"><i class="icon-shopping-cart"></i><span>5</span></a>
                 </div><!-- #top-cart end -->
                 <div id="top-search">
-                    <c:if test="${loggedUser.id == null}"><a href="/login"><i class="icon-user-alt"></i></a></c:if>
-                    <c:if test="${loggedUser.id != null}"><a href="/logout"><i class="icon-user-slash"></i></a></c:if>
+                    <c:if test="${loggedId == null}"><a href="/login"><i class="icon-user-alt"></i></a></c:if>
+                    <c:if test="${loggedId != null}"><a href="/logout"><i class="icon-user-slash"></i></a></c:if>
                 </div>
 
             </nav><!-- #primary-menu end -->

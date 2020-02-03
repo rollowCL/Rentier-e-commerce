@@ -5,7 +5,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
 import pl.coderslab.rentier.BCrypt;
 import pl.coderslab.rentier.Login;
 import pl.coderslab.rentier.entity.OrderType;
@@ -15,26 +14,22 @@ import pl.coderslab.rentier.repository.OrderTypeRepository;
 import pl.coderslab.rentier.repository.UserRepository;
 import pl.coderslab.rentier.repository.UserRoleRepository;
 import pl.coderslab.rentier.validation.UserBasicValidation;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-@SessionAttributes({"loggedUser"})
+@SessionAttributes({"loggedAdmin", "loggedUser", "loggedId", "loggedFirstName", "loggedLastName"})
 @Controller
 public class LoginRegisterController {
 
     private final BCrypt bCrypt;
-    private final Login login;
     private final OrderTypeRepository orderTypeRepository;
     private final UserRoleRepository userRoleRepository;
     private final UserRepository userRepository;
 
-    public LoginRegisterController(BCrypt bCrypt, Login login, OrderTypeRepository orderTypeRepository, UserRoleRepository userRoleRepository, UserRepository userRepository) {
+    public LoginRegisterController(BCrypt bCrypt, OrderTypeRepository orderTypeRepository,
+                                   UserRoleRepository userRoleRepository, UserRepository userRepository) {
         this.bCrypt = bCrypt;
-        this.login = login;
         this.orderTypeRepository = orderTypeRepository;
         this.userRoleRepository = userRoleRepository;
         this.userRepository = userRepository;
@@ -102,11 +97,23 @@ public class LoginRegisterController {
 
             Optional<User> checkedUser = userRepository.findByEmailAndActiveTrue(login.getEmail());
 
-            if (checkedUser.isPresent() && BCrypt.checkpw(login.getPassword(), checkedUser.get().getPassword())) {
+            if (checkedUser.isPresent() && bCrypt.checkpw(login.getPassword(), checkedUser.get().getPassword())) {
 
-                model.addAttribute("loggedUser", checkedUser.get());
+                model.addAttribute("loggedId", checkedUser.get().getId());
+                model.addAttribute("loggedFirstName", checkedUser.get().getFirstName());
+                model.addAttribute("loggedFirstName", checkedUser.get().getLastName());
 
-                return "redirect:/loginSuccess";
+                if (checkedUser.get().getUserRole().getRoleCode().equals("admin")) {
+
+                    model.addAttribute("loggedAdmin", 1);
+                    return "redirect:/admin/config";
+
+                } else {
+
+                    model.addAttribute("loggedUser", 1);
+
+                    return "redirect:/loginSuccess";
+                }
 
 
             } else {
@@ -121,19 +128,9 @@ public class LoginRegisterController {
     }
 
     @GetMapping("/loginSuccess")
-    public String showLoginSuccess(@SessionAttribute("loggedUser") User user) {
-
-
+    public String showLoginSuccess(@SessionAttribute("loggedId") Long id) {
 
         return "/loginSuccess";
-    }
-
-
-
-
-    @ModelAttribute("loggedUser")
-    public User setUpLoggedUser() {
-        return new User();
     }
 
 }

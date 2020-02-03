@@ -61,9 +61,8 @@ To change this template use File | Settings | File Templates.
 
 						<div>
 							<h3>
-								<strong>Jesteś zalogowany jako:</strong>
-								<c:out value="${loggedUser.firstName} ${loggedUser.lastName}"/><br/>
-								<strong>Rola:</strong> ${loggedUser.userRole.roleName}<br/>
+								<strong>Jesteś zalogowany jako:</strong><c:out value="${loggedFirstName} ${loggedLastName}"/>
+<%--								<br/>--%>
 							</h3>
                             <h4>
 								<a href="/logout">Wyloguj</a>

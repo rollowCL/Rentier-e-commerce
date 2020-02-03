@@ -61,15 +61,18 @@ To change this template use File | Settings | File Templates.
                 <div class="row clearfix">
 
                     <div class="col-lg-12">
-                        <a href="/admin/productShops/form" class="button button-mini button-blue button-3d">Dodaj nowy</a>
+                        <a href="/admin/productShops/form" class="button button-mini button-blue button-3d">Dodaj
+                            nowy</a>
 
                         <table class="table">
                             <thead>
-                            <th scope="col">Sklep</th>
-                            <th scope="col">Produkt</th>
-                            <th scope="col">Rozmiar</th>
-                            <th scope="col">Dostępna ilość</th>
-                            <th scope="col">Akcje</th>
+                            <tr>
+                                <th scope="col">Sklep</th>
+                                <th scope="col">Produkt</th>
+                                <th scope="col">Rozmiar</th>
+                                <th scope="col">Dostępna ilość</th>
+                                <th scope="col">Akcje</th>
+                            </tr>
                             </thead>
                             <tbody>
                             <c:forEach items="${productShops}" var="productShop">

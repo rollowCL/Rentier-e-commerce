@@ -24,6 +24,11 @@ public class UserRole {
     @JoinColumn(name = "order_type_id")
     private OrderType orderType;
 
+    @NotBlank
+    @Size(max = 10)
+    @Column(name = "role_code")
+    private String roleCode;
+
     public Long getId() {
         return id;
     }
@@ -48,6 +53,14 @@ public class UserRole {
         this.orderType = orderType;
     }
 
+    public String getRoleCode() {
+        return roleCode;
+    }
+
+    public void setRoleCode(String roleCode) {
+        this.roleCode = roleCode;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -67,6 +80,7 @@ public class UserRole {
                 "id=" + id +
                 ", roleName='" + roleName + '\'' +
                 ", orderType=" + orderType +
+                ", roleCode='" + roleCode + '\'' +
                 '}';
     }
 }

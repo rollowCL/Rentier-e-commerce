@@ -79,24 +79,26 @@ To change this template use File | Settings | File Templates.
                             </form>
                         </div>
                         <a href="/admin/products/form" class="button button-mini button-blue button-3d">Dodaj nowy</a>
-                        <table class="table">
+                        <table class="table table-bordered">
                             <thead>
-                            <th scope="col">Zdjęcie</th>
-                            <th scope="col">Marka</th>
-                            <th scope="col">Kategoria</th>
-                            <th scope="col">Nazwa produktu</th>
-                            <th scope="col">Opis produktu</th>
-                            <th scope="col">Cena brutto</th>
-                            <th scope="col">Dostępny na www</th>
-                            <th scope="col">Aktywny</th>
-                            <th scope="col">Akcje</th>
+                                <tr>
+                                    <th scope="col">Zdjęcie</th>
+                                    <th scope="col">Marka</th>
+                                    <th scope="col">Kategoria</th>
+                                    <th scope="col">Nazwa produktu</th>
+                                    <th scope="col">Opis produktu</th>
+                                    <th scope="col">Cena brutto</th>
+                                    <th scope="col">Dostępny na www</th>
+                                    <th scope="col">Aktywny</th>
+                                    <th scope="col">Akcje</th>
+                                </tr>
                             </thead>
                             <tbody>
                                 <c:forEach items="${products}" var="product">
                                     <tr>
                                         <td>
                                             <c:if test="${not empty product.imageFileName}">
-                                                <img height="90" width="380" src="<c:out value="${product.imageFileName}"/>"
+                                                <img width="100" height="160" src="<c:out value="${product.imageFileName}"/>"
                                                      alt="ProductImage"/>
                                             </c:if>
                                         </td>
@@ -104,7 +106,7 @@ To change this template use File | Settings | File Templates.
                                         <td><c:out value="${product.productCategory.categoryName}"/></td>
                                         <td><c:out value="${product.productName}"/></td>
                                         <td><c:out value="${product.productDesc}"/></td>
-                                        <td><c:out value="${product.priceGross}"/></td>
+                                        <td><c:out value="${product.priceGross} zł"/></td>
                                         <td>
                                             <c:if test="${product.availableOnline}"><i
                                                     class="icon-line-square-check"></i></c:if>

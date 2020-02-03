@@ -14,3 +14,4 @@
 <!-- Footer Scripts
 ============================================= -->
 <script src='<spring:url value="/js/functions.js"/>'></script>
+<script src='<spring:url value="/js/bindingErrors.js"/>'></script>

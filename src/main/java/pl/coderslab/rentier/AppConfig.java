@@ -1,11 +1,15 @@
 package pl.coderslab.rentier;
 
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import pl.coderslab.rentier.converter.*;
+import pl.coderslab.rentier.security.adminURLFilter;
+import pl.coderslab.rentier.security.userURLFilter;
 
 
 @Configuration
@@ -78,7 +82,27 @@ public class AppConfig implements WebMvcConfigurer {
     }
 
 
+    @Bean
+    public FilterRegistrationBean <adminURLFilter> adminFilterRegistrationBean() {
+        FilterRegistrationBean < adminURLFilter > registrationBean = new FilterRegistrationBean();
+        adminURLFilter customURLFilter = new adminURLFilter();
 
+        registrationBean.setFilter(customURLFilter);
+        registrationBean.addUrlPatterns("/admin/*");
+        registrationBean.setOrder(2); //set precedence
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean <userURLFilter> userFilterRegistrationBean() {
+        FilterRegistrationBean < userURLFilter > registrationBean = new FilterRegistrationBean();
+        userURLFilter customURLFilter = new userURLFilter();
+
+        registrationBean.setFilter(customURLFilter);
+        registrationBean.addUrlPatterns("/user/*");
+        registrationBean.setOrder(2); //set precedence
+        return registrationBean;
+    }
 
 //    @Bean
 //    public Validator validator() {

@@ -92,7 +92,7 @@ To change this template use File | Settings | File Templates.
                 <div class="col_two_third col_last nobottommargin">
 
 
-                    <h3>Nie masz konta? Zarejstruj się NEW.</h3>
+                    <h3>Nie masz konta? Zarejstruj się.</h3>
 
                     <form:form class="row" method="post" action="/register"
                                id="registerForm" modelAttribute="user">

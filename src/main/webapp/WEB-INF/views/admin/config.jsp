@@ -97,13 +97,15 @@ To change this template use File | Settings | File Templates.
 
                                             <table class="table table-bordered">
                                                 <thead>
-                                                <th scope="col">Nazwa sklepu</th>
-                                                <th scope="col">Kod pocztowy</th>
-                                                <th scope="col">Miasto</th>
-                                                <th scope="col">Ulica</th>
-                                                <th scope="col">Numer</th>
-                                                <th scope="col">Aktywny</th>
-                                                <th scope="col">Akcje</th>
+                                                    <tr>
+                                                        <th scope="col">Nazwa sklepu</th>
+                                                        <th scope="col">Kod pocztowy</th>
+                                                        <th scope="col">Miasto</th>
+                                                        <th scope="col">Ulica</th>
+                                                        <th scope="col">Numer</th>
+                                                        <th scope="col">Aktywny</th>
+                                                        <th scope="col">Akcje</th>
+                                                    </tr>
                                                 </thead>
                                                 <tbody>
                                                 <c:forEach items="${shops}" var="shop">
@@ -187,7 +189,7 @@ To change this template use File | Settings | File Templates.
                                                 </div>
                                                 <div class="col-md-4 form-group">
                                                     <label for="active">Aktywny </label>
-                                                    <form:checkbox path="active" id="active" class="form-control"/>
+                                                    <form:checkbox path="active" checked="checked" id="active" class="form-control"/>
                                                     <form:errors path="active" cssClass="error"/>
                                                 </div>
                                                 <div class="col-12">
@@ -211,11 +213,13 @@ To change this template use File | Settings | File Templates.
 
                                             <table class="table table-bordered">
                                                 <thead>
-                                                <th scope="col">Logo</th>
-                                                <th scope="col">Marka</th>
-                                                <th scope="col">Email</th>
-                                                <th scope="col">Aktywny</th>
-                                                <th scope="col">Akcje</th>
+                                                    <tr>
+                                                        <th scope="col">Logo</th>
+                                                        <th scope="col">Marka</th>
+                                                        <th scope="col">Email</th>
+                                                        <th scope="col">Aktywny</th>
+                                                        <th scope="col">Akcje</th>
+                                                    </tr>
                                                 </thead>
                                                 <tbody>
                                                 <c:forEach items="${brands}" var="brand">
@@ -294,9 +298,11 @@ To change this template use File | Settings | File Templates.
                                         <div class="col-md-7">
                                                 <table class="table table-bordered">
                                                     <thead>
-                                                    <th scope="col">Nazwa</th>
-                                                    <th scope="col">Aktywny</th>
-                                                    <th scope="col">Akcje</th>
+                                                        <tr>
+                                                            <th scope="col">Nazwa</th>
+                                                            <th scope="col">Aktywny</th>
+                                                            <th scope="col">Akcje</th>
+                                                        </tr>
                                                     </thead>
                                                 <tbody>
                                                 <c:forEach items="${productCategories}" var="productCategory">
@@ -356,10 +362,12 @@ To change this template use File | Settings | File Templates.
                                         <div class="col-md-7">
                                             <table class="table table-bordered">
                                                 <thead>
-                                                <th scope="col">Nazwa</th>
-                                                <th scope="col">Dotyczy kategorii</th>
-                                                <th scope="col">Aktywny</th>
-                                                <th scope="col">Akcje</th>
+                                                    <tr>
+                                                        <th scope="col">Nazwa</th>
+                                                        <th scope="col">Dotyczy kategorii</th>
+                                                        <th scope="col">Aktywny</th>
+                                                        <th scope="col">Akcje</th>
+                                                    </tr>
                                                 </thead>
                                                 <tbody>
                                                 <c:forEach items="${productSizes}" var="productSize">
@@ -430,9 +438,11 @@ To change this template use File | Settings | File Templates.
                                         <div class="col-md-7">
                                             <table class="table table-bordered">
                                                 <thead>
-                                                <th scope="col">Nazwa</th>
-                                                <th scope="col">Aktywny</th>
-                                                <th scope="col">Akcje</th>
+                                                    <tr>
+                                                        <th scope="col">Nazwa</th>
+                                                        <th scope="col">Aktywny</th>
+                                                        <th scope="col">Akcje</th>
+                                                    </tr>
                                                 </thead>
                                                 <tbody>
                                                 <c:forEach items="${paymentMethods}" var="paymentMethod">
@@ -494,10 +504,12 @@ To change this template use File | Settings | File Templates.
                                         <div class="col-md-7">
                                             <table class="table table-bordered">
                                                 <thead>
-                                                <th scope="col">Nazwa</th>
-                                                <th scope="col">Koszt</th>
-                                                <th scope="col">Aktywny</th>
-                                                <th scope="col">Akcje</th>
+                                                    <tr>
+                                                        <th scope="col">Nazwa</th>
+                                                        <th scope="col">Koszt</th>
+                                                        <th scope="col">Aktywny</th>
+                                                        <th scope="col">Akcje</th>
+                                                    </tr>
                                                 </thead>
                                                 <tbody>
                                                 <c:forEach items="${deliveryMethods}" var="deliveryMethod">
