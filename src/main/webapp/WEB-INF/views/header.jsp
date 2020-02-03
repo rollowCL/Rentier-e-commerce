@@ -42,7 +42,7 @@
                 </ul>
 
                 <div id="top-cart">
-                    <a href="cart.html"><i class="icon-shopping-cart"></i><span>5</span></a>
+                    <a href="cart.html"><i class="icon-shopping-cart"></i><span></span></a>
                 </div><!-- #top-cart end -->
                 <div id="top-search">
                     <c:if test="${loggedId == null}"><a href="/login"><i class="icon-user-alt"></i></a></c:if>

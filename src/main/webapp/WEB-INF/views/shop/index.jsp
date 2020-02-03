@@ -57,13 +57,13 @@ To change this template use File | Settings | File Templates.
 
             <div class="container clearfix">
 
-                <div id="shop" class="shop product-3 grid-container clearfix" data-layout="fitRows">
+                <div id="shop" class="shop product grid-container clearfix" data-layout="fitRows">
 
                     <c:forEach items="${products}" var="product">
 
                         <div class="product clearfix">
-                            <div class="product-image">
-                                <a href="#"><img width="100" height="300"
+                            <div class="product-image center">
+                                <a href="#"><img
                                                  src="<c:out value="${product.imageFileName}"/>"
                                                  alt="<c:out value="${product.productName}"/>"></a>
                             </div>
@@ -71,6 +71,7 @@ To change this template use File | Settings | File Templates.
                                 <div class="product-title"><h3><a href="#"><c:out
                                         value="${product.productName}"/></a></h3></div>
                                 <div class="product-price"><c:out value="${product.priceGross} zł"/></div>
+                               <div><img width="50%" height="50%" src="<c:out value="${product.brand.logoFileName}"/>"/></div>
                             </div>
                         </div>
 

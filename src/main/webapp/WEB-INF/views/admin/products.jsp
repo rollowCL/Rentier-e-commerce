@@ -106,7 +106,9 @@ To change this template use File | Settings | File Templates.
                                         <td><c:out value="${product.productCategory.categoryName}"/></td>
                                         <td><c:out value="${product.productName}"/></td>
                                         <td><c:out value="${product.productDesc}"/></td>
-                                        <td><c:out value="${product.priceGross} zł"/></td>
+                                        <td>
+                                            <c:out value="${fn:replace(product.priceGross, '.', ',')} zł"/>
+                                        </td>
                                         <td>
                                             <c:if test="${product.availableOnline}"><i
                                                     class="icon-line-square-check"></i></c:if>

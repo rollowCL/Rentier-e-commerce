@@ -99,21 +99,26 @@ To change this template use File | Settings | File Templates.
                                             maxlength="1000"/>
                                 <form:errors path="productDesc" cssClass="error"/>
                             </div>
+                            <div class="col-md-6 form-group">
+                                <label for="productText">Kod produktu</label>
+                                <form:input path="productText" id="productText" class="form-control"
+                                            maxlength="50"/>
+                                <form:errors path="productText" cssClass="error"/>
                             </div>
                             <div class="col-md-3 form-group">
                                 <label for="priceGross">Cena brutto</label>
-                                <form:input type="number" min="0.01" step="0.01" path="priceGross" id="priceGross" class="form-control"
-                                            maxlength="100"/>
+                                <form:input path="priceGross" id="priceGross" class="form-control"
+                                            maxlength="8"/>
                                 <form:errors path="priceGross" cssClass="error"/>
                             </div>
                             <div class="col-md-1 form-group">
                                 <label for="active">Aktywny </label>
-                                <form:checkbox path="active" checked id="active" class="form-control"/>
+                                <form:checkbox path="active" id="active" class="form-control"/>
                                 <form:errors path="active" cssClass="error"/>
                             </div>
                             <div class="col-md-1 form-group">
                                 <label for="availableOnline">Dostępny na www </label>
-                                <form:checkbox path="availableOnline" checked="checked" id="availableOnline" class="form-control"/>
+                                <form:checkbox path="availableOnline" id="availableOnline" class="form-control"/>
                                 <form:errors path="availableOnline" cssClass="error"/>
                             </div>
                             <div class="col-12">

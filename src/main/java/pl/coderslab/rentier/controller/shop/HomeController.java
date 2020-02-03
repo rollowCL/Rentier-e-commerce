@@ -33,6 +33,7 @@ public class HomeController {
 
         if (categoryId != null) {
             if(productCategoryRepository.findById(categoryId).isPresent()) {
+
                 model.addAttribute("products", productRepository.customFindAllActiveForShopByCategoryId(categoryId));
             }
         }

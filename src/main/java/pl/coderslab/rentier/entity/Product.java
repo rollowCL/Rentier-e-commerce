@@ -1,5 +1,7 @@
 package pl.coderslab.rentier.entity;
 
+import org.springframework.format.annotation.NumberFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
@@ -26,6 +28,11 @@ public class Product {
     @Column(name = "product_desc")
     private String productDesc;
 
+    @NotBlank
+    @Size(max = 50)
+    @Column(name = "product_text")
+    private String productText;
+
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "brand_id")
@@ -50,6 +57,7 @@ public class Product {
     private boolean availableOnline;
 
     @NotNull
+    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "#####.##")
     @DecimalMin(value = "0.0")
     @Digits(integer = 10, fraction = 2)
     @Column(name = "price_gross")
@@ -84,6 +92,14 @@ public class Product {
 
     public void setProductDesc(String productDesc) {
         this.productDesc = productDesc;
+    }
+
+    public String getProductText() {
+        return productText;
+    }
+
+    public void setProductText(String productText) {
+        this.productText = productText;
     }
 
     public Brand getBrand() {

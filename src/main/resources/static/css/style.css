@@ -5822,13 +5822,12 @@ p.wp-caption-text {
 .shop .product {
 	float: left;
 	padding: 0 20px 20px 0;
-	background-color: snow;
 	width: 25%;
 }
 
 .product-image {
 	position: relative;
-	width: 100%px;
+	width: 100%;
 	height: auto;
 	overflow: hidden;
 }
@@ -5836,9 +5835,9 @@ p.wp-caption-text {
 .product-image > a,
 .product-image .slide a,
 .product-image img {
-	display: block;
-	width: 100%;
-	height: 100%;
+	/*display: block;*/
+	width: 200px;
+	height: auto;
 }
 
 body:not(.device-touch):not(.device-sm):not(.device-xs) .product-image > a {

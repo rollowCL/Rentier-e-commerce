@@ -75,6 +75,7 @@ public class ProductController {
     public String saveProduct(Model model, @ModelAttribute @Valid Product product, BindingResult resultProduct,
                               HttpServletRequest request) throws IOException, ServletException {
 
+
         if (product.getId() == null) {
 
             product.setCreatedDate(LocalDate.now());
