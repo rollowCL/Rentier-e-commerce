@@ -85,6 +85,9 @@ To change this template use File | Settings | File Templates.
                                     <a href="#tab-admin-ship-methods"><i class="icon-luggage-cart"></i> Metody
                                         dostawy</a>
                                 </li>
+                                <li>
+                                    <a href="#tab-admin-order-statuses"><i class="icon-file3"></i> Statusy zamówień</a>
+                                </li>
 
                             </ul>
 
@@ -416,7 +419,7 @@ To change this template use File | Settings | File Templates.
                                                 </div>
                                                 <div class="col-md-6 form-group">
                                                     <label for="active">Wybierz kategorię </label>
-                                                    <form:select path="productCategory" class="formElement">
+                                                    <form:select path="productCategory" class="form-control">
                                                         <form:option value="0" label="wybierz..."/>
                                                         <form:options items="${productCategories}" itemValue="id" itemLabel="categoryName"/>
                                                     </form:select>
@@ -566,7 +569,82 @@ To change this template use File | Settings | File Templates.
                                                     <label for="active">Aktywny </label>
                                                     <form:checkbox path="active" id="active" class="form-control"/>
                                                     <form:errors path="active" cssClass="error"/>
-                                                    <form:errors path="*" cssClass="error"/>
+                                                </div>
+                                                <div class="col-12">
+                                                    <button type="submit"
+                                                            class="button button-mini button-blue button-3d"
+                                                            value="Submit">Zapisz
+                                                    </button>
+                                                </div>
+                                            </form:form>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="tab-content clearfix" id="tab-admin-order-statuses">
+                                    <div class="card-body">
+
+                                        <div class="col-md-7">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col">Nazwa</th>
+                                                    <th scope="col">Dotyczy metody dostawy</th>
+                                                    <th scope="col">Aktywny</th>
+                                                    <th scope="col">Akcje</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <c:forEach items="${orderStatuses}" var="orderStatus">
+                                                    <tr>
+                                                        <td><c:out value="${orderStatus.orderStatusName}"/></td>
+                                                        <td><c:out value="${orderStatus.deliveryMethod.deliveryMethodName}"/> </td>
+                                                        <td>
+                                                            <c:if test="${orderStatus.active}"><i
+                                                                    class="icon-line-square-check"></i></c:if>
+                                                            <c:if test="${!orderStatus.active}"><i
+                                                                    class="icon-line-square-cross"></i></c:if>
+                                                        </td>
+                                                        <td>
+                                                            <a class="button button-mini button-red button-3d"
+                                                               href="/admin/config/del?orderStatusId=${orderStatus.id}">Usuń
+                                                            </a>
+                                                            <a class="button button-mini button-blue button-3d"
+                                                               href="/admin/config?orderStatusId=${orderStatus.id}">Edytuj
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                                </tbody>
+                                            </table>
+                                            <div class="w-100 line divider-line"></div>
+                                            <h4 class="card-title">
+                                                <c:if test="${empty orderStatus.id}">Dodaj nowy status</c:if>
+                                                <c:if test="${not empty orderStatus.id}">Edytuj status</c:if>
+                                            </h4>
+                                            <form:form class="row" method="post" action="/admin/config/orderStatus/add"
+                                                       id="orderStatusAddForm" modelAttribute="orderStatus">
+                                                <form:hidden path="id"/>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="orderStatusName">Nazwa </label>
+                                                    <form:input path="orderStatusName" id="orderStatusName" class="form-control"
+                                                                maxlength="50"/>
+                                                    <form:errors path="orderStatusName" cssClass="error"/>
+                                                </div>
+                                                <div class="col-md-4 form-group">
+                                                    <label for="deliveryMethod">Sposób dostawy </label>
+                                                    <form:select path="deliveryMethod" class="form-control">
+                                                        <form:option value="0" label="wybierz..."/>
+                                                        <form:options items="${deliveryMethods}" itemValue="id" itemLabel="deliveryMethodName"/>
+                                                    </form:select>
+                                                    <form:errors path="deliveryMethod" cssClass="error"/>
+                                                </div>
+                                                <div class="col-md-2 form-group">
+                                                    <label for="active">Aktywny </label>
+                                                    <form:checkbox path="active" id="active" class="form-control"/>
+                                                    <form:errors path="active" cssClass="error"/>
                                                 </div>
                                                 <div class="col-12">
                                                     <button type="submit"

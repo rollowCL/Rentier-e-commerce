@@ -36,11 +36,12 @@ public class ConfigController extends HttpServlet {
     private final PaymentMethodRepository paymentMethodRepository;
     private final ShopRepository shopRepository;
     private final ProductSizeRepository productSizeRepository;
+    private final OrderStatusRepository orderStatusRepository;
 
     public ConfigController(RentierProperties rentierProperties, ProductCategoryRepository productCategoryRepository,
                             BrandRepository brandRepository, DeliveryMethodRepository deliveryMethodRepository,
                             PaymentMethodRepository paymentMethodRepository, ShopRepository shopRepository,
-                            ProductSizeRepository productSizeRepository) {
+                            ProductSizeRepository productSizeRepository, OrderStatusRepository orderStatusRepository) {
         this.rentierProperties = rentierProperties;
         this.productCategoryRepository = productCategoryRepository;
         this.brandRepository = brandRepository;
@@ -48,6 +49,7 @@ public class ConfigController extends HttpServlet {
         this.paymentMethodRepository = paymentMethodRepository;
         this.shopRepository = shopRepository;
         this.productSizeRepository = productSizeRepository;
+        this.orderStatusRepository = orderStatusRepository;
     }
 
 
@@ -58,7 +60,8 @@ public class ConfigController extends HttpServlet {
                              @RequestParam(required = false) Long productCategoryId,
                              @RequestParam(required = false) Long productSizeId,
                              @RequestParam(required = false) Long paymentMethodId,
-                             @RequestParam(required = false) Long deliveryMethodId
+                             @RequestParam(required = false) Long deliveryMethodId,
+                             @RequestParam(required = false) Long orderStatusId
     ) {
         Shop shop = null;
 
@@ -126,12 +129,24 @@ public class ConfigController extends HttpServlet {
 
         }
 
+        OrderStatus orderStatus = null;
+
+        if (orderStatusId == null) {
+            orderStatus = new OrderStatus();
+        } else {
+            if (orderStatusRepository.findById(orderStatusId).isPresent()) {
+                orderStatus = orderStatusRepository.findById(orderStatusId).get();
+            }
+
+        }
+
         model.addAttribute("shop", shop);
         model.addAttribute("brand", brand);
         model.addAttribute("productCategory", productCategory);
         model.addAttribute("productSize", productSize);
         model.addAttribute("paymentMethod", paymentMethod);
         model.addAttribute("deliveryMethod", deliveryMethod);
+        model.addAttribute("orderStatus", orderStatus);
 
         return "/admin/config";
     }
@@ -142,7 +157,8 @@ public class ConfigController extends HttpServlet {
                                 @RequestParam(required = false) Long productCategoryId,
                                 @RequestParam(required = false) Long productSizeId,
                                 @RequestParam(required = false) Long paymentMethodId,
-                                @RequestParam(required = false) Long deliveryMethodId
+                                @RequestParam(required = false) Long deliveryMethodId,
+                                @RequestParam(required = false) Long orderStatusId
     ) {
 
         if (shopId != null) {
@@ -187,6 +203,13 @@ public class ConfigController extends HttpServlet {
             }
         }
 
+        if (orderStatusId != null) {
+            if (orderStatusRepository.findById(orderStatusId).isPresent()) {
+                OrderStatus orderStatus = orderStatusRepository.findById(orderStatusId).get();
+                model.addAttribute("orderStatus", orderStatus);
+            }
+        }
+
         return "/admin/del";
     }
 
@@ -196,7 +219,8 @@ public class ConfigController extends HttpServlet {
                                @RequestParam(required = false) Long productCategoryId,
                                @RequestParam(required = false) Long productSizeId,
                                @RequestParam(required = false) Long paymentMethodId,
-                               @RequestParam(required = false) Long deliveryMethodId
+                               @RequestParam(required = false) Long deliveryMethodId,
+                               @RequestParam(required = false) Long orderStatusId
                                 ) {
 
         if (shopId != null) {
@@ -259,6 +283,15 @@ public class ConfigController extends HttpServlet {
             }
         }
 
+        if (orderStatusId != null) {
+            if (orderStatusRepository.findById(orderStatusId).isPresent()) {
+
+                OrderStatus orderStatus = orderStatusRepository.findById(orderStatusId).get();
+                orderStatusRepository.delete(orderStatus);
+
+            }
+        }
+
         return "redirect:/admin/config";
     }
 
@@ -269,7 +302,8 @@ public class ConfigController extends HttpServlet {
                           @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,
                           @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
                           @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
-                          @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod
+                          @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod,
+                          @ModelAttribute(binding = false) OrderStatus orderStatus, BindingResult resultOrderStatus
     ) {
 
         if (resultShop.hasErrors()) {
@@ -291,6 +325,7 @@ public class ConfigController extends HttpServlet {
                           @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
                           @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
                           @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod,
+                          @ModelAttribute(binding = false) OrderStatus orderStatus, BindingResult resultOrderStatus,
                           HttpServletRequest request) throws IOException, ServletException {
 
 
@@ -345,7 +380,9 @@ public class ConfigController extends HttpServlet {
                                      @ModelAttribute @Valid ProductCategory productCategory, BindingResult resultProductCategory,
                                      @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
                                      @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
-                                     @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod) {
+                                     @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod,
+                                     @ModelAttribute(binding = false) OrderStatus orderStatus, BindingResult resultOrderStatus
+    ) {
 
         if (productCategory.getId() == null && productCategoryRepository.existsByCategoryOrder(productCategory.getCategoryOrder())) {
             resultProductCategory.rejectValue("categoryOrder", "error.order", "Taka pozycja już istnieje, wybierz mniejszą lub większą");
@@ -375,12 +412,14 @@ public class ConfigController extends HttpServlet {
                                  @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,
                                  @ModelAttribute @Valid ProductSize productSize, BindingResult resultProductSize,
                                  @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
-                                 @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod) {
+                                 @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod,
+                                 @ModelAttribute(binding = false) OrderStatus orderStatus, BindingResult resultOrderStatus
+    ) {
 
 
         if (productSize.getId() == null &&productSizeRepository.existsBySizeNameAndProductCategory(
                 productSize.getSizeName(), productSize.getProductCategory())) {
-            resultProductSize.rejectValue("sizeName", "error.name", "Takai rozmiar dla kategorii już istnieje");
+            resultProductSize.rejectValue("sizeName", "error.name", "Taki rozmiar dla kategorii już istnieje");
 
         }
 
@@ -403,7 +442,9 @@ public class ConfigController extends HttpServlet {
                                  @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,
                                  @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
                                  @ModelAttribute @Valid PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
-                                 @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod) {
+                                 @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod, 
+                                 @ModelAttribute(binding = false) OrderStatus orderStatus, BindingResult resultOrderStatus
+    ) {
 
         if (paymentMethod.getId() == null && paymentMethodRepository.existsByPaymentMethodName(paymentMethod.getPaymentMethodName())) {
             resultPaymentMethod.rejectValue("paymentMethodName", "error.name", "Taka metoda już istnieje");
@@ -428,7 +469,8 @@ public class ConfigController extends HttpServlet {
                                    @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,
                                    @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
                                    @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
-                                   @ModelAttribute @Valid DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod) {
+                                   @ModelAttribute @Valid DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod,
+                                   @ModelAttribute(binding = false) OrderStatus orderStatus, BindingResult resultOrderStatus) {
 
 
         if (deliveryMethod.getId() == null && deliveryMethodRepository.existsByDeliveryMethodName(deliveryMethod.getDeliveryMethodName())) {
@@ -442,6 +484,33 @@ public class ConfigController extends HttpServlet {
         } else {
 
             deliveryMethodRepository.save(deliveryMethod);
+            return "redirect:/admin/config";
+        }
+
+    }
+
+    @PostMapping("/orderStatus/add")
+    public String addOrderStatus(@ModelAttribute(binding = false) Shop shop, BindingResult resultShop,
+                                    @ModelAttribute(binding = false) Brand brand, BindingResult resultBrand,
+                                    @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,
+                                    @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
+                                    @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
+                                    @ModelAttribute(binding = false)  DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod,
+                                    @ModelAttribute @Valid OrderStatus orderStatus, BindingResult resultOrderStatus) {
+
+
+        if (orderStatus.getId() == null && orderStatusRepository.existsByOrderStatusNameAndDeliveryMethod(
+                orderStatus.getOrderStatusName(), orderStatus.getDeliveryMethod())) {
+            resultOrderStatus.rejectValue("orderStatusName", "error.name", "Taki status dla metody już istnieje");
+
+        }
+
+        if (resultOrderStatus.hasErrors()) {
+            return "/admin/config";
+
+        } else {
+
+            orderStatusRepository.save(orderStatus);
             return "redirect:/admin/config";
         }
 
@@ -481,6 +550,12 @@ public class ConfigController extends HttpServlet {
     public List<ProductSize> getProductSizes() {
 
         return productSizeRepository.findAll();
+    }
+
+    @ModelAttribute("orderStatuses")
+    public List<OrderStatus> getOrderStatuses() {
+
+        return orderStatusRepository.findAll();
     }
 
     private String getFileName(Part part) {

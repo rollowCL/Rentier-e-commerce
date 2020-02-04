@@ -148,7 +148,7 @@ To change this template use File | Settings | File Templates.
                                 <tbody>
                                 <tr class="cart_item">
                                     <td class="cart-totals-tag">
-                                        <strong>Wartość prduktów</strong>
+                                        <strong>Wartość produktów</strong>
                                     </td>
 
                                     <td class="cart-product-name">

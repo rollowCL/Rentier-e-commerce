@@ -44,6 +44,7 @@ public class OrderType {
         this.numbered = numbered;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -59,6 +59,13 @@ public class OrderController {
 
     }
 
+    @PostMapping("/order/checkout")
+    public String processCheckout() {
+
+
+        return "";
+    }
+
     @ModelAttribute("productCategories")
     public List<ProductCategory> getProductCategories() {
 

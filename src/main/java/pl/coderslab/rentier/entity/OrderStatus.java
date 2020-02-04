@@ -22,7 +22,7 @@ public class OrderStatus {
     private boolean active;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "delivery_method_id")
     private DeliveryMethod deliveryMethod;
 
@@ -50,6 +50,14 @@ public class OrderStatus {
         this.active = active;
     }
 
+    public DeliveryMethod getDeliveryMethod() {
+        return deliveryMethod;
+    }
+
+    public void setDeliveryMethod(DeliveryMethod deliveryMethod) {
+        this.deliveryMethod = deliveryMethod;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,6 +77,7 @@ public class OrderStatus {
                 "id=" + id +
                 ", orderStatusName='" + orderStatusName + '\'' +
                 ", active=" + active +
+                ", deliveryMethod=" + deliveryMethod +
                 '}';
     }
 }
