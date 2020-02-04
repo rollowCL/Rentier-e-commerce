@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import pl.coderslab.rentier.entity.Product;
 import pl.coderslab.rentier.entity.ProductShop;
+import pl.coderslab.rentier.entity.ProductSize;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public interface ProductShopRepository extends JpaRepository<ProductShop, Long> 
     @Query(value = "SELECT ps.* FROM products_shops ps JOIN product_sizes p on ps.product_size_id = p.id JOIN products p2 on ps.product_id = p2.id\n" +
             "            JOIN shops s on ps.shop_id = s.id JOIN brands b on p2.brand_id = b.id\n" +
             "            WHERE p.active = true AND p2.active = true AND p2.available_online = true AND b.active = true\n" +
-            "            AND ps.product_id =:productId", nativeQuery = true)
+            "            AND ps.product_id =:productId ORDER BY s.shop_name, p.size_name", nativeQuery = true)
     List<ProductShop> customFindAllProductShopsActiveForShopByProductId(@Param("productId") Long id);
 
 

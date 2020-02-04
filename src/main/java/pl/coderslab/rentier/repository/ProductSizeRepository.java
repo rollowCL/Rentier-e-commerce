@@ -7,6 +7,7 @@ import pl.coderslab.rentier.entity.ProductCategory;
 import pl.coderslab.rentier.entity.ProductSize;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ProductSizeRepository extends JpaRepository<ProductSize, Long> {
 
@@ -17,5 +18,6 @@ public interface ProductSizeRepository extends JpaRepository<ProductSize, Long> 
             "            WHERE p.active = true AND p2.active = true AND p2.available_online = true AND b.active = true\n" +
             "            AND ps.product_id =:productId", nativeQuery = true)
     List<ProductSize> customFindDistinctProductSizesActiveForShopByProductId(@Param("productId") Long id);
+
 
 }

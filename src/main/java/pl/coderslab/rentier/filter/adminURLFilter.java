@@ -1,4 +1,4 @@
-package pl.coderslab.rentier.security;
+package pl.coderslab.rentier.filter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

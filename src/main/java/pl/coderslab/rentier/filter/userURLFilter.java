@@ -1,4 +1,4 @@
-package pl.coderslab.rentier.security;
+package pl.coderslab.rentier.filter;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

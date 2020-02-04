@@ -74,7 +74,6 @@ To change this template use File | Settings | File Templates.
                                            data-lightbox="gallery-item" target="_blank">
                                             <img src="<c:out value="${product.imageFileName}"/>" alt="<c:out value="${product.productName}"/>">
                                         </a>
-<%--                                    <div class="sale-flash">Sale!</div>--%>
                                 </div><!-- Product Single - Gallery End -->
 
                             </div>
@@ -92,20 +91,21 @@ To change this template use File | Settings | File Templates.
                                 ============================================= -->
                                 <form class="cart nobottommargin clearfix" method="post">
                                     <div> Wybierz rozmiar:
-                                        <select class="sm-form-control">
+                                        <select id="sizeSelect" name="productSizeId" class="sm-form-control">
                                             <option value="0">wybierz...</option>
-                                            <for:forEach items="${productSizes}" var="productSize">
-                                                <option value="<c:out value="${productSize.id}"/>"><c:out value="${productSize.sizeName}"/></option>
+                                            <for:forEach items="${productSizesWithMaxMap}" var="entry">
+                                                <option value="${entry.key.id}" data-max="${entry.value}">${entry.key.sizeName}</option>
                                             </for:forEach>
                                         </select>
                                     </div>
                                     <div class="line"></div>
                                     <div class="quantity clearfix">
                                         <input type="button" value="-" class="minus">
-                                        <input type="text" step="1" min="1" max="4" name="quantity" value="1" title="Qty" class="qty" size="4" />
+                                        <input id="quantity" type="number" step="1" min="1" name="quantity" value="1" title="Qty" class="qty" size="2" />
                                         <input type="button" value="+" class="plus">
                                     </div>
-                                    <button type="submit" class="add-to-cart button nomargin">Do koszyka</button>
+                                    <input type="hidden" name="productId" value="${product.id}"/>
+                                    <button id="addToCartButton" type="submit" class="add-to-cart button nomargin">Do koszyka</button>
                                 </form><!-- Product Single - Quantity & Cart Button End -->
 
                                 <div class="clear"></div>
@@ -186,6 +186,5 @@ To change this template use File | Settings | File Templates.
 <!--  JavaScripts
 ============================================= -->
 <jsp:include page="../scripts.jsp"/>
-
 </body>
 </html>

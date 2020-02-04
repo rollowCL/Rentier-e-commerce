@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import pl.coderslab.rentier.converter.*;
-import pl.coderslab.rentier.security.adminURLFilter;
-import pl.coderslab.rentier.security.userURLFilter;
+import pl.coderslab.rentier.filter.adminURLFilter;
+import pl.coderslab.rentier.filter.userURLFilter;
 import pl.coderslab.rentier.utils.BCrypt;
 import pl.coderslab.rentier.utils.EmailUtil;
 

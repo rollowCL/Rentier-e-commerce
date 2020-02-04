@@ -10,8 +10,6 @@
 ============================================= -->
 <script src='<spring:url value="/js/jquery.js"/>'></script>
 <script src='<spring:url value="/js/plugins.js"/>'></script>
-
-<!-- Footer Scripts
-============================================= -->
 <script src='<spring:url value="/js/functions.js"/>'></script>
 <script src='<spring:url value="/js/bindingErrors.js"/>'></script>
+<script src='<spring:url value="/js/shopCartActions.js"/>'></script>

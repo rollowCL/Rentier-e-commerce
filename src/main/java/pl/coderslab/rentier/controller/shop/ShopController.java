@@ -14,17 +14,18 @@ import pl.coderslab.rentier.repository.ProductRepository;
 import pl.coderslab.rentier.repository.ProductShopRepository;
 import pl.coderslab.rentier.repository.ProductSizeRepository;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
-public class HomeController {
+public class ShopController {
 
     private final ProductShopRepository productShopRepository;
     private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;
     private final ProductSizeRepository productSizeRepository;
 
-    public HomeController(ProductCategoryRepository productCategoryRepository, ProductShopRepository productShopRepository,
+    public ShopController(ProductCategoryRepository productCategoryRepository, ProductShopRepository productShopRepository,
                           ProductRepository productRepository, ProductSizeRepository productSizeRepository) {
         this.productShopRepository = productShopRepository;
         this.productCategoryRepository = productCategoryRepository;
@@ -56,9 +57,22 @@ public class HomeController {
             List<ProductShop> productShops = productShopRepository.customFindAllProductShopsActiveForShopByProductId(productId);
             List<ProductSize> productSizes = productSizeRepository.customFindDistinctProductSizesActiveForShopByProductId(productId);
 
+            Map<ProductSize, Integer> productSizesWithMaxMap = new HashMap<>();
+
+            for (ProductSize productSize: productSizes) {
+
+                int maxAvailable = productShops.stream()
+                        .filter(s -> s.getProductSize() == productSize)
+                        .map(ProductShop::getQuantity).mapToInt(Integer::intValue).sum();
+
+                productSizesWithMaxMap.put(productSize, maxAvailable);
+            }
+
+
             model.addAttribute("product", product);
             model.addAttribute("productShops", productShops);
             model.addAttribute("productSizes", productSizes);
+            model.addAttribute("productSizesWithMaxMap", productSizesWithMaxMap);
 
         }
 

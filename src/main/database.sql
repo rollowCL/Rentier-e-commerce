@@ -83,7 +83,8 @@ CREATE TABLE products_shops
     PRIMARY KEY (id),
     FOREIGN KEY (product_id) REFERENCES products(id),
     FOREIGN KEY (product_size_id) REFERENCES product_sizes(id),
-    FOREIGN KEY (shop_id) REFERENCES shops(id)
+    FOREIGN KEY (shop_id) REFERENCES shops(id),
+    UNIQUE (product_id, shop_id, product_size_id)
 );
 
 CREATE TABLE user_roles
