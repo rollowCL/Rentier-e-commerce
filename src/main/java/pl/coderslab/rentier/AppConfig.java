@@ -10,6 +10,7 @@ import pl.coderslab.rentier.converter.*;
 import pl.coderslab.rentier.security.adminURLFilter;
 import pl.coderslab.rentier.security.userURLFilter;
 import pl.coderslab.rentier.utils.BCrypt;
+import pl.coderslab.rentier.utils.EmailUtil;
 
 
 @Configuration
@@ -78,7 +79,16 @@ public class AppConfig implements WebMvcConfigurer {
 
     @Bean
     public BCrypt passwordEncoder() {
+
         return new BCrypt();
+
+    }
+
+    @Bean
+    public EmailUtil emailUtil() {
+
+        return new EmailUtil();
+
     }
 
 

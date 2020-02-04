@@ -7,9 +7,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.coderslab.rentier.entity.Product;
 import pl.coderslab.rentier.entity.ProductCategory;
+import pl.coderslab.rentier.entity.ProductShop;
+import pl.coderslab.rentier.entity.ProductSize;
 import pl.coderslab.rentier.repository.ProductCategoryRepository;
 import pl.coderslab.rentier.repository.ProductRepository;
 import pl.coderslab.rentier.repository.ProductShopRepository;
+import pl.coderslab.rentier.repository.ProductSizeRepository;
 
 import java.util.List;
 
@@ -19,11 +22,14 @@ public class HomeController {
     private final ProductShopRepository productShopRepository;
     private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;
+    private final ProductSizeRepository productSizeRepository;
 
-    public HomeController(ProductCategoryRepository productCategoryRepository, ProductShopRepository productShopRepository, ProductRepository productRepository) {
+    public HomeController(ProductCategoryRepository productCategoryRepository, ProductShopRepository productShopRepository,
+                          ProductRepository productRepository, ProductSizeRepository productSizeRepository) {
         this.productShopRepository = productShopRepository;
         this.productCategoryRepository = productCategoryRepository;
         this.productRepository = productRepository;
+        this.productSizeRepository = productSizeRepository;
     }
 
 
@@ -34,7 +40,7 @@ public class HomeController {
         if (categoryId != null) {
             if(productCategoryRepository.findById(categoryId).isPresent()) {
 
-                model.addAttribute("products", productRepository.customFindAllActiveForShopByCategoryId(categoryId));
+                model.addAttribute("products", productRepository.customFindDistinctProductsActiveForShopByCategoryId(categoryId));
             }
         }
 
@@ -45,7 +51,16 @@ public class HomeController {
     @GetMapping("/product")
     public String showProduct(Model model, @RequestParam Long productId) {
 
+        if (productRepository.findById(productId).isPresent()) {
+            Product product = productRepository.findById(productId).get();
+            List<ProductShop> productShops = productShopRepository.customFindAllProductShopsActiveForShopByProductId(productId);
+            List<ProductSize> productSizes = productSizeRepository.customFindDistinctProductSizesActiveForShopByProductId(productId);
 
+            model.addAttribute("product", product);
+            model.addAttribute("productShops", productShops);
+            model.addAttribute("productSizes", productSizes);
+
+        }
 
 
         return "/shop/product";
@@ -54,7 +69,7 @@ public class HomeController {
     @ModelAttribute("products")
     public List<Product> getProductsForShop() {
 
-        return productRepository.customFindAllActiveForShop();
+        return productRepository.customFindDistinctProductsActiveForShop();
     }
 
     @ModelAttribute("productCategories")

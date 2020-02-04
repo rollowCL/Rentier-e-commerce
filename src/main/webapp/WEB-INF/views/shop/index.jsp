@@ -9,6 +9,7 @@ To change this template use File | Settings | File Templates.
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">
 <head>
@@ -63,14 +64,16 @@ To change this template use File | Settings | File Templates.
 
                         <div class="product clearfix">
                             <div class="product-image center">
-                                <a href="#"><img
-                                                 src="<c:out value="${product.imageFileName}"/>"
-                                                 alt="<c:out value="${product.productName}"/>"></a>
+                                <a href="/product?productId=<c:out value="${product.id}"/>">
+                                    <img src="<c:out value="${product.imageFileName}"/>"
+                                         alt="<c:out value="${product.productName}"/>">
+                                </a>
                             </div>
                             <div class="product-desc center">
-                                <div class="product-title"><h3><a href="#"><c:out
+                                <div class="product-title"><h3><a href="/product?productId=<c:out
+                                        value="${product.id}"/>"><c:out
                                         value="${product.productName}"/></a></h3></div>
-                                <div class="product-price"><c:out value="${product.priceGross} zł"/></div>
+                                <div class="product-price"><c:out value="${fn:replace(product.priceGross, '.', ',')} zł"/></div>
                                <div><img width="50%" height="50%" src="<c:out value="${product.brand.logoFileName}"/>"/></div>
                             </div>
                         </div>

@@ -21,13 +21,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT DISTINCT p2.* FROM products_shops ps JOIN product_sizes p on ps.product_size_id = p.id JOIN products p2 on ps.product_id = p2.id\n" +
             "            JOIN shops s on ps.shop_id = s.id JOIN brands b on p2.brand_id = b.id\n" +
             "            WHERE p.active = true AND p2.active = true AND p2.available_online = true AND b.active = true;", nativeQuery = true)
-    List<Product> customFindAllActiveForShop();
+    List<Product> customFindDistinctProductsActiveForShop();
 
 
     @Query(value = "SELECT DISTINCT p2.* FROM products_shops ps JOIN product_sizes p on ps.product_size_id = p.id JOIN products p2 on ps.product_id = p2.id\n" +
             "            JOIN shops s on ps.shop_id = s.id JOIN brands b on p2.brand_id = b.id\n" +
             "            WHERE p.active = true AND p2.active = true AND p2.available_online = true AND b.active = true\n" +
             "            AND p2.product_category_id =:categoryId", nativeQuery = true)
-    List<Product> customFindAllActiveForShopByCategoryId(@Param("categoryId") Long id);
+    List<Product> customFindDistinctProductsActiveForShopByCategoryId(@Param("categoryId") Long id);
 
 }
