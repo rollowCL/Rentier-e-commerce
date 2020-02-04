@@ -5,6 +5,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import pl.coderslab.rentier.entity.ProductCategory;
+import pl.coderslab.rentier.repository.ProductCategoryRepository;
 import pl.coderslab.rentier.utils.BCrypt;
 import pl.coderslab.rentier.pojo.Login;
 import pl.coderslab.rentier.entity.OrderType;
@@ -16,6 +18,7 @@ import pl.coderslab.rentier.repository.UserRoleRepository;
 import pl.coderslab.rentier.validation.UserBasicValidation;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @SessionAttributes({"loggedAdmin", "loggedUser", "loggedId", "loggedFirstName", "loggedLastName"})
@@ -26,13 +29,16 @@ public class LoginRegisterController {
     private final OrderTypeRepository orderTypeRepository;
     private final UserRoleRepository userRoleRepository;
     private final UserRepository userRepository;
+    private final ProductCategoryRepository productCategoryRepository;
 
     public LoginRegisterController(BCrypt bCrypt, OrderTypeRepository orderTypeRepository,
-                                   UserRoleRepository userRoleRepository, UserRepository userRepository) {
+                                   UserRoleRepository userRoleRepository, UserRepository userRepository,
+                                   ProductCategoryRepository productCategoryRepository) {
         this.bCrypt = bCrypt;
         this.orderTypeRepository = orderTypeRepository;
         this.userRoleRepository = userRoleRepository;
         this.userRepository = userRepository;
+        this.productCategoryRepository = productCategoryRepository;
     }
 
 
@@ -131,6 +137,12 @@ public class LoginRegisterController {
     public String showLoginSuccess(@SessionAttribute("loggedId") Long id) {
 
         return "/login/loginSuccess";
+    }
+
+    @ModelAttribute("productCategories")
+    public List<ProductCategory> getProductCategories() {
+
+        return productCategoryRepository.findProductCategoriesByActiveTrueOrderByCategoryOrder();
     }
 
 }

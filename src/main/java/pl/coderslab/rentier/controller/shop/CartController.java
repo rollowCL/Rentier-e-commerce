@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.rentier.beans.Cart;
 import pl.coderslab.rentier.entity.Product;
+import pl.coderslab.rentier.entity.ProductCategory;
 import pl.coderslab.rentier.entity.ProductSize;
 import pl.coderslab.rentier.pojo.CartItem;
 import pl.coderslab.rentier.repository.ProductCategoryRepository;
@@ -101,6 +102,12 @@ public class CartController {
         }
 
         return "/shop/cart";
+    }
+
+    @ModelAttribute("productCategories")
+    public List<ProductCategory> getProductCategories() {
+
+        return productCategoryRepository.findProductCategoriesByActiveTrueOrderByCategoryOrder();
     }
 
 }

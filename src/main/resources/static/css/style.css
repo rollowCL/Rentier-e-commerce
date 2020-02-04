@@ -6248,6 +6248,10 @@ body:not(.device-touch):not(.device-sm):not(.device-xs) .product-overlay a {
 	text-align: center
 }
 
+.cart-totals-tag {
+	text-align: left
+}
+
 .cart-product-name a,
 .product-name a {
 	font-weight: bold;

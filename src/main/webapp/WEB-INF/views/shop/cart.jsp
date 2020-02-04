@@ -60,7 +60,7 @@ To change this template use File | Settings | File Templates.
             <div class="container clearfix">
 
                 <div class="table-responsive">
-                    <table class="table table-bordered cart">
+                    <table class="table cart">
                         <thead>
                         <tr>
                             <th class="cart-product-remove">&nbsp;</th>
@@ -76,24 +76,28 @@ To change this template use File | Settings | File Templates.
                         <c:forEach items="${sessionScope.cart.cartItems}" var="cartItem">
                             <tr class="cart_item">
                                 <td class="cart-product-remove">
-                                    <a href="/cart/remove?productId=${cartItem.product.id}&productSizeId=${cartItem.productSize.id}" class="remove" title="Usuń produkt z koszyka"><i class="icon-trash2"></i></a>
+                                    <a href="/cart/remove?productId=${cartItem.product.id}&productSizeId=${cartItem.productSize.id}"
+                                       class="remove" title="Usuń produkt z koszyka"><i class="icon-trash2"></i></a>
                                 </td>
 
                                 <td class="cart-product-thumbnail">
-                                    <a href="#"><img height="64" width="auto" src="<c:out value="${cartItem.product.imageFileName}"/>"
-                                                     alt="<c:out value="${cartItem.product.productName}"/>"></a>
+                                    <a href="/product?productId=${cartItem.product.id}"><img height="64" width="auto"
+                                                                                             src="<c:out value="${cartItem.product.imageFileName}"/>"
+                                                                                             alt="<c:out value="${cartItem.product.productName}"/>"></a>
                                 </td>
 
                                 <td class="cart-product-name">
-                                    <a href="#"><c:out value="${cartItem.product.productName}"/></a>
+                                    <a href="/product?productId=${cartItem.product.id}"><c:out
+                                            value="${cartItem.product.productName}"/></a>
                                 </td>
 
                                 <td class="cart-product-name">
-                                    <a href="#"><c:out value="${cartItem.productSize.sizeName}"/></a>
+                                    <c:out value="${cartItem.productSize.sizeName}"/>
                                 </td>
 
                                 <td class="cart-product-price">
-                                    <span class="amount"><c:out value="${fn:replace(cartItem.product.priceGross, '.', ',')} zł"/></span>
+                                    <span class="amount"><c:out
+                                            value="${fn:replace(cartItem.product.priceGross, '.', ',')} zł"/></span>
                                 </td>
 
                                 <td class="cart-product-quantity">
@@ -104,7 +108,8 @@ To change this template use File | Settings | File Templates.
                                 <c:set var="subtotal" value="${cartItem.product.priceGross * cartItem.quantity}"/>
                                 <fmt:formatNumber var="substotalFormatted" value="${subtotal}" maxFractionDigits="2"/>
                                 <td class="cart-product-subtotal">
-                                    <span class="amount"><c:out value="${fn:replace(substotalFormatted, '.', ',')} zł"/></span>
+                                    <span class="amount"><c:out
+                                            value="${fn:replace(substotalFormatted, '.', ',')} zł"/></span>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -115,8 +120,10 @@ To change this template use File | Settings | File Templates.
 
                                     </div>
                                     <div class="col-lg-8 col-8 nopadding">
-                                        <a href="#" class="button button-mini button-blue fright button-3d">Aktualizuj koszty</a>
-                                        <a href="#" class="button button-mini button-blue fright button-3d">Zamówienie</a>
+                                        <a href="#" class="button button-mini button-blue fright button-3d">Aktualizuj
+                                            koszty</a>
+                                        <a href="#"
+                                           class="button button-mini button-blue fright button-3d">Zamówienie</a>
                                     </div>
                                 </div>
                             </td>
@@ -125,7 +132,47 @@ To change this template use File | Settings | File Templates.
 
                     </table>
                 </div>
+                <div class="row clearfix">
+                    <div class="col-lg-6 clearfix"></div>
+                    <div class="col-lg-6 clearfix">
+                        <h4>Podsumowanie</h4>
 
+                        <div class="table-responsive">
+                            <table class="table cart">
+                                <tbody>
+                                <tr class="cart_item">
+                                    <td class="cart-totals-tag">
+                                        <strong>Wartość produktów</strong>
+                                    </td>
+
+                                    <td class="cart-product-name">
+                                        <span class="amount">$106.94</span>
+                                    </td>
+                                </tr>
+                                <tr class="cart_item">
+                                    <td class="cart-totals-tag">
+                                        <strong>Dostawa</strong>
+                                    </td>
+
+                                    <td class="cart-product-name">
+                                        <span class="amount">0 zł</span>
+                                    </td>
+                                </tr>
+                                <tr class="cart_item">
+                                    <td class="cart-totals-tag">
+                                        <strong>Razem</strong>
+                                    </td>
+
+                                    <td class="cart-product-name">
+                                        <span class="amount color lead"><strong>$106.94</strong></span>
+                                    </td>
+                                </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
