@@ -1,12 +1,14 @@
-package pl.coderslab.rentier.controller.user;
+package pl.coderslab.rentier.controller.shop;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.rentier.entity.*;
 import pl.coderslab.rentier.repository.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +36,6 @@ public class OrderController {
     public String showCheckout(@SessionAttribute(value = "loggedId") Long id, Model model) {
 
         Optional<User> user = userRepository.findById(id);
-        System.out.println(user.get().toString());
 
         Address billAddress = new Address();
         if (user.get().getBillAddress() != null) {
@@ -60,10 +61,36 @@ public class OrderController {
     }
 
     @PostMapping("/order/checkout")
-    public String processCheckout() {
+    public String processCheckout(@SessionAttribute("loggedId") Long id,
+                                  @ModelAttribute("billAddress") @Valid Address billAddress, BindingResult resultBillAddress,
+                                  @ModelAttribute("shipAddress") @Valid Address shipAddress, BindingResult resultShipAddress,
+                                  @ModelAttribute("selectedPaymentMethod") PaymentMethod selectedPaymentMethod, BindingResult resultPaymentMethod,
+                                  @ModelAttribute("selectedDeliveryMethod") DeliveryMethod selectedDeliveryMethod, BindingResult resultDeliveryMethod,
+                                  @ModelAttribute("selectedShop") Shop selectedShop, BindingResult resultShop
+                                  ) {
+        if (resultBillAddress.hasErrors() || resultShipAddress.hasErrors()) {
+
+            return "/shop/checkout";
+
+        } else {
+
+            Optional<User> user = userRepository.findById(id);
+            if (user.isPresent()) {
+
+                user.get().setBillAddress(billAddress);
+                user.get().setShipAddress(shipAddress);
+                userRepository.save(user.get());
+
+                Order order = new Order();
 
 
-        return "";
+
+            }
+
+            return "redirect:/shop/orderSuccess";
+        }
+
+
     }
 
     @ModelAttribute("productCategories")

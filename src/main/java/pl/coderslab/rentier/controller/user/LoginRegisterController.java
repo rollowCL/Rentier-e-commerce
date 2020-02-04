@@ -1,4 +1,4 @@
-package pl.coderslab.rentier.controller.login;
+package pl.coderslab.rentier.controller.user;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
