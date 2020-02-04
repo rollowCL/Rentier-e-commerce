@@ -120,10 +120,8 @@ To change this template use File | Settings | File Templates.
 
                                     </div>
                                     <div class="col-lg-8 col-8 nopadding">
-                                        <a href="#" class="button button-mini button-blue fright button-3d">Aktualizuj
-                                            koszty</a>
-                                        <a href="#"
-                                           class="button button-mini button-blue fright button-3d">Zamówienie</a>
+<%--                                        <a href="#" class="button button-mini button-blue fright button-3d">Aktualizuj koszty</a>--%>
+                                        <a href="/user/order/checkout" class="button button-mini button-blue fright button-3d">Zamówienie</a>
                                     </div>
                                 </div>
                             </td>
@@ -142,31 +140,31 @@ To change this template use File | Settings | File Templates.
                                 <tbody>
                                 <tr class="cart_item">
                                     <td class="cart-totals-tag">
-                                        <strong>Wartość produktów</strong>
-                                    </td>
-
-                                    <td class="cart-product-name">
-                                        <span class="amount">$106.94</span>
-                                    </td>
-                                </tr>
-                                <tr class="cart_item">
-                                    <td class="cart-totals-tag">
-                                        <strong>Dostawa</strong>
-                                    </td>
-
-                                    <td class="cart-product-name">
-                                        <span class="amount">0 zł</span>
-                                    </td>
-                                </tr>
-                                <tr class="cart_item">
-                                    <td class="cart-totals-tag">
                                         <strong>Razem</strong>
                                     </td>
 
                                     <td class="cart-product-name">
-                                        <span class="amount color lead"><strong>$106.94</strong></span>
+                                        <span class="amount">${sessionScope.cart.totalValue}</span>
                                     </td>
                                 </tr>
+<%--                                <tr class="cart_item">--%>
+<%--                                    <td class="cart-totals-tag">--%>
+<%--                                        <strong>Dostawa</strong>--%>
+<%--                                    </td>--%>
+
+<%--                                    <td class="cart-product-name">--%>
+<%--                                        <span class="amount">0 zł</span>--%>
+<%--                                    </td>--%>
+<%--                                </tr>--%>
+<%--                                <tr class="cart_item">--%>
+<%--                                    <td class="cart-totals-tag">--%>
+<%--                                        <strong>Razem</strong>--%>
+<%--                                    </td>--%>
+
+<%--                                    <td class="cart-product-name">--%>
+<%--                                        <span class="amount color lead"><strong>$106.94</strong></span>--%>
+<%--                                    </td>--%>
+<%--                                </tr>--%>
                                 </tbody>
 
                             </table>

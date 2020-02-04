@@ -110,7 +110,6 @@ To change this template use File | Settings | File Templates.
 
 </div><!-- #wrapper end -->
 
-<!-- JavaScripts
     <jsp:include page="../scripts.jsp"/>
 
 </body>

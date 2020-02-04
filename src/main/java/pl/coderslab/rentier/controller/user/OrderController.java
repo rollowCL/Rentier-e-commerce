@@ -4,81 +4,59 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.rentier.beans.Cart;
-import pl.coderslab.rentier.entity.Product;
-import pl.coderslab.rentier.entity.ProductCategory;
-import pl.coderslab.rentier.entity.ProductShop;
-import pl.coderslab.rentier.entity.ProductSize;
-import pl.coderslab.rentier.repository.ProductCategoryRepository;
-import pl.coderslab.rentier.repository.ProductRepository;
-import pl.coderslab.rentier.repository.ProductShopRepository;
-import pl.coderslab.rentier.repository.ProductSizeRepository;
+import pl.coderslab.rentier.entity.*;
+import pl.coderslab.rentier.repository.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/user")
 public class OrderController {
 
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(OrderController.class);
-    private final ProductShopRepository productShopRepository;
-    private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;
-    private final ProductSizeRepository productSizeRepository;
+    private final UserRepository userRepository;
+    private final PaymentMethodRepository paymentMethodRepository;
+    private final DeliveryMethodRepository deliveryMethodRepository;
+    private final ShopRepository shopRepository;
 
-    public OrderController(ProductCategoryRepository productCategoryRepository, ProductShopRepository productShopRepository,
-                           ProductRepository productRepository, ProductSizeRepository productSizeRepository, Cart cart) {
-        this.productShopRepository = productShopRepository;
+    public OrderController(ProductCategoryRepository productCategoryRepository, UserRepository userRepository, PaymentMethodRepository paymentMethodRepository, DeliveryMethodRepository deliveryMethodRepository, ShopRepository shopRepository) {
         this.productCategoryRepository = productCategoryRepository;
-        this.productRepository = productRepository;
-        this.productSizeRepository = productSizeRepository;
+        this.userRepository = userRepository;
+        this.paymentMethodRepository = paymentMethodRepository;
+        this.deliveryMethodRepository = deliveryMethodRepository;
+        this.shopRepository = shopRepository;
     }
 
 
     @GetMapping("/order/checkout")
-    public String showCheckout(@SessionAttribute(value = "cart", required = false) Cart cart) {
+    public String showCheckout(@SessionAttribute(value = "loggedId") Long id, Model model) {
 
+        Optional<User> user = userRepository.findById(id);
+        System.out.println(user.get().toString());
 
-        return "/shop/index";
-    }
-
-    @GetMapping("/product")
-    public String showProduct(Model model, @RequestParam Long productId) {
-
-        if (productRepository.findById(productId).isPresent()) {
-            Product product = productRepository.findById(productId).get();
-            List<ProductShop> productShops = productShopRepository.customFindAllProductShopsActiveForShopByProductId(productId);
-            List<ProductSize> productSizes = productSizeRepository.customFindDistinctProductSizesActiveForShopByProductId(productId);
-            Map<ProductSize, Integer> productSizesWithMaxMap = new HashMap<>();
-
-            for (ProductSize productSize: productSizes) {
-
-                int maxAvailable = productShops.stream()
-                        .filter(s -> s.getProductSize() == productSize)
-                        .map(ProductShop::getQuantity).mapToInt(Integer::intValue).sum();
-
-                productSizesWithMaxMap.put(productSize, maxAvailable);
-            }
-
-
-            model.addAttribute("product", product);
-            model.addAttribute("productShops", productShops);
-            model.addAttribute("productSizes", productSizes);
-            model.addAttribute("productSizesWithMaxMap", productSizesWithMaxMap);
-
+        Address billAddress = new Address();
+        if (user.get().getBillAddress() != null) {
+            billAddress = user.get().getBillAddress();
         }
 
+        Address shipAddress = new Address();
+        if (user.get().getShipAddress() != null) {
+            shipAddress = user.get().getBillAddress();
+        }
 
-        return "/shop/product";
-    }
+        PaymentMethod selectedPaymentMethod = new PaymentMethod();
+        DeliveryMethod selectedDeliveryMethod = new DeliveryMethod();
+        Shop selectedShop = new Shop();
 
+        model.addAttribute("billAddress", billAddress);
+        model.addAttribute("shipAddress", shipAddress);
+        model.addAttribute("selectedPaymentMethod", selectedPaymentMethod);
+        model.addAttribute("selectedDeliveryMethod", selectedDeliveryMethod);
+        model.addAttribute("selectedShop", selectedShop);
+        return "/shop/checkout";
 
-    @ModelAttribute("products")
-    public List<Product> getProductsForShop() {
-
-        return productRepository.customFindDistinctProductsActiveForShop();
     }
 
     @ModelAttribute("productCategories")
@@ -87,5 +65,22 @@ public class OrderController {
         return productCategoryRepository.findProductCategoriesByActiveTrueOrderByCategoryOrder();
     }
 
+    @ModelAttribute("paymentMethods")
+    public List<PaymentMethod> getPaymentMethods() {
+
+        return paymentMethodRepository.findByActiveTrue();
+    }
+
+    @ModelAttribute("deliveryMethods")
+    public List<DeliveryMethod> getDeliveryMethods() {
+
+        return deliveryMethodRepository.findByActiveTrue();
+    }
+
+    @ModelAttribute("shops")
+    public List<Shop> getShops() {
+
+        return shopRepository.findByActiveTrue();
+    }
 
 }

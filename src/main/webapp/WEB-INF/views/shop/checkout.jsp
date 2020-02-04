@@ -59,82 +59,88 @@ To change this template use File | Settings | File Templates.
 
             <div class="container clearfix">
 
-                <div class="table-responsive">
-                    <table class="table cart">
-                        <thead>
-                        <tr>
-                            <th class="cart-product-remove">&nbsp;</th>
-                            <th class="cart-product-thumbnail">&nbsp;</th>
-                            <th class="cart-product-name">Nazwa produktu</th>
-                            <th class="cart-product-name">Rozmiar</th>
-                            <th class="cart-product-price">Cena</th>
-                            <th class="cart-product-quantity">Ilość</th>
-                            <th class="cart-product-subtotal">Wartość</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach items="${sessionScope.cart.cartItems}" var="cartItem">
-                            <tr class="cart_item">
-                                <td class="cart-product-remove">
-                                    <a href="/cart/remove?productId=${cartItem.product.id}&productSizeId=${cartItem.productSize.id}"
-                                       class="remove" title="Usuń produkt z koszyka"><i class="icon-trash2"></i></a>
-                                </td>
+                <div class="clear"></div>
 
-                                <td class="cart-product-thumbnail">
-                                    <a href="/product?productId=${cartItem.product.id}"><img height="64" width="auto"
-                                                                                             src="<c:out value="${cartItem.product.imageFileName}"/>"
-                                                                                             alt="<c:out value="${cartItem.product.productName}"/>"></a>
-                                </td>
-
-                                <td class="cart-product-name">
-                                    <a href="/product?productId=${cartItem.product.id}"><c:out
-                                            value="${cartItem.product.productName}"/></a>
-                                </td>
-
-                                <td class="cart-product-name">
-                                    <c:out value="${cartItem.productSize.sizeName}"/>
-                                </td>
-
-                                <td class="cart-product-price">
-                                    <span class="amount"><c:out
-                                            value="${fn:replace(cartItem.product.priceGross, '.', ',')} zł"/></span>
-                                </td>
-
-                                <td class="cart-product-quantity">
-                                    <div class="quantity clearfix">
-                                        <c:out value="${cartItem.quantity}"/>
-                                    </div>
-                                </td>
-                                <c:set var="subtotal" value="${cartItem.product.priceGross * cartItem.quantity}"/>
-                                <fmt:formatNumber var="substotalFormatted" value="${subtotal}" maxFractionDigits="2"/>
-                                <td class="cart-product-subtotal">
-                                    <span class="amount"><c:out
-                                            value="${fn:replace(substotalFormatted, '.', ',')} zł"/></span>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        <tr class="cart_item">
-                            <td colspan="7">
-                                <div class="row clearfix">
-                                    <div class="col-lg-4 col-4 nopadding">
-
-                                    </div>
-                                    <div class="col-lg-8 col-8 nopadding">
-                                        <a href="#" class="button button-mini button-blue fright button-3d">Aktualizuj
-                                            koszty</a>
-                                        <a href="#"
-                                           class="button button-mini button-blue fright button-3d">Zamówienie</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-
-                    </table>
-                </div>
                 <div class="row clearfix">
-                    <div class="col-lg-6 clearfix"></div>
-                    <div class="col-lg-6 clearfix">
+                    <div class="col-md-6">
+                        <h3>Adres na fakturze</h3>
+
+                        <form:form modelAttribute="shipAddress" method="post" id="shipping-form" name="shipping-form"
+                                   class="nobottommargin">
+                            <form:hidden path="id"/>
+                            <form:label path="zipCode">Kod pocztowy</form:label>
+                            <form:input path="zipCode" id="zipCode" class="form-control"
+                                        maxlength="6"/>
+                            <form:errors path="zipCode" cssClass="error"/>
+                            <form:label path="city">Miasto</form:label>
+                            <form:input path="city" id="city" class="form-control"
+                                        maxlength="50"/>
+                            <form:errors path="city" cssClass="error"/>
+                            <form:label path="street">Ulica</form:label>
+                            <form:input path="street" id="street" class="form-control"
+                                        maxlength="50"/>
+                            <form:errors path="street" cssClass="error"/>
+                            <form:label path="streetNumber">Numer</form:label>
+                            <form:input path="streetNumber" id="streetNumber" class="form-control"
+                                        maxlength="50"/>
+                            <form:errors path="streetNumber" cssClass="error"/>
+                        </form:form>
+                    </div>
+                    <div class="col-md-6">
+                        <h3 class="">Adres Dostawy</h3>
+                        <form:form modelAttribute="shipAddress" method="post" id="shipping-form" name="shipping-form"
+                                   class="nobottommargin">
+                            <form:hidden path="id"/>
+                            <form:label path="zipCode">Kod pocztowy</form:label>
+                            <form:input path="zipCode" id="zipCode" class="form-control"
+                                        maxlength="6"/>
+                            <form:errors path="zipCode" cssClass="error"/>
+                            <form:label path="city">Miasto</form:label>
+                            <form:input path="city" id="city" class="form-control"
+                                        maxlength="50"/>
+                            <form:errors path="city" cssClass="error"/>
+                            <form:label path="street">Ulica</form:label>
+                            <form:input path="street" id="street" class="form-control"
+                                        maxlength="50"/>
+                            <form:errors path="street" cssClass="error"/>
+                            <form:label path="streetNumber">Numer</form:label>
+                            <form:input path="streetNumber" id="streetNumber" class="form-control"
+                                        maxlength="50"/>
+                            <form:errors path="streetNumber" cssClass="error"/>
+                        </form:form>
+
+                    </div>
+                    <div class="w-100 bottommargin"></div>
+                    <div class="col-lg-6">
+                        <h4 class="card-title">Wybierz sposób dostawy</h4>
+                        <form:form id="selectedDeliveryMethod" class="row" modelAttribute="selectedDeliveryMethod">
+                            <form:select path="id" class="sm-form-control">
+                                <form:options items="${deliveryMethods}" itemValue="id"
+                                              itemLabel="deliveryMethodNameAndCost"/>
+                            </form:select>
+                            <form:errors path="id" cssClass="error"/>
+                        </form:form>
+                        <h4 class="card-title">Wybierz sposób płatności</h4>
+                        <form:form id="selectedPaymentMethod" class="row" modelAttribute="selectedPaymentMethod">
+                            <form:select path="id" class="sm-form-control">
+                                <form:options items="${paymentMethods}" itemValue="id" itemLabel="paymentMethodName"/>
+                            </form:select>
+                            <form:errors path="id" cssClass="error"/>
+                        </form:form>
+                        <div>
+                            <h4 class="card-title">Wybierz sklep</h4>
+                            <form:form class="row" modelAttribute="selectedShop">
+                                <form:select path="id" class="sm-form-control">
+                                    <form:option value="0" label="wybierz..."/>
+                                    <form:options items="${shops}" itemValue="id"
+                                                  itemLabel="shopName"/>
+                                </form:select>
+                                <form:errors path="id" cssClass="error"/>
+                            </form:form>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+
                         <h4>Podsumowanie</h4>
 
                         <div class="table-responsive">
@@ -142,16 +148,16 @@ To change this template use File | Settings | File Templates.
                                 <tbody>
                                 <tr class="cart_item">
                                     <td class="cart-totals-tag">
-                                        <strong>Wartość produktów</strong>
+                                        <strong>Wartość prduktów</strong>
                                     </td>
 
                                     <td class="cart-product-name">
-                                        <span class="amount">$106.94</span>
+                                        <span class="amount">${sessionScope.cart.totalValue}</span>
                                     </td>
                                 </tr>
                                 <tr class="cart_item">
                                     <td class="cart-totals-tag">
-                                        <strong>Dostawa</strong>
+                                        <strong>Koszt dostawy</strong>
                                     </td>
 
                                     <td class="cart-product-name">
@@ -171,8 +177,12 @@ To change this template use File | Settings | File Templates.
 
                             </table>
                         </div>
+
+                        <a href="#" class="button button-mini button-green fright button-3d">Zamawiam i płacę</a>
                     </div>
                 </div>
+
+
             </div>
 
         </div>

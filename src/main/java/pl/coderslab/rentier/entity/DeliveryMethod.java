@@ -1,5 +1,7 @@
 package pl.coderslab.rentier.entity;
 
+import org.springframework.format.annotation.NumberFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
@@ -19,6 +21,7 @@ public class DeliveryMethod {
     private String deliveryMethodName;
 
     @NotNull
+    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "#####.##")
     @DecimalMin(value = "0.0")
     @Digits(integer = 10, fraction = 2)
     @Column(name = "delivery_method_cost")
@@ -26,6 +29,9 @@ public class DeliveryMethod {
 
     @NotNull
     private boolean active;
+
+    @Transient
+    private String deliveryMethodNameAndCost;
 
     public Long getId() {
         return id;
@@ -57,6 +63,10 @@ public class DeliveryMethod {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getDeliveryMethodNameAndCost() {
+        return deliveryMethodName + " - " + deliveryMethodCost + " zł";
     }
 
     @Override
