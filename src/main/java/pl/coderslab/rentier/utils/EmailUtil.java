@@ -1,14 +1,15 @@
 package pl.coderslab.rentier.utils;
 
+import org.springframework.stereotype.Component;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Date;
 import java.util.Properties;
 
-
 public class EmailUtil {
-    private static final String PERSONAL = "CRM | Mechanik";
+    private static final String PERSONAL = "Rentier | Sklep";
     private static final String SMTP_PORT = "465";
 
     /**

@@ -7,7 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-============================================= -->
 <script src='<spring:url value="/js/jquery.js"/>'></script>
 <script src='<spring:url value="/js/plugins.js"/>'></script>
 <script src='<spring:url value="/js/functions.js"/>'></script>

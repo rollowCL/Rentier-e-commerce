@@ -23,11 +23,14 @@ $(() => {
             alert("Musisz wybrać rozmiar");
 
         } else {
+
             let option = sizeSelect.children(`option[value=${sizeSelect.val()}]`);
 
             if (quantity.val() > option.data('max')) {
                 event.preventDefault();
                 alert("Brak w magazynie takiej ilości w tym rozmiarze");
+            } else {
+
             }
 
         }

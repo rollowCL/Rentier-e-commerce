@@ -15,6 +15,7 @@ import pl.coderslab.rentier.entity.UserRole;
 import pl.coderslab.rentier.repository.OrderTypeRepository;
 import pl.coderslab.rentier.repository.UserRepository;
 import pl.coderslab.rentier.repository.UserRoleRepository;
+import pl.coderslab.rentier.utils.EmailUtil;
 import pl.coderslab.rentier.validation.UserBasicValidation;
 import javax.validation.Valid;
 import java.time.LocalDateTime;

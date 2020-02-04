@@ -12,7 +12,6 @@ public class CartItem {
     private ProductSize productSize;
     private Integer quantity;
 
-
     public Integer getQuantity() {
         return quantity;
     }

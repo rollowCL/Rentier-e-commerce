@@ -1,4 +1,4 @@
-package pl.coderslab.rentier.controller.shop;
+package pl.coderslab.rentier.controller.user;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -14,19 +14,22 @@ import pl.coderslab.rentier.repository.ProductRepository;
 import pl.coderslab.rentier.repository.ProductShopRepository;
 import pl.coderslab.rentier.repository.ProductSizeRepository;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
-public class ShopController {
+@RequestMapping("/user")
+public class OrderController {
 
-    private final org.slf4j.Logger logger = LoggerFactory.getLogger(ShopController.class);
+    private final org.slf4j.Logger logger = LoggerFactory.getLogger(OrderController.class);
     private final ProductShopRepository productShopRepository;
     private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;
     private final ProductSizeRepository productSizeRepository;
 
-    public ShopController(ProductCategoryRepository productCategoryRepository, ProductShopRepository productShopRepository,
-                          ProductRepository productRepository, ProductSizeRepository productSizeRepository, Cart cart) {
+    public OrderController(ProductCategoryRepository productCategoryRepository, ProductShopRepository productShopRepository,
+                           ProductRepository productRepository, ProductSizeRepository productSizeRepository, Cart cart) {
         this.productShopRepository = productShopRepository;
         this.productCategoryRepository = productCategoryRepository;
         this.productRepository = productRepository;
@@ -34,16 +37,9 @@ public class ShopController {
     }
 
 
-    @GetMapping("/")
-    public String showIndex(Model model, @RequestParam(required = false) Long categoryId) {
+    @GetMapping("/order/checkout")
+    public String showCheckout(@SessionAttribute(value = "cart", required = false) Cart cart) {
 
-
-        if (categoryId != null) {
-            if(productCategoryRepository.findById(categoryId).isPresent()) {
-
-                model.addAttribute("products", productRepository.customFindDistinctProductsActiveForShopByCategoryId(categoryId));
-            }
-        }
 
         return "/shop/index";
     }
