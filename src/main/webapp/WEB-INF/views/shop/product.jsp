@@ -89,7 +89,7 @@ To change this template use File | Settings | File Templates.
 
                                 <!-- Product Single - Quantity & Cart Button
                                 ============================================= -->
-                                <form class="cart nobottommargin clearfix" method="post">
+                                <form class="cart nobottommargin clearfix" method="post" action="/cart/add">
                                     <div> Wybierz rozmiar:
                                         <select id="sizeSelect" name="productSizeId" class="sm-form-control">
                                             <option value="0">wybierz...</option>

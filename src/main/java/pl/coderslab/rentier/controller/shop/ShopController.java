@@ -1,10 +1,10 @@
 package pl.coderslab.rentier.controller.shop;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import pl.coderslab.rentier.beans.Cart;
 import pl.coderslab.rentier.entity.Product;
 import pl.coderslab.rentier.entity.ProductCategory;
 import pl.coderslab.rentier.entity.ProductShop;
@@ -15,18 +15,18 @@ import pl.coderslab.rentier.repository.ProductShopRepository;
 import pl.coderslab.rentier.repository.ProductSizeRepository;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 public class ShopController {
 
+    private final org.slf4j.Logger logger = LoggerFactory.getLogger(ShopController.class);
     private final ProductShopRepository productShopRepository;
     private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;
     private final ProductSizeRepository productSizeRepository;
 
     public ShopController(ProductCategoryRepository productCategoryRepository, ProductShopRepository productShopRepository,
-                          ProductRepository productRepository, ProductSizeRepository productSizeRepository) {
+                          ProductRepository productRepository, ProductSizeRepository productSizeRepository, Cart cart) {
         this.productShopRepository = productShopRepository;
         this.productCategoryRepository = productCategoryRepository;
         this.productRepository = productRepository;
@@ -35,7 +35,8 @@ public class ShopController {
 
 
     @GetMapping("/")
-    public String showIndex(Model model, @RequestParam(required = false) Long categoryId) {
+    public String showIndex(Model model, @RequestParam(required = false) Long categoryId,
+                            @SessionAttribute(value = "cart", required = false) Cart cart) {
 
 
         if (categoryId != null) {
@@ -43,6 +44,10 @@ public class ShopController {
 
                 model.addAttribute("products", productRepository.customFindDistinctProductsActiveForShopByCategoryId(categoryId));
             }
+        }
+
+        if (cart != null) {
+            logger.info("Cart" + cart.toString());
         }
 
 
@@ -80,6 +85,7 @@ public class ShopController {
         return "/shop/product";
     }
 
+
     @ModelAttribute("products")
     public List<Product> getProductsForShop() {
 
@@ -91,4 +97,6 @@ public class ShopController {
 
         return productCategoryRepository.findProductCategoriesByActiveTrueOrderByCategoryOrder();
     }
+
+
 }

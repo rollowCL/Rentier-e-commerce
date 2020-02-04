@@ -27,7 +27,7 @@ $(() => {
 
             if (quantity.val() > option.data('max')) {
                 event.preventDefault();
-                alert("Brak w magazynie takiej ilości rozmiaru");
+                alert("Brak w magazynie takiej ilości w tym rozmiarze");
             }
 
         }

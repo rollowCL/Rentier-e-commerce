@@ -42,7 +42,16 @@
                 </ul>
 
                 <div id="top-cart">
-                    <a href="cart.html"><i class="icon-shopping-cart"></i><span>0</span></a>
+                    <a href="cart.html">
+                        <i class="icon-shopping-cart"></i>
+                        <span>
+                            <c:if test="${not empty sessionScope.cart.totalQuantity}">
+                                <c:out value="${sessionScope.cart.totalQuantity}"/>
+                            </c:if>
+                            <c:if test="${empty sessionScope.cart.totalQuantity}">
+                                0
+                            </c:if>
+                        </span></a>
                 </div><!-- #top-cart end -->
                 <div id="top-search">
                     <c:if test="${loggedId == null}"><a href="/login"><i class="icon-user-alt"></i></a></c:if>

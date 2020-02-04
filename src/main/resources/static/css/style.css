@@ -6237,11 +6237,16 @@ body:not(.device-touch):not(.device-sm):not(.device-xs) .product-overlay a {
 .cart-product-thumbnail img {
 	display: block;
 	width: 64px;
-	height: 64px;
+	height: auto;
 	border: 2px solid #EEE;
 }
 
 .cart-product-thumbnail img:hover { border-color: #1ABC9C; }
+
+
+.cart-product-name {
+	text-align: center
+}
 
 .cart-product-name a,
 .product-name a {

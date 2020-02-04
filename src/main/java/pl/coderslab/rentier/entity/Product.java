@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -44,10 +45,10 @@ public class Product {
     private ProductCategory productCategory;
 
     @Column(name = "created_date")
-    private LocalDate createdDate;
+    private LocalDateTime createdDate;
 
     @Column(name = "updated_date")
-    private LocalDate updatedDate;
+    private LocalDateTime updatedDate;
 
     @NotNull
     private boolean active;
@@ -118,19 +119,19 @@ public class Product {
         this.productCategory = productCategory;
     }
 
-    public LocalDate getCreatedDate() {
+    public LocalDateTime getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDate createdDate) {
+    public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
 
-    public LocalDate getUpdatedDate() {
+    public LocalDateTime getUpdatedDate() {
         return updatedDate;
     }
 
-    public void setUpdatedDate(LocalDate updatedDate) {
+    public void setUpdatedDate(LocalDateTime updatedDate) {
         this.updatedDate = updatedDate;
     }
 

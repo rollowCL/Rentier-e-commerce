@@ -78,7 +78,7 @@ public class ProductController {
 
         if (product.getId() == null) {
 
-            product.setCreatedDate(LocalDate.now());
+            product.setCreatedDate(LocalDateTime.now());
 
             if (productRepository.existsByProductName(product.getProductName())) {
                 resultProduct.rejectValue("productName", "error.name", "Produkt o takiej nazwie już istnieje");
@@ -86,7 +86,8 @@ public class ProductController {
 
         } else {
 
-            product.setUpdatedDate(LocalDate.now());
+            product.setUpdatedDate(LocalDateTime.now());
+
         }
 
         Part filePart = request.getPart("fileName");
