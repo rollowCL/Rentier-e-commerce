@@ -42,6 +42,15 @@ public class HomeController {
         return "/shop/index";
     }
 
+    @GetMapping("/product")
+    public String showProduct(Model model, @RequestParam Long productId) {
+
+
+
+
+        return "/shop/product";
+    }
+
     @ModelAttribute("products")
     public List<Product> getProductsForShop() {
 
