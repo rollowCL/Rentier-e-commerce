@@ -46,8 +46,41 @@ public class ProductController {
 
 
     @GetMapping("")
-    public String showProducts(Model model, @RequestParam(required = false) Long productId) {
+    public String showProducts(Model model) {
 
+        ProductCategory productCategoryFilter = new ProductCategory();
+        productCategoryFilter.setId(0L);
+
+        model.addAttribute("productCategoryFilter", productCategoryFilter);
+
+
+        return "/admin/products";
+    }
+
+    @PostMapping("/filterProductCategories")
+    public String showFilteredUsers(Model model, @ModelAttribute("productCategoryFilter") ProductCategory productCategoryFilter,
+                                    BindingResult result) {
+
+        if (productCategoryFilter.getId() == 0) {
+
+            model.addAttribute("products", productRepository.findAll());
+
+        } else {
+
+            model.addAttribute("products", productRepository.findByProductCategoryId(productCategoryFilter.getId()));
+        }
+
+        return "/admin/products";
+    }
+
+    @PostMapping("/filterProductsName")
+    public String showFilteredUsersByName(Model model, @RequestParam String productNameSearch,
+                                          @ModelAttribute(binding = false, name = "productCategoryFilter") ProductCategory productCategoryFilter,
+                                          BindingResult result) {
+
+        List<Product> foundProducts = productRepository.findByProductNameContaining(productNameSearch);
+
+        model.addAttribute("products", foundProducts);
 
         return "/admin/products";
     }
@@ -175,17 +208,18 @@ public class ProductController {
         return productRepository.findAll();
     }
 
+    @ModelAttribute("productCategories")
+    public List<ProductCategory> getProductCategories() {
+
+        return productCategoryRepository.findAll();
+    }
+
     @ModelAttribute("brands")
     public List<Brand> getBrands() {
 
         return brandRepository.findAll();
     }
 
-    @ModelAttribute("productCategories")
-    public List<ProductCategory> getProductCategories() {
-
-        return productCategoryRepository.findAll();
-    }
 
     private String getFileName(Part part) {
         for (String content : part.getHeader("content-disposition").split(";")) {

@@ -45,12 +45,14 @@
                     <a href="/cart">
                         <i class="icon-shopping-cart"></i>
                         <span>
-                            <c:if test="${not empty sessionScope.cart.totalQuantity}">
-                                <c:out value="${sessionScope.cart.totalQuantity}"/>
-                            </c:if>
-                            <c:if test="${empty sessionScope.cart.totalQuantity}">
-                                0
-                            </c:if>
+                            <c:choose>
+                                <c:when test="${not empty sessionScope.cart.totalQuantity}">
+                                    <c:out value="${sessionScope.cart.totalQuantity}"/>
+                                </c:when>
+                                <c:when test="${empty sessionScope.cart.totalQuantity}">
+                                    0
+                                </c:when>
+                            </c:choose>
                         </span></a>
                 </div><!-- #top-cart end -->
                 <div id="top-search">

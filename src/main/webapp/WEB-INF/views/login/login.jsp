@@ -80,7 +80,7 @@ To change this template use File | Settings | File Templates.
                             <div class="col-12">
                                 <button type="submit"
                                         class="button button-mini button-blue button-3d"
-                                        value="Submit">Zapisz
+                                        value="Submit">Zaloguj
                                 </button>
                             </div>
                         </form:form>
@@ -137,7 +137,7 @@ To change this template use File | Settings | File Templates.
                         <div class="col-12">
                             <button type="submit"
                                     class="button button-mini button-blue button-3d"
-                                    value="Submit">Zapisz
+                                    value="Submit">Zarejestruj
                             </button>
                         </div>
                     </form:form>

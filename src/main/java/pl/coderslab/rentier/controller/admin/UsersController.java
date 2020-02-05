@@ -35,6 +35,7 @@ public class UsersController {
     public String showUsers(Model model) {
 
         UserRole userRoleFilter = new UserRole();
+        userRoleFilter.setId(0L);
 
         model.addAttribute("userRoleFilter", userRoleFilter);
 

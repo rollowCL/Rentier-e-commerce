@@ -47,13 +47,13 @@
 
                     </li>
 
-                    <li><a href="/admin/products/">
+                    <li><a href="/admin/products">
                         <div>Produkty</div>
                     </a>
 
                     </li>
 
-                    <li><a href="/admin/productShops/">
+                    <li><a href="/admin/productShops">
                         <div>Stan magazynowy</div>
                     </a>
                     </li>

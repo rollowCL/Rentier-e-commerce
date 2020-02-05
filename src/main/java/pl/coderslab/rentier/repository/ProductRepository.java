@@ -12,7 +12,8 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     boolean existsByProductName(String productName);
-
+    List<Product> findByProductCategoryId(Long id);
+    List<Product> findByProductNameContaining(String productNameSearch);
 
     @Query(value = "SELECT p.image_file_name FROM products p WHERE p.id = :id", nativeQuery = true)
     String selectImageFileNameByProductId(@Param("id") Long id);

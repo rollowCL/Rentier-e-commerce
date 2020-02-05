@@ -62,17 +62,16 @@ To change this template use File | Settings | File Templates.
 
                     <div class="col-lg-12">
                         <div class="filterForm">
-                            <form class="myFormLeft" action="/admin/products/filterProductsCategory" method="post">
-
+                            <form:form class="myFormLeft" action="/admin/products/filterProductCategories" method="post" modelAttribute="productCategoryFilter">
+                                <form:radiobutton path="id" value="0" label="Wszystkie"/>
+                                <form:radiobuttons path="id" items="${productCategories}" itemLabel="categoryName" itemValue="id"/>
                                 <button type="submit" class="button button-mini button-blue button-3d"
-                                        value="Submit">Filruj
+                                        value="Submit">Filtruj
                                 </button>
-                            </form>
-                        </div>
-                        <div class="filterForm">
+                            </form:form>
                             <form class="myFormRight" action="/admin/products/filterProductsName" method="post">
                                 <label for="productNameSearch">Szukaj</label>
-                                <input type="text" minlength="3" name="productNameSearch" id="productNameSearch" maxlength="50"/>
+                                <input type="text" placeholder="podaj fragment nazwy produktu" minlength="3" name="productNameSearch" id="productNameSearch" maxlength="50"/>
                                 <button type="submit" class="button button-mini button-blue button-3d"
                                         value="Submit">Szukaj
                                 </button>
@@ -86,6 +85,7 @@ To change this template use File | Settings | File Templates.
                                     <th scope="col">Marka</th>
                                     <th scope="col">Kategoria</th>
                                     <th scope="col">Nazwa produktu</th>
+                                    <th scope="col">Kod produktu</th>
                                     <th scope="col">Opis produktu</th>
                                     <th scope="col">Cena brutto</th>
                                     <th scope="col">Dostępny na www</th>
@@ -105,6 +105,7 @@ To change this template use File | Settings | File Templates.
                                         <td><c:out value="${product.brand.name}"/></td>
                                         <td><c:out value="${product.productCategory.categoryName}"/></td>
                                         <td><c:out value="${product.productName}"/></td>
+                                        <td><c:out value="${product.productText}"/></td>
                                         <td><c:out value="${product.productDesc}"/></td>
                                         <td>
                                             <c:out value="${fn:replace(product.priceGross, '.', ',')} zł"/>
