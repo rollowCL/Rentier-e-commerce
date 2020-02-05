@@ -81,7 +81,7 @@ public class CartController {
         return -1;
     }
 
-    @RequestMapping("/")
+    @RequestMapping("")
 
     public String viewCart() {
 

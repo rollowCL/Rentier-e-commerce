@@ -64,85 +64,70 @@ To change this template use File | Settings | File Templates.
                 <div class="row clearfix">
                     <div class="col-md-6">
                         <h3>Adres na fakturze</h3>
-
-                        <form:form modelAttribute="shipAddress" method="post" id="shipping-form" name="shipping-form"
-                                   class="nobottommargin">
-                            <form:hidden path="id"/>
-                            <form:label path="zipCode">Kod pocztowy</form:label>
-                            <form:input path="zipCode" id="zipCode" class="form-control"
+                        <form:form id="orderForm" class="row nobottommargin" modelAttribute="order">
+                            <form:label path="billAddress.zipCode">Kod pocztowy</form:label>
+                            <form:input path="billAddress.zipCode" id="billAddress.zipCode" class="form-control"
                                         maxlength="6"/>
-                            <form:errors path="zipCode" cssClass="error"/>
-                            <form:label path="city">Miasto</form:label>
-                            <form:input path="city" id="city" class="form-control"
+                            <form:errors path="billAddress.zipCode" cssClass="error"/>
+                            <form:label path="billAddress.city">Miasto</form:label>
+                            <form:input path="billAddress.city" id="billAddress.city" class="form-control"
                                         maxlength="50"/>
-                            <form:errors path="city" cssClass="error"/>
-                            <form:label path="street">Ulica</form:label>
-                            <form:input path="street" id="street" class="form-control"
+                            <form:errors path="billAddress.city" cssClass="error"/>
+                            <form:label path="billAddress.street">Ulica</form:label>
+                            <form:input path="billAddress.street" id="billAddress.street" class="form-control"
                                         maxlength="50"/>
-                            <form:errors path="street" cssClass="error"/>
-                            <form:label path="streetNumber">Numer</form:label>
-                            <form:input path="streetNumber" id="streetNumber" class="form-control"
+                            <form:errors path="billAddress.street" cssClass="error"/>
+                            <form:label path="billAddress.streetNumber">Numer</form:label>
+                            <form:input path="billAddress.streetNumber" id="billAddress.streetNumber" class="form-control"
                                         maxlength="50"/>
-                            <form:errors path="streetNumber" cssClass="error"/>
-                        </form:form>
+                            <form:errors path="billAddress.streetNumber" cssClass="error"/>
                     </div>
                     <div class="col-md-6">
                         <h3 class="">Adres Dostawy</h3>
-                        <form:form modelAttribute="shipAddress" method="post" id="shipping-form" name="shipping-form"
-                                   class="nobottommargin">
-                            <form:hidden path="id"/>
-                            <form:label path="zipCode">Kod pocztowy</form:label>
-                            <form:input path="zipCode" id="zipCode" class="form-control"
+                            <form:label path="shipAddress.zipCode">Kod pocztowy</form:label>
+                            <form:input path="shipAddress.zipCode" id="shipAddress.zipCode" class="form-control"
                                         maxlength="6"/>
-                            <form:errors path="zipCode" cssClass="error"/>
-                            <form:label path="city">Miasto</form:label>
-                            <form:input path="city" id="city" class="form-control"
+                            <form:errors path="shipAddress.zipCode" cssClass="error"/>
+                            <form:label path="shipAddress.city">Miasto</form:label>
+                            <form:input path="shipAddress.city" id="shipAddress.city" class="form-control"
                                         maxlength="50"/>
-                            <form:errors path="city" cssClass="error"/>
-                            <form:label path="street">Ulica</form:label>
-                            <form:input path="street" id="street" class="form-control"
+                            <form:errors path="shipAddress.city" cssClass="error"/>
+                            <form:label path="shipAddress.street">Ulica</form:label>
+                            <form:input path="shipAddress.street" id="shipAddress.street" class="form-control"
                                         maxlength="50"/>
-                            <form:errors path="street" cssClass="error"/>
-                            <form:label path="streetNumber">Numer</form:label>
-                            <form:input path="streetNumber" id="streetNumber" class="form-control"
+                            <form:errors path="shipAddress.street" cssClass="error"/>
+                            <form:label path="shipAddress.streetNumber">Numer</form:label>
+                            <form:input path="shipAddress.streetNumber" id="shipAddress.streetNumber" class="form-control"
                                         maxlength="50"/>
-                            <form:errors path="streetNumber" cssClass="error"/>
-                        </form:form>
-
+                            <form:errors path="shipAddress.streetNumber" cssClass="error"/>
                     </div>
                     <div class="w-100 bottommargin"></div>
                     <div class="col-lg-6">
                         <h4 class="card-title">Wybierz sposób dostawy</h4>
-                        <form:form id="selectedDeliveryMethod" class="row" modelAttribute="selectedDeliveryMethod">
-                            <form:select path="id" class="sm-form-control">
+                            <form:select path="deliveryMethod" class="form-control">
+                                <form:option value="0" label="wybierz..."/>
                                 <form:options items="${deliveryMethods}" itemValue="id"
                                               itemLabel="deliveryMethodNameAndCost"/>
                             </form:select>
-                            <form:errors path="id" cssClass="error"/>
-                        </form:form>
-                        <h4 class="card-title">Wybierz sposób płatności</h4>
-                        <form:form id="selectedPaymentMethod" class="row" modelAttribute="selectedPaymentMethod">
-                            <form:select path="id" class="sm-form-control">
-                                <form:options items="${paymentMethods}" itemValue="id" itemLabel="paymentMethodName"/>
+                            <form:errors path="deliveryMethod" cssClass="error"/>
+                            <h4 class="card-title">Wybierz sposób płatności</h4>
+                            <form:select path="paymentMethod" class="form-control">
+                                <form:option value="0" label="wybierz..."/>
+                                <form:options items="${paymentMethods}" itemValue="id"
+                                              itemLabel="paymentMethodName"/>
                             </form:select>
-                            <form:errors path="id" cssClass="error"/>
-                        </form:form>
-                        <div>
+                            <form:errors path="paymentMethod" cssClass="error"/>
+
                             <h4 class="card-title">Wybierz sklep</h4>
-                            <form:form class="row" modelAttribute="selectedShop">
-                                <form:select path="id" class="sm-form-control">
-                                    <form:option value="0" label="wybierz..."/>
-                                    <form:options items="${shops}" itemValue="id"
-                                                  itemLabel="shopName"/>
-                                </form:select>
-                                <form:errors path="id" cssClass="error"/>
-                            </form:form>
-                        </div>
+                            <form:select path="pickupShop" class="form-control">
+                                <form:option value="0" label="wybierz..."/>
+                                <form:options items="${shops}" itemValue="id"
+                                              itemLabel="shopName"/>
+                            </form:select>
+                            <form:errors path="pickupShop" cssClass="error"/>
                     </div>
                     <div class="col-lg-6">
-
                         <h4>Podsumowanie</h4>
-
                         <div class="table-responsive">
                             <table class="table cart">
                                 <tbody>
@@ -170,15 +155,18 @@ To change this template use File | Settings | File Templates.
                                     </td>
 
                                     <td class="cart-product-name">
-                                        <span class="amount color lead"><strong>$106.94</strong></span>
+                                        <span class="amount color lead"><strong>${sessionScope.cart.totalValue}</strong></span>
                                     </td>
                                 </tr>
                                 </tbody>
 
                             </table>
                         </div>
-
-                        <a href="#" class="button button-mini button-green fright button-3d">Zamawiam i płacę</a>
+                        <button type="submit"
+                                       class="button button-mini button-blue button-3d"
+                                       value="Submit">Zamawiam i płacę
+                        </button>
+                        </form:form>
                     </div>
                 </div>
 

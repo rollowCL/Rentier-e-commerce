@@ -15,6 +15,8 @@ public class RentierProperties {
     private String uploadPathProductsForDelete = "/home/osint/Documents/Repos/CodersLab/Rentier/src/main/resources/static";
     private String uploadPathProdutsForView = "/images/products/";
 
+    private String orderStartStatus = "Nowy";
+
     public String getUploadPathBrands() {
         return uploadPathBrands;
     }
@@ -39,4 +41,7 @@ public class RentierProperties {
         return uploadPathProductsForDelete;
     }
 
+    public String getOrderStartStatus() {
+        return orderStartStatus;
+    }
 }

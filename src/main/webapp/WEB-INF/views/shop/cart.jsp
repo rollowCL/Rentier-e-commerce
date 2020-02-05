@@ -144,7 +144,8 @@ To change this template use File | Settings | File Templates.
                                     </td>
 
                                     <td class="cart-product-name">
-                                        <span class="amount">${sessionScope.cart.totalValue}</span>
+                                        <span class="amount"><c:out
+                                                value="${fn:replace(sessionScope.cart.totalValue, '.', ',')} zł"/></span>
                                     </td>
                                 </tr>
 <%--                                <tr class="cart_item">--%>

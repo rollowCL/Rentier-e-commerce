@@ -163,7 +163,7 @@ CREATE TABLE orders
     id BIGINT AUTO_INCREMENT NOT NULL,
     order_type_id BIGINT NOT NULL,
     order_status_id BIGINT NOT NULL,
-    order_number VARCHAR(255),
+    order_number VARCHAR(20) UNIQUE,
     order_date DATETIME NOT NULL,
     order_status_date DATETIME NOT NULL,
     user_id BIGINT NOT NULL,

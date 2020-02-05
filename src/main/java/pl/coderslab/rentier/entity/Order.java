@@ -1,6 +1,9 @@
 package pl.coderslab.rentier.entity;
 
+import pl.coderslab.rentier.validation.OrderBasicValidation;
+
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -16,32 +19,23 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "order_type_id")
     private OrderType orderType;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "order_status_id")
     private OrderStatus orderStatus;
 
-    @NotBlank
-    @Size(max = 10)
     @Column(name = "order_number")
     private String orderNumber;
 
-    @NotNull
-    @PastOrPresent
     @Column(name = "order_date")
     private LocalDateTime orderDate;
 
-    @NotNull
-    @PastOrPresent
     @Column(name = "order_status_date")
     private LocalDateTime orderStatusDate;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -51,8 +45,8 @@ public class Order {
     @JoinColumn(name = "delivery_method_id")
     private DeliveryMethod deliveryMethod;
 
-    @DecimalMin(value = "0.0")
-    @Digits(integer = 10, fraction = 2)
+//    @DecimalMin(value = "0.0")
+//    @Digits(integer = 10, fraction = 2)
     @Column(name = "delivery_method_cost")
     private BigDecimal deliveryMethodCost;
 
@@ -61,17 +55,18 @@ public class Order {
     @JoinColumn(name = "payment_method_id")
     private PaymentMethod paymentMethod;
 
+    @Valid
     @NotNull
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "bill_address_id")
     private Address billAddress;
 
+    @Valid
     @NotNull
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ship_address_id")
     private Address shipAddress;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "pickup_shop_id")
     private Shop pickupShop;
