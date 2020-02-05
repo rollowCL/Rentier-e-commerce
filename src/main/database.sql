@@ -173,6 +173,8 @@ CREATE TABLE orders
     bill_address_id BIGINT NOT NULL,
     ship_address_id BIGINT NOT NULL,
     pickup_ship_id BIGINT NOT NULL,
+    total_quantity INT NOT NULL,
+    total_value DECIMAL(10,2) NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (order_type_id) REFERENCES order_types(id),
     FOREIGN KEY (order_status_id) REFERENCES order_statuses(id),
@@ -192,9 +194,8 @@ CREATE TABLE order_details
     product_category_name VARCHAR(255) NOT NULL,
     product_size_name VARCHAR(255) NOT NULL,
     quantity INT NOT NULL,
-    price_net DECIMAL(10) NOT NULL,
-    vat_prc DECIMAL(2) NOT NULL,
-    price_gross DECIMAL(10) NOT NULL,
+    price_gross DECIMAL(10, 2) NOT NULL,
+    value_gross DECIMAL(10, 2) NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (order_id) REFERENCES orders(id)
 );

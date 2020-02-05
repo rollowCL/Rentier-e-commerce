@@ -1,5 +1,6 @@
 package pl.coderslab.rentier.beans;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
@@ -73,9 +74,8 @@ public class Cart {
         List<CartItem> cartItemList = this.cartItems;
 
         for (CartItem cartItem: cartItemList) {
-            BigDecimal prodQuantity = BigDecimal.valueOf(cartItem.getQuantity());
-            BigDecimal prodPrice = cartItem.getProduct().getPriceGross();
-            totalPrice = totalPrice.add(prodPrice.multiply(prodQuantity));
+
+            totalPrice = totalPrice.add(cartItem.getCartItemValue());
 
         }
 

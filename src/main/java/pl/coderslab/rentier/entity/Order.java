@@ -1,6 +1,6 @@
 package pl.coderslab.rentier.entity;
 
-import pl.coderslab.rentier.validation.OrderBasicValidation;
+import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -45,8 +45,6 @@ public class Order {
     @JoinColumn(name = "delivery_method_id")
     private DeliveryMethod deliveryMethod;
 
-//    @DecimalMin(value = "0.0")
-//    @Digits(integer = 10, fraction = 2)
     @Column(name = "delivery_method_cost")
     private BigDecimal deliveryMethodCost;
 
@@ -73,6 +71,14 @@ public class Order {
 
     @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetails = new ArrayList<>();
+
+    @Column(name = "total_quantity")
+    private Integer totalQuantity;
+
+    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "########.##")
+    @Column(name = "total_value")
+    private BigDecimal totalValue;
+
 
     public Long getId() {
         return id;
@@ -186,6 +192,22 @@ public class Order {
         this.orderDetails = orderDetails;
     }
 
+    public Integer getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public void setTotalQuantity(Integer totalQuantity) {
+        this.totalQuantity = totalQuantity;
+    }
+
+    public BigDecimal getTotalValue() {
+        return totalValue;
+    }
+
+    public void setTotalValue(BigDecimal totalValue) {
+        this.totalValue = totalValue;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -216,6 +238,8 @@ public class Order {
                 ", shipAddress=" + shipAddress +
                 ", pickupShop=" + pickupShop +
                 ", orderDetails=" + orderDetails +
+                ", totalQuantity=" + totalQuantity +
+                ", totalValue=" + totalValue +
                 '}';
     }
 }

@@ -4,13 +4,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.rentier.entity.*;
 import pl.coderslab.rentier.repository.*;
-import pl.coderslab.rentier.service.OrderService;
 import pl.coderslab.rentier.service.OrderServiceImpl;
-import pl.coderslab.rentier.validation.OrderBasicValidation;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -74,7 +71,6 @@ public class OrderController {
         } else {
 
             String orderNumber = orderService.placeOrder(userId, order);
-            System.out.println(orderNumber);
             model.addAttribute("orderNumber", orderNumber);
             return "/shop/orderSuccess";
         }

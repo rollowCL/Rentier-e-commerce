@@ -105,11 +105,9 @@ To change this template use File | Settings | File Templates.
                                         <c:out value="${cartItem.quantity}"/>
                                     </div>
                                 </td>
-                                <c:set var="subtotal" value="${cartItem.product.priceGross * cartItem.quantity}"/>
-                                <fmt:formatNumber var="substotalFormatted" value="${subtotal}" maxFractionDigits="2"/>
                                 <td class="cart-product-subtotal">
                                     <span class="amount"><c:out
-                                            value="${fn:replace(substotalFormatted, '.', ',')} zł"/></span>
+                                            value="${fn:replace(cartItem.cartItemValue, '.', ',')} zł"/></span>
                                 </td>
                             </tr>
                         </c:forEach>

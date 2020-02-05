@@ -43,18 +43,13 @@ public class OrderDetail {
 
     @DecimalMin(value = "0.0")
     @Digits(integer = 10, fraction = 2)
-    @Column(name = "price_net")
-    private BigDecimal priceNet;
-
-    @DecimalMin(value = "0.0")
-    @Digits(integer = 4, fraction = 2)
-    @Column(name = "vat_prc")
-    private BigDecimal vatPrc;
+    @Column(name = "price_gross")
+    private BigDecimal priceGross;
 
     @DecimalMin(value = "0.0")
     @Digits(integer = 10, fraction = 2)
-    @Column(name = "price_gross")
-    private BigDecimal priceGross;
+    @Column(name = "value_gross")
+    private BigDecimal valueGross;
 
     public Long getId() {
         return id;
@@ -112,28 +107,20 @@ public class OrderDetail {
         this.quantity = quantity;
     }
 
-    public BigDecimal getPriceNet() {
-        return priceNet;
-    }
-
-    public void setPriceNet(BigDecimal priceNet) {
-        this.priceNet = priceNet;
-    }
-
-    public BigDecimal getVatPrc() {
-        return vatPrc;
-    }
-
-    public void setVatPrc(BigDecimal vatPrc) {
-        this.vatPrc = vatPrc;
-    }
-
     public BigDecimal getPriceGross() {
         return priceGross;
     }
 
     public void setPriceGross(BigDecimal priceGross) {
         this.priceGross = priceGross;
+    }
+
+    public BigDecimal getValueGross() {
+        return valueGross;
+    }
+
+    public void setValueGross(BigDecimal valueGross) {
+        this.valueGross = valueGross;
     }
 
     @Override
@@ -149,6 +136,7 @@ public class OrderDetail {
         return Objects.hash(id);
     }
 
+
     @Override
     public String toString() {
         return "OrderDetail{" +
@@ -159,9 +147,8 @@ public class OrderDetail {
                 ", productCategoryName='" + productCategoryName + '\'' +
                 ", productSizeName='" + productSizeName + '\'' +
                 ", quantity=" + quantity +
-                ", priceNet=" + priceNet +
-                ", vatPrc=" + vatPrc +
                 ", priceGross=" + priceGross +
+                ", valueGross=" + valueGross +
                 '}';
     }
 }

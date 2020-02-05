@@ -140,7 +140,7 @@ To change this template use File | Settings | File Templates.
                                     </td>
 
                                     <td class="cart-product-name">
-                                        <span class="amount">${sessionScope.cart.totalValue}</span>
+                                        <span class="amount">${sessionScope.cart.totalValue} zł</span>
                                     </td>
                                 </tr>
                                 <tr class="cart_item">
@@ -158,19 +158,21 @@ To change this template use File | Settings | File Templates.
                                     </td>
 
                                     <td class="cart-product-name">
-                                        <span class="amount color lead"><strong>${sessionScope.cart.totalValue}</strong></span>
+                                        <span class="amount color lead"><strong>${sessionScope.cart.totalValue} zł</strong></span>
                                     </td>
                                 </tr>
                                 </tbody>
 
                             </table>
                         </div>
-                        <button type="submit"
-                                       class="button button-mini button-blue button-3d"
-                                       value="Submit">Zamawiam i płacę
-                        </button>
-                        <button class="button button-mini button-blue button-3d" type="button" onClick="javascript:document.location.href='/admin/config'">Wstecz</button>
-                    </form:form>
+                        <div>
+                            <button class="button button-mini button-blue fright button-3d" type="button" onClick="javascript:document.location.href='/admin/config'">Wstecz</button>
+                            <button type="submit"
+                                    class="button button-mini fright button-blue button-3d"
+                                    value="Submit">Zamawiam i płacę
+                            </button>
+                        </div>
+                        </form:form>
                     </div>
                 </div>
 

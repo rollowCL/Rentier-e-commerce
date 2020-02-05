@@ -10,7 +10,6 @@ import pl.coderslab.rentier.entity.*;
 import pl.coderslab.rentier.repository.BrandRepository;
 import pl.coderslab.rentier.repository.ProductCategoryRepository;
 import pl.coderslab.rentier.repository.ProductRepository;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
@@ -21,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.regex.Matcher;

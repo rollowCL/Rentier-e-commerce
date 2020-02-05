@@ -23,12 +23,13 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final UserServiceImpl userService;
     private final OrderNumberServiceImpl orderNumberService;
+    private final OrderDetailServiceImpl orderDetailService;
 
 
 
     public OrderServiceImpl(Cart cart, UserRepository userRepository, OrderStatusRepository orderStatusRepository,
                             RentierProperties rentierProperties, OrderRepository orderRepository,
-                            UserServiceImpl userService, OrderNumberServiceImpl orderNumberService) {
+                            UserServiceImpl userService, OrderNumberServiceImpl orderNumberService, OrderDetailServiceImpl orderDetailService) {
         this.cart = cart;
         this.userRepository = userRepository;
         this.orderStatusRepository = orderStatusRepository;
@@ -36,6 +37,7 @@ public class OrderServiceImpl implements OrderService {
         this.orderRepository = orderRepository;
         this.userService = userService;
         this.orderNumberService = orderNumberService;
+        this.orderDetailService = orderDetailService;
     }
 
 
@@ -70,10 +72,14 @@ public class OrderServiceImpl implements OrderService {
             BigDecimal orderDeliveryMethodCost = order.getDeliveryMethod().getDeliveryMethodCost();
 
             order.setDeliveryMethodCost(orderDeliveryMethodCost);
+            order.setTotalQuantity(cart.getTotalQuantity());
+            order.setTotalValue(cart.getTotalValue());
 
             orderRepository.save(order);
             userService.updateUserBillAddress(user.get(), order.getBillAddress());
             userService.updateUserShipAddress(user.get(), order.getShipAddress());
+
+            orderDetailService.placeOrderDetails(cart, order);
             cart.clearCart();
 
             return order.getOrderNumber();

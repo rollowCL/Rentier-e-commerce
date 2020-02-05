@@ -15,6 +15,7 @@ import pl.coderslab.rentier.repository.ProductShopRepository;
 import pl.coderslab.rentier.repository.ProductSizeRepository;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.List;
 
 @Controller
@@ -23,7 +24,7 @@ import java.util.List;
 public class CartController {
 
 
-    private final org.slf4j.Logger logger = LoggerFactory.getLogger(CartController.class);
+    private final org.slf4j.Logger logger = LoggerFactory.getLogger(Cart.class);
     private final Cart cart;
     private final ProductShopRepository productShopRepository;
     private final ProductRepository productRepository;
@@ -54,7 +55,14 @@ public class CartController {
             Product product = productList.stream().filter(s -> s.getId().equals(productId)).findFirst().get();
             ProductSize productSize = productSizeList.stream().filter(s -> s.getId().equals(productSizeId)).findFirst().get();
 
-            cart.addToCart(new CartItem(product, productSize, quantity));
+            CartItem cartItem = new CartItem();
+            cartItem.setProduct(product);
+            cartItem.setProductSize(productSize);
+            cartItem.setQuantity(quantity);
+            cart.addToCart(cartItem);
+
+            logger.info("Value: " + cartItem);
+
 
         } else {
 
@@ -62,8 +70,10 @@ public class CartController {
             cart.getCartItems().get(itemInCartIndex).setQuantity(newQuantity);
 
         }
-        cart.setTotalQuantity();
+
+        logger.info("cart" + cart.toString());
         cart.setTotalValue();
+        cart.setTotalQuantity();
         model.addAttribute("cart", cart);
 
         return "redirect:/cart";
@@ -97,8 +107,8 @@ public class CartController {
         if (itemInCartIndex > -1) {
 
             cart.getCartItems().remove(itemInCartIndex);
-            cart.setTotalQuantity();
             cart.setTotalValue();
+            cart.setTotalQuantity();
 
         }
 
