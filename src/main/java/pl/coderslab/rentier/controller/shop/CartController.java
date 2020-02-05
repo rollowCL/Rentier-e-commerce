@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
+@RequestMapping("/cart")
 @SessionAttributes({"cart"})
 public class CartController {
 
@@ -39,7 +40,7 @@ public class CartController {
     }
 
 
-    @RequestMapping("/cart/add")
+    @RequestMapping("/add")
     @GetMapping
     public String addToCart(Model model, @RequestParam Long productId, @RequestParam Long productSizeId,
                             @RequestParam Integer quantity) {
@@ -80,7 +81,7 @@ public class CartController {
         return -1;
     }
 
-    @RequestMapping("/cart")
+    @RequestMapping("/")
 
     public String viewCart() {
 
@@ -88,7 +89,7 @@ public class CartController {
     }
 
 
-    @RequestMapping("/cart/remove")
+    @RequestMapping("/remove")
     public String removeFromCart(Model model, @RequestParam Long productId, @RequestParam Long productSizeId) {
 
         int itemInCartIndex = checkCartIndex(productId, productSizeId, cart);

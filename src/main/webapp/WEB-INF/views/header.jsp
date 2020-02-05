@@ -42,7 +42,7 @@
                 </ul>
 
                 <div id="top-cart">
-                    <a href="cart.html">
+                    <a href="/cart">
                         <i class="icon-shopping-cart"></i>
                         <span>
                             <c:if test="${not empty sessionScope.cart.totalQuantity}">
