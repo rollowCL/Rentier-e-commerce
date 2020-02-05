@@ -9,17 +9,16 @@ import pl.coderslab.rentier.entity.OrderDetail;
 import pl.coderslab.rentier.pojo.CartItem;
 import pl.coderslab.rentier.repository.OrderDetailRepository;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-
 @Service
 public class OrderDetailServiceImpl implements OrderDetailService {
 
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(CartController.class);
     private final OrderDetailRepository orderDetailRepository;
+    private final ProductShopServiceImpl productShopService;
 
-    public OrderDetailServiceImpl(OrderDetailRepository orderDetailRepository) {
+    public OrderDetailServiceImpl(OrderDetailRepository orderDetailRepository, ProductShopServiceImpl productShopService) {
         this.orderDetailRepository = orderDetailRepository;
+        this.productShopService = productShopService;
     }
 
 
@@ -37,8 +36,11 @@ public class OrderDetailServiceImpl implements OrderDetailService {
             orderDetail.setQuantity(cartItem.getQuantity());
             orderDetail.setPriceGross(cartItem.getProduct().getPriceGross());
             orderDetail.setValueGross(cartItem.getCartItemValue());
-
             orderDetailRepository.save(orderDetail);
+
+            productShopService.removeFromStock(cartItem);
+
+
 
         }
 

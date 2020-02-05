@@ -26,5 +26,7 @@ public interface ProductShopRepository extends JpaRepository<ProductShop, Long> 
     List<ProductShop> customFindAllProductShopsActiveForShopByProductId(@Param("productId") Long id);
 
 
+    List<ProductShop> findByProductAndProductSizeOrderByShopId(Product product, ProductSize productSize);
+
 
 }
