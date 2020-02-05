@@ -61,7 +61,7 @@ To change this template use File | Settings | File Templates.
 
 						<div>
 							<h3>
-								<strong>Jesteś zalogowany jako:</strong><c:out value="${loggedFirstName} ${loggedLastName}"/>
+								<strong>Jesteś zalogowany jako: </strong><c:out value="${loggedFirstName} ${loggedLastName}"/>
 <%--								<br/>--%>
 							</h3>
                             <h4>

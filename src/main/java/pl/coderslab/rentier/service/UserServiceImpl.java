@@ -21,30 +21,40 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUserBillAddress(User user, Address sourceBillAddress) {
+        Address newUserBillAddress = new Address();
 
-        Address userBillAddress = new Address();
-        userBillAddress.setZipCode(sourceBillAddress.getZipCode());
-        userBillAddress.setCity(sourceBillAddress.getCity());
-        userBillAddress.setStreet(sourceBillAddress.getStreet());
-        userBillAddress.setStreetNumber(sourceBillAddress.getStreetNumber());
-        user.setBillAddress(userBillAddress);
+        if (user.getShipAddress() != null) {
+            newUserBillAddress = user.getBillAddress();
+        }
+
+        newUserBillAddress.setZipCode(sourceBillAddress.getZipCode());
+        newUserBillAddress.setCity(sourceBillAddress.getCity());
+        newUserBillAddress.setStreet(sourceBillAddress.getStreet());
+        newUserBillAddress.setStreetNumber(sourceBillAddress.getStreetNumber());
+
+        user.setBillAddress(newUserBillAddress);
         userRepository.save(user);
-        addressRepository.save(userBillAddress);
-
+        addressRepository.save(newUserBillAddress);
 
     }
 
     @Override
     public void updateUserShipAddress(User user, Address sourceShipAddress) {
 
-        Address userShipAddress = new Address();
-        userShipAddress.setZipCode(sourceShipAddress.getZipCode());
-        userShipAddress.setCity(sourceShipAddress.getCity());
-        userShipAddress.setStreet(sourceShipAddress.getStreet());
-        userShipAddress.setStreetNumber(sourceShipAddress.getStreetNumber());
-        user.setShipAddress(userShipAddress);
+        Address newUserShipAddress = new Address();
+
+        if (user.getShipAddress() != null) {
+            newUserShipAddress = user.getShipAddress();
+        }
+
+        newUserShipAddress.setZipCode(sourceShipAddress.getZipCode());
+        newUserShipAddress.setCity(sourceShipAddress.getCity());
+        newUserShipAddress.setStreet(sourceShipAddress.getStreet());
+        newUserShipAddress.setStreetNumber(sourceShipAddress.getStreetNumber());
+
+        user.setShipAddress(newUserShipAddress);
         userRepository.save(user);
-        addressRepository.save(userShipAddress);
+        addressRepository.save(newUserShipAddress);
 
     }
 }

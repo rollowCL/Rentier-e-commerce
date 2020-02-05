@@ -57,13 +57,13 @@ public class Order {
 
     @Valid
     @NotNull
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bill_address_id")
     private Address billAddress;
 
     @Valid
     @NotNull
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ship_address_id")
     private Address shipAddress;
 

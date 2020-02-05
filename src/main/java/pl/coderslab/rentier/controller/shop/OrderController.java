@@ -61,10 +61,11 @@ public class OrderController {
 
     }
 
+
     @PostMapping("/order/checkout")
     public String processCheckout(@SessionAttribute("loggedId") Long userId,
                                   @ModelAttribute("order") @Valid  Order order,
-                                  BindingResult resultOrder
+                                  BindingResult resultOrder, Model model
                                   ) {
         if (resultOrder.hasErrors()) {
 
@@ -72,9 +73,9 @@ public class OrderController {
 
         } else {
 
-            orderService.placeOrder(userId, order);
-
-
+            String orderNumber = orderService.placeOrder(userId, order);
+            System.out.println(orderNumber);
+            model.addAttribute("orderNumber", orderNumber);
             return "/shop/orderSuccess";
         }
 

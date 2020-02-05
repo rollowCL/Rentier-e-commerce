@@ -1,7 +1,9 @@
 package pl.coderslab.rentier.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import pl.coderslab.rentier.RentierProperties;
+import pl.coderslab.rentier.beans.Cart;
 import pl.coderslab.rentier.entity.*;
 import pl.coderslab.rentier.repository.*;
 
@@ -10,9 +12,11 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+@SessionAttributes({"cart"})
 @Service
 public class OrderServiceImpl implements OrderService {
 
+    private final Cart cart;
     private final UserRepository userRepository;
     private final OrderStatusRepository orderStatusRepository;
     private final RentierProperties rentierProperties;
@@ -22,9 +26,10 @@ public class OrderServiceImpl implements OrderService {
 
 
 
-    public OrderServiceImpl(UserRepository userRepository, OrderStatusRepository orderStatusRepository,
+    public OrderServiceImpl(Cart cart, UserRepository userRepository, OrderStatusRepository orderStatusRepository,
                             RentierProperties rentierProperties, OrderRepository orderRepository,
                             UserServiceImpl userService, OrderNumberServiceImpl orderNumberService) {
+        this.cart = cart;
         this.userRepository = userRepository;
         this.orderStatusRepository = orderStatusRepository;
         this.rentierProperties = rentierProperties;
@@ -36,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void placeOrder(Long id, Order order) {
+    public String placeOrder(Long id, Order order) {
 
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
@@ -69,9 +74,11 @@ public class OrderServiceImpl implements OrderService {
             orderRepository.save(order);
             userService.updateUserBillAddress(user.get(), order.getBillAddress());
             userService.updateUserShipAddress(user.get(), order.getShipAddress());
+            cart.clearCart();
 
+            return order.getOrderNumber();
         }
-
+         return null;
     }
 
 
@@ -84,6 +91,13 @@ public class OrderServiceImpl implements OrderService {
         orderAddress.setStreetNumber(userAddress.getStreetNumber());
 
         return orderAddress;
+    }
+
+    public void resetCart(Cart cart) {
+        cart.setCartItems(null);
+        cart.setTotalValue();
+        cart.setTotalValue();
+
     }
 
 

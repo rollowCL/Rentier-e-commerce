@@ -34,20 +34,26 @@ public class Cart {
     }
 
     public Integer getTotalQuantity() {
+
         return totalQuantity;
     }
 
     public void setTotalQuantity() {
+
         this.totalQuantity = calcTotalQuantity();
     }
 
     public BigDecimal getTotalValue() {
+
         return totalValue;
     }
 
     public void setTotalValue() {
+
         this.totalValue = calcTotalValue();
+
     }
+
 
     public Integer calcTotalQuantity() {
 
@@ -57,6 +63,8 @@ public class Cart {
                 .map(CartItem::getQuantity).mapToInt(Integer::intValue).sum();
 
     }
+
+
 
     public BigDecimal calcTotalValue() {
 
@@ -72,6 +80,24 @@ public class Cart {
         }
 
         return totalPrice;
+    }
+
+    public void resetTotalQuantity() {
+
+        this.totalQuantity = 0;
+
+    }
+
+    public void resetTotalValue() {
+
+        this.totalValue = new BigDecimal(0);
+
+    }
+
+    public void clearCart() {
+        this.cartItems = new ArrayList<>();
+        this.resetTotalQuantity();
+        this.resetTotalValue();
     }
 
     @Override

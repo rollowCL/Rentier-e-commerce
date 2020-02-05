@@ -108,7 +108,7 @@ public class LoginRegisterController {
 
                 model.addAttribute("loggedId", checkedUser.get().getId());
                 model.addAttribute("loggedFirstName", checkedUser.get().getFirstName());
-                model.addAttribute("loggedFirstName", checkedUser.get().getLastName());
+                model.addAttribute("loggedLastName", checkedUser.get().getLastName());
 
                 if (checkedUser.get().getUserRole().getRoleCode().equals("admin")) {
 

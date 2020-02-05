@@ -61,11 +61,8 @@ To change this template use File | Settings | File Templates.
 
 						<div>
 							<h3>
-								<strong>Zamówienie numer .... zostało złożone</strong>
+								<strong>Zamówienie numer ${orderNumber} zostało złożone</strong>
 							</h3>
-							<h4>
-								<a href="/login">Zaloguj</a>
-							</h4>
 						</div>
 
 					</div>

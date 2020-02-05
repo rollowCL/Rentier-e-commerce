@@ -43,11 +43,7 @@ To change this template use File | Settings | File Templates.
     <section id="page-title">
 
         <div class="container clearfix">
-            <h1>Shop</h1>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Shop</li>
-            </ol>
+            <h1>Sklep</h1>
         </div>
 
     </section><!-- #page-title end -->
@@ -65,18 +61,22 @@ To change this template use File | Settings | File Templates.
                     <div class="col-md-6">
                         <h3>Adres na fakturze</h3>
                         <form:form id="orderForm" class="row nobottommargin" modelAttribute="order">
+
                             <form:label path="billAddress.zipCode">Kod pocztowy</form:label>
                             <form:input path="billAddress.zipCode" id="billAddress.zipCode" class="form-control"
                                         maxlength="6"/>
                             <form:errors path="billAddress.zipCode" cssClass="error"/>
+                            <br/>
                             <form:label path="billAddress.city">Miasto</form:label>
                             <form:input path="billAddress.city" id="billAddress.city" class="form-control"
                                         maxlength="50"/>
                             <form:errors path="billAddress.city" cssClass="error"/>
+                            <br/>
                             <form:label path="billAddress.street">Ulica</form:label>
                             <form:input path="billAddress.street" id="billAddress.street" class="form-control"
                                         maxlength="50"/>
                             <form:errors path="billAddress.street" cssClass="error"/>
+                            <br/>
                             <form:label path="billAddress.streetNumber">Numer</form:label>
                             <form:input path="billAddress.streetNumber" id="billAddress.streetNumber" class="form-control"
                                         maxlength="50"/>
@@ -88,14 +88,17 @@ To change this template use File | Settings | File Templates.
                             <form:input path="shipAddress.zipCode" id="shipAddress.zipCode" class="form-control"
                                         maxlength="6"/>
                             <form:errors path="shipAddress.zipCode" cssClass="error"/>
+                            <br/>
                             <form:label path="shipAddress.city">Miasto</form:label>
                             <form:input path="shipAddress.city" id="shipAddress.city" class="form-control"
                                         maxlength="50"/>
                             <form:errors path="shipAddress.city" cssClass="error"/>
+                            <br/>
                             <form:label path="shipAddress.street">Ulica</form:label>
                             <form:input path="shipAddress.street" id="shipAddress.street" class="form-control"
                                         maxlength="50"/>
                             <form:errors path="shipAddress.street" cssClass="error"/>
+                            <br/>
                             <form:label path="shipAddress.streetNumber">Numer</form:label>
                             <form:input path="shipAddress.streetNumber" id="shipAddress.streetNumber" class="form-control"
                                         maxlength="50"/>
@@ -166,7 +169,8 @@ To change this template use File | Settings | File Templates.
                                        class="button button-mini button-blue button-3d"
                                        value="Submit">Zamawiam i płacę
                         </button>
-                        </form:form>
+                        <button class="button button-mini button-blue button-3d" type="button" onClick="javascript:document.location.href='/admin/config'">Wstecz</button>
+                    </form:form>
                     </div>
                 </div>
 
