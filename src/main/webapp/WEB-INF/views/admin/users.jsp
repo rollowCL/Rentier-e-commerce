@@ -94,7 +94,10 @@ To change this template use File | Settings | File Templates.
                                         <td>${user.phone}</td>
                                         <td>${user.email}</td>
                                         <td>${user.userRole.roleName}</td>
-                                        <td>${user.registerDate}</td>
+                                        <td>
+                                            <fmt:parseDate value="${ user.registerDate }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
+                                            <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ parsedDateTime }" />
+                                        </td>
                                         <td>
                                             <c:if test="${user.active}"><i
                                                     class="icon-line-square-check"></i></c:if>

@@ -18,13 +18,13 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin/users")
-public class UsersController {
+public class UserController {
 
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
     private final ShopRepository shopRepository;
 
-    public UsersController(UserRepository userRepository, UserRoleRepository userRoleRepository, ShopRepository shopRepository) {
+    public UserController(UserRepository userRepository, UserRoleRepository userRoleRepository, ShopRepository shopRepository) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.shopRepository = shopRepository;

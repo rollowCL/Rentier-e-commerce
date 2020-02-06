@@ -58,7 +58,7 @@
                     </a>
                     </li>
 
-                    <li><a href="#">
+                    <li><a href="/admin/orders">
                         <div>Zamówienia</div>
                     </a>
                     </li>

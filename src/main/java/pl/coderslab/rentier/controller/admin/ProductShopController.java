@@ -54,7 +54,7 @@ public class ProductShopController {
     }
 
     @PostMapping("/filterProductCategories")
-    public String showFilteredUsers(Model model, @ModelAttribute("productCategoryFilter") ProductCategory productCategoryFilter,
+    public String showFilteredProductShops(Model model, @ModelAttribute("productCategoryFilter") ProductCategory productCategoryFilter,
                                     BindingResult result) {
 
         if (productCategoryFilter.getId() == 0) {
@@ -70,7 +70,7 @@ public class ProductShopController {
     }
 
     @PostMapping("/filterProductsName")
-    public String showFilteredUsersByName(Model model, @RequestParam String productNameSearch,
+    public String showFilteredProductShopsByName(Model model, @RequestParam String productNameSearch,
                                           @ModelAttribute(binding = false, name = "productCategoryFilter") ProductCategory productCategoryFilter,
                                           BindingResult result) {
 

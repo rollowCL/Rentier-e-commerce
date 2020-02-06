@@ -81,7 +81,6 @@ To change this template use File | Settings | File Templates.
                                     <th scope="col">Marka</th>
                                     <th scope="col">Kategoria</th>
                                     <th scope="col">Nazwa produktu</th>
-                                    <th scope="col">Kod produktu</th>
                                     <th scope="col">Opis produktu</th>
                                     <th scope="col">Cena brutto</th>
                                     <th scope="col">Dostępny na www</th>
@@ -101,8 +100,7 @@ To change this template use File | Settings | File Templates.
                                         <td><c:out value="${product.brand.name}"/></td>
                                         <td><c:out value="${product.productCategory.categoryName}"/></td>
                                         <td><c:out value="${product.productName}"/></td>
-                                        <td><c:out value="${product.productText}"/></td>
-                                        <td><c:out value="${product.productDesc}"/></td>
+                                        <td>${product.productDesc}</td>
                                         <td>
                                             <c:out value="${fn:replace(product.priceGross, '.', ',')} zł"/>
                                         </td>

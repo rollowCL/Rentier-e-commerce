@@ -109,7 +109,7 @@ To change this template use File | Settings | File Templates.
 
                                 <!-- Product Single - Short Description
                                 ============================================= -->
-                                <p><c:out value="${product.productDesc}"/></p>
+                                <p>${product.productDesc}</p>
 
                                 <!-- Product Single - Meta
                                 ============================================= -->

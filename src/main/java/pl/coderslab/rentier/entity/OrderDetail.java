@@ -141,7 +141,6 @@ public class OrderDetail {
     public String toString() {
         return "OrderDetail{" +
                 "id=" + id +
-                ", order=" + order +
                 ", productName='" + productName + '\'' +
                 ", productDesc='" + productDesc + '\'' +
                 ", productCategoryName='" + productCategoryName + '\'' +
