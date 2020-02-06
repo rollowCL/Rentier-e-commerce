@@ -72,7 +72,7 @@ To change this template use File | Settings | File Templates.
                                     <button type="submit" class="button button-mini button-blue button-3d"
                                             value="Submit">Zapisz
                                     </button>
-                                    <a class="button button-mini button-blue button-3d" href="javascript: window.history.go(-1)">Anuluj</a>
+                                    <a href="javascript:window.history.back()" class="button button-mini button-blue button-3d">Wstecz</a>
                                 </form>
                             </div>
                         </div>

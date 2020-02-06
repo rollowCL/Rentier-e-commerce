@@ -82,7 +82,7 @@ To change this template use File | Settings | File Templates.
                                 <c:if test="${not empty product.id}"> <input type="hidden" name="productId" <c:out value="${product.id}"/>></c:if>
                                 <c:if test="${not empty productShop.id}"> <input type="hidden" name="productShopId" <c:out value="${productShop.id}"/>></c:if>
                                 <input class="button button-mini button-red button-3d" type="submit" value="Tak, usuń">
-                                <button class="button button-mini button-blue button-3d" type="button" onClick="javascript:document.location.href='/admin/config'">Anuluj</button>
+                                <a href="javascript:window.history.back()" class="button button-mini button-blue button-3d">Anuluj</a>
                             </form>
 
                         </div>

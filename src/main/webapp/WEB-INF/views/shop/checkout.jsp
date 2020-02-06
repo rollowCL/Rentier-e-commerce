@@ -166,7 +166,7 @@ To change this template use File | Settings | File Templates.
                             </table>
                         </div>
                         <div>
-                            <button class="button button-mini button-blue fright button-3d" type="button" onClick="javascript:document.location.href='/admin/config'">Wstecz</button>
+                            <a href="javascript:window.history.back()" class="button fright button-mini button-blue button-3d">Wstecz</a>
                             <button type="submit"
                                     class="button button-mini fright button-blue button-3d"
                                     value="Submit">Zamawiam i płacę

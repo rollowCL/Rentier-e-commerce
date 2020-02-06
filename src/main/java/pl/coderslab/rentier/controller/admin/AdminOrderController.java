@@ -36,6 +36,15 @@ public class AdminOrderController {
         return "/admin/orders";
     }
 
+    @GetMapping("/details")
+    public String showOrderDetails(Model model, @RequestParam Long orderId) {
+
+        Order order = orderRepository.getOne(orderId);
+        model.addAttribute("order", order);
+
+        return "/admin/orderDetails";
+    }
+
 
     @PostMapping("/filterOrderNumber")
     public String showFilteredOrdersByNumber(Model model, Pageable pageable, @RequestParam String orderNumberSearch,

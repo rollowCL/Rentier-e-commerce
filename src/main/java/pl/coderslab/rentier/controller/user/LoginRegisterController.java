@@ -1,6 +1,7 @@
 package pl.coderslab.rentier.controller.user;
 
 import com.google.common.net.HttpHeaders;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,17 +30,15 @@ import java.util.Optional;
 @SessionAttributes({"loggedAdmin", "loggedUser", "loggedId", "loggedFirstName", "loggedLastName", "referer"})
 @Controller
 public class LoginRegisterController {
-
-    private final BCrypt bCrypt;
+    private final org.slf4j.Logger logger = LoggerFactory.getLogger(LoginRegisterController.class);
     private final OrderTypeRepository orderTypeRepository;
     private final UserRoleRepository userRoleRepository;
     private final UserRepository userRepository;
     private final ProductCategoryRepository productCategoryRepository;
 
-    public LoginRegisterController(BCrypt bCrypt, OrderTypeRepository orderTypeRepository,
+    public LoginRegisterController(OrderTypeRepository orderTypeRepository,
                                    UserRoleRepository userRoleRepository, UserRepository userRepository,
                                    ProductCategoryRepository productCategoryRepository) {
-        this.bCrypt = bCrypt;
         this.orderTypeRepository = orderTypeRepository;
         this.userRoleRepository = userRoleRepository;
         this.userRepository = userRepository;
@@ -59,13 +58,62 @@ public class LoginRegisterController {
 
         String referer = request.getHeader("Referer");
         model.addAttribute("referer", referer);
-
+        logger.info("set: " + referer);
         return "/login/login";
     }
 
+    @PostMapping("/login")
+    public String logInUser(Model model, @ModelAttribute(binding = false) User user, BindingResult resultUser,
+                            @ModelAttribute @Valid Login login, BindingResult resultLogin,
+                            @SessionAttribute(value = "referer", required = false) String referer) {
+        logger.info("read: " + referer);
+        if (resultLogin.hasErrors()) {
+
+            return "/login/login";
+
+        } else {
+
+            Optional<User> checkedUser = userRepository.findByEmailAndActiveTrue(login.getEmail());
+
+            if (checkedUser.isPresent() && BCrypt.checkpw(login.getPassword(), checkedUser.get().getPassword())) {
+
+                model.addAttribute("loggedId", checkedUser.get().getId());
+                model.addAttribute("loggedFirstName", checkedUser.get().getFirstName());
+                model.addAttribute("loggedLastName", checkedUser.get().getLastName());
+
+                if (checkedUser.get().getUserRole().getRoleCode().equals("admin")) {
+
+                    model.addAttribute("loggedAdmin", 1);
+                    return "redirect:/admin/config";
+
+                } else {
+
+                    model.addAttribute("loggedUser", 1);
+
+                    if (referer != null) {
+                        return "redirect:" + referer;
+                    } else {
+                        return "/";
+                    }
+
+                }
+
+
+            } else {
+
+                model.addAttribute("message", "Nieprawidłowe dane logowania");
+                return "/login/login";
+
+            }
+
+        }
+
+    }
+
+
     @PostMapping("/register")
     public String registerStepOne(@ModelAttribute @Validated({UserBasicValidation.class}) User user, BindingResult resultUser,
-                                  @ModelAttribute (binding = false) Login login, BindingResult resultLogin) {
+                                  @ModelAttribute(binding = false) Login login, BindingResult resultLogin) {
 
         OrderType orderType = orderTypeRepository.findExternalOrderTypeIdByOrderTypeNameEquals("external");
         UserRole userRole = userRoleRepository.findByOrderTypeId(orderType.getId());
@@ -97,48 +145,6 @@ public class LoginRegisterController {
             return "/login/registerSuccess";
         }
 
-
-    }
-
-    @PostMapping("/login")
-    public String logInUser(Model model, @ModelAttribute (binding = false) User user, BindingResult resultUser,
-                            @ModelAttribute @Valid Login login, BindingResult resultLogin,
-                            @SessionAttribute("referer") String referer) {
-
-        if (resultLogin.hasErrors()) {
-
-            return "/login/login";
-
-        } else {
-
-            Optional<User> checkedUser = userRepository.findByEmailAndActiveTrue(login.getEmail());
-
-            if (checkedUser.isPresent() && bCrypt.checkpw(login.getPassword(), checkedUser.get().getPassword())) {
-
-                model.addAttribute("loggedId", checkedUser.get().getId());
-                model.addAttribute("loggedFirstName", checkedUser.get().getFirstName());
-                model.addAttribute("loggedLastName", checkedUser.get().getLastName());
-
-                if (checkedUser.get().getUserRole().getRoleCode().equals("admin")) {
-
-                    model.addAttribute("loggedAdmin", 1);
-                    return "redirect:/admin/config";
-
-                } else {
-
-                    model.addAttribute("loggedUser", 1);
-                    return "redirect:"+ referer;
-                }
-
-
-            } else {
-
-                model.addAttribute("message", "Nieprawidłowe dane logowania");
-                return "/login/login";
-
-            }
-
-        }
 
     }
 

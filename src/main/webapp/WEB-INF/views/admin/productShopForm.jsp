@@ -90,9 +90,7 @@ To change this template use File | Settings | File Templates.
                                         class="button button-mini button-blue button-3d"
                                         value="Submit">Zapisz
                                 </button>
-                                <button class="button button-mini button-blue button-3d" type="button"
-                                        onClick="javascript:document.location.href='/admin/config'">Anuluj
-                                </button>
+                                <a href="javascript:window.history.back()" class="button button-mini button-blue button-3d">Wstecz</a>
 
                             </div>
                         </div>

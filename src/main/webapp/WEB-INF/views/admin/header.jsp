@@ -29,11 +29,6 @@
             <nav id="primary-menu" class="style-3">
 
                 <ul>
-                    <li><a href="${pageContext.request.contextPath}/admin">
-                        <div>Home</div>
-                    </a>
-
-                    </li>
 
                     <li><a href="/admin/config">
                         <div>Konfiguracja</div>
