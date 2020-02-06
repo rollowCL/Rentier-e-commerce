@@ -42,11 +42,7 @@ To change this template use File | Settings | File Templates.
     <section id="page-title">
 
         <div class="container clearfix">
-            <h1>Stan magazynowy</h1>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Produkty</li>
-            </ol>
+            <h1>Nowy stan magazynowy dla produktu ${product.productName}</h1>
         </div>
 
     </section><!-- #page-title end -->
@@ -61,26 +57,20 @@ To change this template use File | Settings | File Templates.
                 <div class="row clearfix">
 
                     <div class="col-lg-12">
-                        <form:form class="row" method="post"
-                                   id="productAddForm" modelAttribute="productShop">
-                            <form:hidden path="id"/>
-                            <div class="col-md-12 form-group">
+                        <div class="row">
+                            <div class="col-4">
+                                <form:form class="row" method="post"
+                                           id="productAddForm" modelAttribute="productShop">
+                                <form:hidden path="id"/>
+                                <form:hidden path="product"/>
                                 <label for="shop">Wybierz sklep </label>
                                 <form:select path="shop" class="formElement">
                                     <form:option value="0" label="wybierz..."/>
                                     <form:options items="${shops}" itemValue="id" itemLabel="shopName"/>
                                 </form:select>
+                            </div>
+                            <div class="col-4">
                                 <form:errors path="shop" cssClass="error"/>
-                            </div>
-                            <div class="col-md-4 form-group">
-                                <label for="product">Wybierz produkt </label>
-                                <form:select path="product" class="formElement">
-                                    <form:option value="0" label="wybierz..."/>
-                                    <form:options items="${products}" itemValue="id" itemLabel="productName"/>
-                                </form:select>
-                                <form:errors path="product" cssClass="error"/>
-                            </div>
-                            <div class="col-md-4 form-group">
                                 <label for="productSize">Wybierz rozmiar </label>
                                 <form:select path="productSize" class="formElement">
                                     <form:option value="0" label="wybierz..."/>
@@ -88,11 +78,10 @@ To change this template use File | Settings | File Templates.
                                 </form:select>
                                 <form:errors path="productSize" cssClass="error"/>
                             </div>
-
-                            </div>
-                            <div class="col-md-3 form-group">
+                            <div class="col-4">
                                 <label for="quantity">Dostępna ilość</label>
-                                <form:input type="number" min="1" step="1" path="quantity" id="quantity" class="form-control"
+                                <form:input type="number" step="1" min="1" max="999" path="quantity" id="quantity"
+                                            class="form-control"
                                             maxlength="100"/>
                                 <form:errors path="quantity" cssClass="error"/>
                             </div>
@@ -101,9 +90,12 @@ To change this template use File | Settings | File Templates.
                                         class="button button-mini button-blue button-3d"
                                         value="Submit">Zapisz
                                 </button>
-                                <button class="button button-mini button-blue button-3d" type="button" onClick="javascript:document.location.href='/admin/config'">Anuluj</button>
+                                <button class="button button-mini button-blue button-3d" type="button"
+                                        onClick="javascript:document.location.href='/admin/config'">Anuluj
+                                </button>
 
                             </div>
+                        </div>
                         </form:form>
                     </div>
                 </div>
@@ -120,7 +112,7 @@ To change this template use File | Settings | File Templates.
 
 </div><!-- #wrapper end -->
 
-    <jsp:include page="../scripts.jsp"/>
+<jsp:include page="../scripts.jsp"/>
 
 </body>
 </html>

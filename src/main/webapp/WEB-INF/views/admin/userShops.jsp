@@ -44,10 +44,6 @@ To change this template use File | Settings | File Templates.
 
         <div class="container clearfix">
             <h1>Sklepy sprzedawców</h1>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Admin</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Użytkownicy</li>
-            </ol>
         </div>
 
     </section><!-- #page-title end -->

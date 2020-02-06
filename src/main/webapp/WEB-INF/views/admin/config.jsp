@@ -43,10 +43,6 @@ To change this template use File | Settings | File Templates.
 
         <div class="container clearfix">
             <h1>Konfiguracja</h1>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Konfiguracja</li>
-            </ol>
         </div>
 
     </section><!-- #page-title end -->

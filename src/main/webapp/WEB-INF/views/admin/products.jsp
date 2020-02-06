@@ -43,10 +43,6 @@ To change this template use File | Settings | File Templates.
 
         <div class="container clearfix">
             <h1>Produkty</h1>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Konfiguracja</li>
-            </ol>
         </div>
 
     </section><!-- #page-title end -->
@@ -71,7 +67,7 @@ To change this template use File | Settings | File Templates.
                             </form:form>
                             <form class="myFormRight" action="/admin/products/filterProductsName" method="post">
                                 <label for="productNameSearch">Szukaj</label>
-                                <input type="text" placeholder="podaj fragment nazwy produktu" minlength="3" name="productNameSearch" id="productNameSearch" maxlength="50"/>
+                                <input type="text" size="30" placeholder="podaj fragment nazwy produktu" minlength="3" name="productNameSearch" id="productNameSearch" maxlength="50"/>
                                 <button type="submit" class="button button-mini button-blue button-3d"
                                         value="Submit">Szukaj
                                 </button>
@@ -128,6 +124,9 @@ To change this template use File | Settings | File Templates.
                                             </a>
                                             <a class="button button-mini button-blue button-3d"
                                                href="/admin/products/form?productId=${product.id}">Edytuj
+                                            </a>
+                                            <a class="button button-mini button-blue button-3d"
+                                               href="/admin/productShops/form?productId=${product.id}">Stan
                                             </a>
                                         </td>
                                     </tr>

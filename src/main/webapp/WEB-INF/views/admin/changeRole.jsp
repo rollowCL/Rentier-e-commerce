@@ -43,11 +43,7 @@ To change this template use File | Settings | File Templates.
     <section id="page-title">
 
         <div class="container clearfix">
-            <h1>Użytkownicy</h1>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Admin</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Użytkownicy</li>
-            </ol>
+            <h1>Zmiana roli użytkownika</h1>
         </div>
 
     </section><!-- #page-title end -->

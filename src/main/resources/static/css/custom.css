@@ -30,7 +30,7 @@
 
 .product-image-admin {
     position: relative;
-    width: 50%;
+    width: 100px;
     height: auto;
     overflow: hidden;
 }
@@ -76,6 +76,10 @@ input[type=number] {
     /*display: block;*/
     width: 100%;
     height: auto;
+}
+
+input[type=number]{
+    width: 40px;
 }
 
 

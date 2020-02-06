@@ -43,10 +43,6 @@ To change this template use File | Settings | File Templates.
 
         <div class="container clearfix">
             <h1>Stan magazynowy</h1>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Produkty</li>
-            </ol>
         </div>
 
     </section><!-- #page-title end -->
@@ -61,8 +57,24 @@ To change this template use File | Settings | File Templates.
                 <div class="row clearfix">
 
                     <div class="col-lg-12">
-                        <a href="/admin/productShops/form" class="button button-mini button-blue button-3d">Dodaj
-                            nowy</a>
+
+                        <div class="filterForm">
+                            <form:form class="myFormLeft" action="/admin/productShops/filterProductCategories" method="post" modelAttribute="productCategoryFilter">
+                                <form:radiobutton path="id" value="0" label="Wszystkie"/>
+                                <form:radiobuttons path="id" items="${productCategories}" itemLabel="categoryName" itemValue="id"/>
+                                <button type="submit" class="button button-mini button-blue button-3d"
+                                        value="Submit">Filtruj
+                                </button>
+                            </form:form>
+                            <form class="myFormRight" action="/admin/productShops/filterProductsName" method="post">
+                                <label for="productNameSearch">Szukaj</label>
+                                <input type="text" size="30" placeholder="podaj fragment nazwy produktu" minlength="3" name="productNameSearch" id="productNameSearch" maxlength="50"/>
+                                <button type="submit" class="button button-mini button-blue button-3d"
+                                        value="Submit">Szukaj
+                                </button>
+                            </form>
+                        </div>
+
 
                         <table class="table">
                             <thead>
@@ -82,12 +94,17 @@ To change this template use File | Settings | File Templates.
                                     <td><c:out value="${productShop.productSize.sizeName}"/></td>
                                     <td><c:out value="${productShop.quantity}"/></td>
                                     <td>
-                                        <a class="button button-mini button-red button-3d"
-                                           href="/admin/productShops/del?productShopId=${productShop.id}">Usuń
-                                        </a>
-                                        <a class="button button-mini button-blue button-3d"
-                                           href="/admin/productShops/form?productShopId=${productShop.id}">Edytuj
-                                        </a>
+                                        <form action="/admin/productShops/update" method="post">
+                                            <input type="hidden" name="productShopId" value="${productShop.id}"/>
+                                            <input type="number" step="1" min="1" max="999" value="${productShop.quantity}" name="newQuantity"/>
+                                            <button type="submit"
+                                                    class="button button-mini button-blue button-3d"
+                                                    value="Submit">Aktualizuj
+                                            </button>
+                                            <a class="button button-mini button-red button-3d"
+                                               href="/admin/productShops/del?productShopId=${productShop.id}">Usuń
+                                            </a>
+                                        </form>
                                     </td>
                                 </tr>
                             </c:forEach>

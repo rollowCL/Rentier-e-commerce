@@ -43,7 +43,7 @@ To change this template use File | Settings | File Templates.
     <section id="page-title">
 
         <div class="container clearfix">
-            <h1>Sklep</h1>
+            <h1>Finaliacja zamówienia</h1>
         </div>
 
     </section><!-- #page-title end -->

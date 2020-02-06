@@ -42,11 +42,7 @@ To change this template use File | Settings | File Templates.
     <section id="page-title">
 
         <div class="container clearfix">
-            <h1>Produkty</h1>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Produkty</li>
-            </ol>
+            <h1>Dodawanie produktu</h1>
         </div>
 
     </section><!-- #page-title end -->
