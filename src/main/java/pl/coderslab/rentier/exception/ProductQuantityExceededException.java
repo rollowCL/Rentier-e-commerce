@@ -1,4 +1,4 @@
-package pl.coderslab.rentier;
+package pl.coderslab.rentier.exception;
 
 public class ProductQuantityExceededException extends Exception {
 

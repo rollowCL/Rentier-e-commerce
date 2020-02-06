@@ -1,7 +1,6 @@
 package pl.coderslab.rentier.service;
 
-import org.springframework.web.bind.annotation.RequestParam;
-import pl.coderslab.rentier.ProductQuantityExceededException;
+import pl.coderslab.rentier.exception.ProductQuantityExceededException;
 import pl.coderslab.rentier.beans.Cart;
 
 public interface CartService {

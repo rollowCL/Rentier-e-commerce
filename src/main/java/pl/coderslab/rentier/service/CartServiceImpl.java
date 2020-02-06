@@ -2,7 +2,7 @@ package pl.coderslab.rentier.service;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import pl.coderslab.rentier.ProductQuantityExceededException;
+import pl.coderslab.rentier.exception.ProductQuantityExceededException;
 import pl.coderslab.rentier.beans.Cart;
 import pl.coderslab.rentier.entity.Product;
 import pl.coderslab.rentier.entity.ProductSize;

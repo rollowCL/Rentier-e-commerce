@@ -4,13 +4,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.rentier.ProductQuantityExceededException;
+import pl.coderslab.rentier.exception.ProductQuantityExceededException;
 import pl.coderslab.rentier.beans.Cart;
 import pl.coderslab.rentier.entity.ProductCategory;
 import pl.coderslab.rentier.repository.ProductCategoryRepository;
-import pl.coderslab.rentier.repository.ProductRepository;
-import pl.coderslab.rentier.repository.ProductShopRepository;
-import pl.coderslab.rentier.repository.ProductSizeRepository;
 import pl.coderslab.rentier.service.CartServiceImpl;
 
 import java.util.List;
