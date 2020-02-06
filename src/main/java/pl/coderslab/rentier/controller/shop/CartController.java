@@ -61,7 +61,6 @@ public class CartController {
             cartItem.setQuantity(quantity);
             cart.addToCart(cartItem);
 
-            logger.info("Value: " + cartItem);
 
 
         } else {
@@ -71,12 +70,11 @@ public class CartController {
 
         }
 
-        logger.info("cart" + cart.toString());
         cart.setTotalValue();
         cart.setTotalQuantity();
         model.addAttribute("cart", cart);
 
-        return "redirect:/cart";
+        return "redirect:/cart/";
     }
 
 
