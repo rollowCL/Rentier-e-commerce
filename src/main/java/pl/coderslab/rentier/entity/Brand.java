@@ -3,6 +3,8 @@ package pl.coderslab.rentier.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -26,6 +28,9 @@ public class Brand {
     private String email;
 
     private boolean active;
+
+    @OneToMany(mappedBy = "brand", cascade = CascadeType.REMOVE)
+    private List<Product> products = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -65,6 +70,14 @@ public class Brand {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     @Override

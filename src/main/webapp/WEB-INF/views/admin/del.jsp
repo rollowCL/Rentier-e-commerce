@@ -69,6 +69,7 @@ To change this template use File | Settings | File Templates.
                             <c:if test="${not empty paymentMethod.id}"> metodę płatności <strong><c:out value="${paymentMethod.paymentMethodName}"/></strong>?</c:if>
                             <c:if test="${not empty deliveryMethod.id}"> sposób dostawy <strong><c:out value="${deliveryMethod.deliveryMethodName}"/></strong>?</c:if>
                             <c:if test="${not empty product.id}"> produkt <strong><c:out value="${product.productName}"/></strong> z całym stanem magazynowym?</c:if>
+                            <c:if test="${not empty orderStatus.id}"> produkt <strong><c:out value="${product.productName}"/></strong> z całym stanem magazynowym?</c:if>
                             <c:if test="${not empty productShop.id}"> stan magazynowy <strong><c:out value="Sklep: ${productShop.shop.shopName}, produkt: ${productShop.product.productName}, rozmiar: ${productShop.productSize.sizeName}"/></strong>?</c:if>
                             </h3>
                             <form method="post">

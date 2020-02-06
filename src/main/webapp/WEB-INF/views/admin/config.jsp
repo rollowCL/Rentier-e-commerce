@@ -91,7 +91,6 @@ To change this template use File | Settings | File Templates.
 
                                 <div class="tab-content clearfix" id="tab-admin-shops">
                                     <div class="card">
-
                                         <div class="card-body">
 
                                             <table class="table table-bordered">
@@ -121,12 +120,6 @@ To change this template use File | Settings | File Templates.
                                                                     class="icon-line-square-cross"></i></c:if>
                                                         </td>
                                                         <td>
-                                                            <a class="button button-mini button-red button-3d"
-                                                                    href="/admin/config/del?shopId=${shop.id}">Usuń
-                                                            </a>
-                                                            <a class="button button-mini button-blue button-3d"
-                                                                    href="/admin/config?shopId=${shop.id}">Edytuj
-                                                            </a>
                                                             <a class="button button-mini button-blue button-3d"
                                                                href="/admin/productShops?shopId=${shop.id}">Magazyn
                                                             </a>
@@ -462,9 +455,6 @@ To change this template use File | Settings | File Templates.
                                                                     class="icon-line-square-cross"></i></c:if>
                                                         </td>
                                                         <td>
-                                                            <a class="button button-mini button-red button-3d"
-                                                               href="/admin/config/del?paymentMethodId=${paymentMethod.id}">Usuń
-                                                            </a>
                                                             <a class="button button-mini button-blue button-3d"
                                                                href="/admin/config?paymentMethodId=${paymentMethod.id}">Edytuj
                                                             </a>
@@ -530,9 +520,6 @@ To change this template use File | Settings | File Templates.
                                                                     class="icon-line-square-cross"></i></c:if>
                                                         </td>
                                                         <td>
-                                                            <a class="button button-mini button-red button-3d"
-                                                               href="/admin/config/del?deliveryMethodId=${deliveryMethod.id}">Usuń
-                                                            </a>
                                                             <a class="button button-mini button-blue button-3d"
                                                                href="/admin/config?deliveryMethodId=${deliveryMethod.id}">Edytuj
                                                             </a>
@@ -604,9 +591,6 @@ To change this template use File | Settings | File Templates.
                                                                     class="icon-line-square-cross"></i></c:if>
                                                         </td>
                                                         <td>
-                                                            <a class="button button-mini button-red button-3d"
-                                                               href="/admin/config/del?orderStatusId=${orderStatus.id}">Usuń
-                                                            </a>
                                                             <a class="button button-mini button-blue button-3d"
                                                                href="/admin/config?orderStatusId=${orderStatus.id}">Edytuj
                                                             </a>
@@ -650,8 +634,6 @@ To change this template use File | Settings | File Templates.
                                                 </div>
                                             </form:form>
                                         </div>
-
-
                                     </div>
                                 </div>
 

@@ -124,7 +124,10 @@ To change this template use File | Settings | File Templates.
                                                href="/admin/products/form?productId=${product.id}">Edytuj
                                             </a>
                                             <a class="button button-mini button-blue button-3d"
-                                               href="/admin/productShops/form?productId=${product.id}">Stan
+                                               href="/admin/productShops/?productId=${product.id}">Stan sprawdź
+                                            </a>
+                                            <a class="button button-mini button-blue button-3d"
+                                               href="/admin/productShops/form?productId=${product.id}">Stan dodaj
                                             </a>
                                         </td>
                                     </tr>

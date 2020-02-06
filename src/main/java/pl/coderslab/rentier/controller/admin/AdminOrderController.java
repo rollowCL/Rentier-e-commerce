@@ -1,19 +1,17 @@
 package pl.coderslab.rentier.controller.admin;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.rentier.controller.shop.OrderController;
 import pl.coderslab.rentier.entity.Order;
 import pl.coderslab.rentier.entity.OrderStatus;
-import pl.coderslab.rentier.entity.ProductCategory;
 import pl.coderslab.rentier.repository.OrderRepository;
 import pl.coderslab.rentier.repository.OrderStatusRepository;
-
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Controller
 @RequestMapping("/admin/orders")
@@ -31,19 +29,20 @@ public class AdminOrderController {
 
 
     @GetMapping("")
-    public String showOrders(Model model) {
+    public String showOrders(Model model, Pageable pageable) {
 
-
+        Page<Order> page = orderRepository.findAllByOrderByOrderDateDesc(pageable);
+        model.addAttribute("orders", page);
         return "/admin/orders";
     }
 
 
     @PostMapping("/filterOrderNumber")
-    public String showFilteredOrdersByNumber(Model model, @RequestParam String orderNumberSearch,
+    public String showFilteredOrdersByNumber(Model model, Pageable pageable, @RequestParam String orderNumberSearch,
                                           @ModelAttribute(binding = false, name = "orderStatusFilter") OrderStatus orderStatus,
                                           BindingResult result) {
-
-        model.addAttribute("orders", orderRepository.findByOrOrderNumberContaining(orderNumberSearch));
+        Page<Order> page = orderRepository.findByOrderNumberContainingOrderByOrderDateDesc(orderNumberSearch, pageable);
+        model.addAttribute("orders", page);
 
         return "/admin/orders";
     }
@@ -66,12 +65,6 @@ public class AdminOrderController {
         return "redirect:/admin/orders";
     }
 
-
-    @ModelAttribute("orders")
-    public List<Order> getOrders() {
-
-        return orderRepository.findAllByOrderByOrderDateDesc();
-    }
 
 
 }

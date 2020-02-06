@@ -4,6 +4,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -23,6 +25,9 @@ public class ProductSize {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_category_id")
     private ProductCategory productCategory;
+
+    @OneToMany(mappedBy = "productSize", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<ProductShop> productShops = new ArrayList<>();
 
     @NotNull
     private boolean active;
@@ -57,6 +62,14 @@ public class ProductSize {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public List<ProductShop> getProductShops() {
+        return productShops;
+    }
+
+    public void setProductShops(List<ProductShop> productShops) {
+        this.productShops = productShops;
     }
 
     @Override

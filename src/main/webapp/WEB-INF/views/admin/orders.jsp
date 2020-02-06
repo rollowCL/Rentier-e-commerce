@@ -10,8 +10,9 @@ To change this template use File | Settings | File Templates.
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib tagdir="/WEB-INF/tags/util" prefix="util" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <html dir="ltr" lang="en-US">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -83,7 +84,7 @@ To change this template use File | Settings | File Templates.
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:forEach items="${orders}" var="order">
+                                <c:forEach items="${orders.content}" var="order">
                                     <tr>
                                         <td><c:out value="${order.orderNumber}"/> </td>
                                         <td><c:out value="${order.orderStatus.orderStatusName}"/></td>
@@ -109,8 +110,8 @@ To change this template use File | Settings | File Templates.
                                     </tr>
                                 </c:forEach>
                             </tbody>
-
                         </table>
+                        <util:pagination thispage="${orders}"></util:pagination>
                     </div>
                 </div>
 

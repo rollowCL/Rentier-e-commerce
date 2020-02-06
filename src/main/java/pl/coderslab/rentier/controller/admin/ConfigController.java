@@ -37,11 +37,13 @@ public class ConfigController extends HttpServlet {
     private final ShopRepository shopRepository;
     private final ProductSizeRepository productSizeRepository;
     private final OrderStatusRepository orderStatusRepository;
+    private final ProductRepository productRepository;
+    private final ProductShopRepository productShopRepository;
 
     public ConfigController(RentierProperties rentierProperties, ProductCategoryRepository productCategoryRepository,
                             BrandRepository brandRepository, DeliveryMethodRepository deliveryMethodRepository,
                             PaymentMethodRepository paymentMethodRepository, ShopRepository shopRepository,
-                            ProductSizeRepository productSizeRepository, OrderStatusRepository orderStatusRepository) {
+                            ProductSizeRepository productSizeRepository, OrderStatusRepository orderStatusRepository, ProductRepository productRepository, ProductShopRepository productShopRepository) {
         this.rentierProperties = rentierProperties;
         this.productCategoryRepository = productCategoryRepository;
         this.brandRepository = brandRepository;
@@ -50,6 +52,8 @@ public class ConfigController extends HttpServlet {
         this.shopRepository = shopRepository;
         this.productSizeRepository = productSizeRepository;
         this.orderStatusRepository = orderStatusRepository;
+        this.productRepository = productRepository;
+        this.productShopRepository = productShopRepository;
     }
 
 
@@ -158,7 +162,9 @@ public class ConfigController extends HttpServlet {
                                 @RequestParam(required = false) Long productSizeId,
                                 @RequestParam(required = false) Long paymentMethodId,
                                 @RequestParam(required = false) Long deliveryMethodId,
-                                @RequestParam(required = false) Long orderStatusId
+                                @RequestParam(required = false) Long orderStatusId,
+                                @RequestParam(required = false) Long productId,
+                                @RequestParam(required = false) Long productShopId
     ) {
 
         if (shopId != null) {
@@ -210,6 +216,20 @@ public class ConfigController extends HttpServlet {
             }
         }
 
+        if (productId != null) {
+            if (productRepository.findById(productId).isPresent()) {
+                Product product = productRepository.findById(productId).get();
+                model.addAttribute("product", product);
+            }
+        }
+
+        if (productShopId != null) {
+            if (productShopRepository.findById(productShopId).isPresent()) {
+                ProductShop productShop = productShopRepository.findById(productShopId).get();
+                model.addAttribute("productShop", productShop);
+            }
+        }
+
         return "/admin/del";
     }
 
@@ -220,8 +240,13 @@ public class ConfigController extends HttpServlet {
                                @RequestParam(required = false) Long productSizeId,
                                @RequestParam(required = false) Long paymentMethodId,
                                @RequestParam(required = false) Long deliveryMethodId,
-                               @RequestParam(required = false) Long orderStatusId
+                               @RequestParam(required = false) Long orderStatusId,
+                               @RequestParam(required = false) Long productId,
+                               @RequestParam(required = false) Long productShopId,
+                               Model model
                                 ) {
+
+        String returnToTag = null;
 
         if (shopId != null) {
             if (shopRepository.findById(shopId).isPresent()) {
@@ -288,7 +313,22 @@ public class ConfigController extends HttpServlet {
 
                 OrderStatus orderStatus = orderStatusRepository.findById(orderStatusId).get();
                 orderStatusRepository.delete(orderStatus);
+            }
+        }
 
+        if (productId != null) {
+            if (productRepository.findById(productId).isPresent()) {
+
+                Product product = productRepository.findById(productId).get();
+                productRepository.delete(product);
+            }
+        }
+
+        if (productShopId != null) {
+            if (productShopRepository.findById(productShopId).isPresent()) {
+
+                ProductShop productShop = productShopRepository.findById(productShopId).get();
+                productShopRepository.delete(productShop);
             }
         }
 

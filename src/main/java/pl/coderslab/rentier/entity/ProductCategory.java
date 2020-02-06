@@ -6,6 +6,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,6 +30,9 @@ public class ProductCategory {
     @Min(0)
     @Column(name = "category_order")
     private int categoryOrder;
+
+    @OneToMany(mappedBy = "productCategory", cascade = CascadeType.REMOVE)
+    private List<Product> products = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -60,6 +64,14 @@ public class ProductCategory {
 
     public void setCategoryOrder(int categoryOrder) {
         this.categoryOrder = categoryOrder;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     @Override
