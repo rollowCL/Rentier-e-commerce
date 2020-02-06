@@ -63,3 +63,19 @@ input[type=number] {
     -moz-appearance:textfield;
 }
 
+.product-single-image {
+    position: relative;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+
+.product-single-image > a,
+.product-single-image .slide a,
+.product-single-image img {
+    /*display: block;*/
+    width: 100%;
+    height: auto;
+}
+
+

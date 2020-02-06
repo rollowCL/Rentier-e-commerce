@@ -37,8 +37,8 @@ public class OrderController {
 
     @GetMapping("/order/checkout")
     public String showCheckout(@SessionAttribute(value = "loggedId") Long id, Model model) {
-        Order order = new Order();
 
+        Order order = new Order();
         Optional<User> user = userRepository.findById(id);
 
         if (user.get().getBillAddress() != null) {

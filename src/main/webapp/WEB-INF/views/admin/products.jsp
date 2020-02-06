@@ -98,7 +98,7 @@ To change this template use File | Settings | File Templates.
                                     <tr>
                                         <td>
                                             <c:if test="${not empty product.imageFileName}">
-                                                <img width="100" height="160" src="<c:out value="${product.imageFileName}"/>"
+                                                <img height="100" src="<c:out value="${product.imageFileName}"/>"
                                                      alt="ProductImage"/>
                                             </c:if>
                                         </td>

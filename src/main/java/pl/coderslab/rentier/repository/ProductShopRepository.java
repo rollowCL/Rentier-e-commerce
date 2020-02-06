@@ -25,8 +25,12 @@ public interface ProductShopRepository extends JpaRepository<ProductShop, Long> 
             "            AND ps.product_id =:productId ORDER BY s.shop_name, p.size_name", nativeQuery = true)
     List<ProductShop> customFindAllProductShopsActiveForShopByProductId(@Param("productId") Long id);
 
-
     List<ProductShop> findByProductAndProductSizeOrderByShopId(Product product, ProductSize productSize);
+
+    @Query(value = "SELECT SUM(ps.quantity) AS available FROM products_shops ps JOIN product_sizes p on ps.product_size_id = p.id " +
+            "JOIN products p2 on ps.product_id = p2.id " +
+            "WHERE ps.product_id =:productId AND ps.product_size_id =:productSizeId", nativeQuery = true)
+    Integer customSumAvailableQuantityByProductIdAndProductSizeId(@Param("productId") Long productId, @Param("productSizeId") Long productSizeId);
 
 
 }

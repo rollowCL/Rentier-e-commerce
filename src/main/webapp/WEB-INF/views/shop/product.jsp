@@ -69,7 +69,7 @@ To change this template use File | Settings | File Templates.
 
                                 <!-- Product Single - Gallery
                                 ============================================= -->
-                                <div class="product-image">
+                                <div class="product-single-image">
                                         <a href="<c:out value="${product.imageFileName}"/>" title="<c:out value="${product.imageFileName}"/>"
                                            data-lightbox="gallery-item" target="_blank">
                                             <img src="<c:out value="${product.imageFileName}"/>" alt="<c:out value="${product.productName}"/>">
@@ -82,7 +82,7 @@ To change this template use File | Settings | File Templates.
 
                                 <!-- Product Single - Price
                                 ============================================= -->
-                                <div class="product-price"><del></del><ins><c:out value="${fn:replace(product.priceGross, '.', ',')} zł"/></ins></div><!-- Product Single - Price End -->
+                                <div class="product-price">Cena: <del></del><ins><c:out value="${fn:replace(product.priceGross, '.', ',')} zł"/></ins></div><!-- Product Single - Price End -->
 
                                 <div class="clear"></div>
                                 <div class="line"></div>
