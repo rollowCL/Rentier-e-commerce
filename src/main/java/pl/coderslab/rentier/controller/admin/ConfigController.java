@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.coderslab.rentier.RentierProperties;
 import pl.coderslab.rentier.entity.*;
 import pl.coderslab.rentier.repository.*;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,7 @@ import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/admin/config")
+@SessionAttributes("returnToTag")
 public class ConfigController extends HttpServlet {
 
     private final RentierProperties rentierProperties;
@@ -244,7 +246,7 @@ public class ConfigController extends HttpServlet {
                                @RequestParam(required = false) Long productId,
                                @RequestParam(required = false) Long productShopId,
                                Model model
-                                ) {
+    ) {
 
         String returnToTag = null;
 
@@ -252,6 +254,7 @@ public class ConfigController extends HttpServlet {
             if (shopRepository.findById(shopId).isPresent()) {
                 Shop shop = shopRepository.findById(shopId).get();
                 shopRepository.delete(shop);
+
             }
         }
 
@@ -263,6 +266,7 @@ public class ConfigController extends HttpServlet {
                     file.delete();
                 }
                 brandRepository.delete(brand);
+
             }
         }
 
@@ -289,7 +293,9 @@ public class ConfigController extends HttpServlet {
 
                 ProductSize productSize = productSizeRepository.findById(productSizeId).get();
                 productSizeRepository.delete(productSize);
+
             }
+            returnToTag = "tab-admin-sizes";
         }
 
         if (paymentMethodId != null) {
@@ -322,6 +328,7 @@ public class ConfigController extends HttpServlet {
                 Product product = productRepository.findById(productId).get();
                 productRepository.delete(product);
             }
+            return "redirect:/admin/products";
         }
 
         if (productShopId != null) {
@@ -330,8 +337,10 @@ public class ConfigController extends HttpServlet {
                 ProductShop productShop = productShopRepository.findById(productShopId).get();
                 productShopRepository.delete(productShop);
             }
+            return "redirect:/admin/productShops";
         }
 
+        model.addAttribute("returnToTag", returnToTag);
         return "redirect:/admin/config";
     }
 
@@ -457,7 +466,7 @@ public class ConfigController extends HttpServlet {
     ) {
 
 
-        if (productSize.getId() == null &&productSizeRepository.existsBySizeNameAndProductCategory(
+        if (productSize.getId() == null && productSizeRepository.existsBySizeNameAndProductCategory(
                 productSize.getSizeName(), productSize.getProductCategory())) {
             resultProductSize.rejectValue("sizeName", "error.name", "Taki rozmiar dla kategorii już istnieje");
 
@@ -478,12 +487,12 @@ public class ConfigController extends HttpServlet {
 
     @PostMapping("/paymentMethod/add")
     public String addPaymentMethod(@ModelAttribute(binding = false) Shop shop, BindingResult resultShop,
-                                 @ModelAttribute(binding = false) Brand brand, BindingResult resultBrand,
-                                 @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,
-                                 @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
-                                 @ModelAttribute @Valid PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
-                                 @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod, 
-                                 @ModelAttribute(binding = false) OrderStatus orderStatus, BindingResult resultOrderStatus
+                                   @ModelAttribute(binding = false) Brand brand, BindingResult resultBrand,
+                                   @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,
+                                   @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
+                                   @ModelAttribute @Valid PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
+                                   @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod,
+                                   @ModelAttribute(binding = false) OrderStatus orderStatus, BindingResult resultOrderStatus
     ) {
 
         if (paymentMethod.getId() == null && paymentMethodRepository.existsByPaymentMethodName(paymentMethod.getPaymentMethodName())) {
@@ -505,12 +514,12 @@ public class ConfigController extends HttpServlet {
 
     @PostMapping("/deliveryMethod/add")
     public String addDeliveryMethod(@ModelAttribute(binding = false) Shop shop, BindingResult resultShop,
-                                   @ModelAttribute(binding = false) Brand brand, BindingResult resultBrand,
-                                   @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,
-                                   @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
-                                   @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
-                                   @ModelAttribute @Valid DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod,
-                                   @ModelAttribute(binding = false) OrderStatus orderStatus, BindingResult resultOrderStatus) {
+                                    @ModelAttribute(binding = false) Brand brand, BindingResult resultBrand,
+                                    @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,
+                                    @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
+                                    @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
+                                    @ModelAttribute @Valid DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod,
+                                    @ModelAttribute(binding = false) OrderStatus orderStatus, BindingResult resultOrderStatus) {
 
 
         if (deliveryMethod.getId() == null && deliveryMethodRepository.existsByDeliveryMethodName(deliveryMethod.getDeliveryMethodName())) {
@@ -531,12 +540,12 @@ public class ConfigController extends HttpServlet {
 
     @PostMapping("/orderStatus/add")
     public String addOrderStatus(@ModelAttribute(binding = false) Shop shop, BindingResult resultShop,
-                                    @ModelAttribute(binding = false) Brand brand, BindingResult resultBrand,
-                                    @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,
-                                    @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
-                                    @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
-                                    @ModelAttribute(binding = false)  DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod,
-                                    @ModelAttribute @Valid OrderStatus orderStatus, BindingResult resultOrderStatus) {
+                                 @ModelAttribute(binding = false) Brand brand, BindingResult resultBrand,
+                                 @ModelAttribute(binding = false) ProductCategory productCategory, BindingResult resultProductCategory,
+                                 @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
+                                 @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
+                                 @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod,
+                                 @ModelAttribute @Valid OrderStatus orderStatus, BindingResult resultOrderStatus) {
 
 
         if (orderStatus.getId() == null && orderStatusRepository.existsByOrderStatusNameAndDeliveryMethod(

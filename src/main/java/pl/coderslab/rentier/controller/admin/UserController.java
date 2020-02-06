@@ -99,7 +99,7 @@ public class UserController {
             model.addAttribute("user", user.get());
         }
 
-        return "/admin/changeRole";
+        return "/admin/userChangeRole";
 
     }
 

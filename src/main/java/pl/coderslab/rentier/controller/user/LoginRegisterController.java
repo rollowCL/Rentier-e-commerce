@@ -1,5 +1,6 @@
 package pl.coderslab.rentier.controller.user;
 
+import com.google.common.net.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,12 +18,15 @@ import pl.coderslab.rentier.repository.UserRepository;
 import pl.coderslab.rentier.repository.UserRoleRepository;
 import pl.coderslab.rentier.utils.EmailUtil;
 import pl.coderslab.rentier.validation.UserBasicValidation;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.net.http.HttpRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-@SessionAttributes({"loggedAdmin", "loggedUser", "loggedId", "loggedFirstName", "loggedLastName"})
+@SessionAttributes({"loggedAdmin", "loggedUser", "loggedId", "loggedFirstName", "loggedLastName", "referer"})
 @Controller
 public class LoginRegisterController {
 
@@ -44,13 +48,17 @@ public class LoginRegisterController {
 
 
     @GetMapping("/login")
-    public String showLoginRegister(Model model) {
+    public String showLoginRegister(Model model,
+                                    HttpServletRequest request) {
 
         Login login = new Login();
         User user = new User();
 
         model.addAttribute("user", user);
         model.addAttribute("login", login);
+
+        String referer = request.getHeader("Referer");
+        model.addAttribute("referer", referer);
 
         return "/login/login";
     }
@@ -94,7 +102,8 @@ public class LoginRegisterController {
 
     @PostMapping("/login")
     public String logInUser(Model model, @ModelAttribute (binding = false) User user, BindingResult resultUser,
-                            @ModelAttribute @Valid Login login, BindingResult resultLogin) {
+                            @ModelAttribute @Valid Login login, BindingResult resultLogin,
+                            @SessionAttribute("referer") String referer) {
 
         if (resultLogin.hasErrors()) {
 
@@ -118,8 +127,7 @@ public class LoginRegisterController {
                 } else {
 
                     model.addAttribute("loggedUser", 1);
-
-                    return "redirect:/loginSuccess";
+                    return "redirect:"+ referer;
                 }
 
 
