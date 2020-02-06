@@ -12,4 +12,3 @@
 <script src='<spring:url value="/js/functions.js"/>'></script>
 <script src='<spring:url value="/js/bindingErrors.js"/>'></script>
 <script src='<spring:url value="/js/shopCartActions.js"/>'></script>
-<script src='<spring:url value="/js/configReturn.js"/>'></script>
