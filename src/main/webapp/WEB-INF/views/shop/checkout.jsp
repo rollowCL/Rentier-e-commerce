@@ -149,7 +149,7 @@ To change this template use File | Settings | File Templates.
                                     </td>
 
                                     <td class="cart-product-name">
-                                        <span class="amount">0 zł</span>
+                                        <span class="amount deliveryCost">0 zł</span>
                                     </td>
                                 </tr>
                                 <tr class="cart_item">
@@ -158,7 +158,7 @@ To change this template use File | Settings | File Templates.
                                     </td>
 
                                     <td class="cart-product-name">
-                                        <span class="amount color lead"><strong>${sessionScope.cart.totalValue} zł</strong></span>
+                                        <span class="amount color lead totalValue"><strong>${sessionScope.cart.totalValue} zł</strong></span>
                                     </td>
                                 </tr>
                                 </tbody>

@@ -115,7 +115,9 @@ To change this template use File | Settings | File Templates.
                                     </div>
                                     <div class="col-lg-8 col-8 nopadding">
                                         <a href="/" class="button button-mini button-blue fright button-3d">Kontynuuj zakupy</a>
+                                        <c:if test="${not empty sessionScope.cart.totalQuantity}">
                                         <a href="/user/order/checkout" class="button button-mini button-blue fright button-3d">Zamówienie</a>
+                                        </c:if>
                                     </div>
                                 </div>
                             </td>
