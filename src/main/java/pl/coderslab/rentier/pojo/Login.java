@@ -9,24 +9,24 @@ import javax.validation.constraints.NotEmpty;
 public class Login {
 
     @NotEmpty
-    private String email;
+    private String emailLogin;
 
     @NotEmpty
-    private String password;
+    private String passwordLogin;
 
-    public String getEmail() {
-        return email;
+    public String getEmailLogin() {
+        return emailLogin;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmailLogin(String emailLogin) {
+        this.emailLogin = emailLogin;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPasswordLogin() {
+        return passwordLogin;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPasswordLogin(String passwordLogin) {
+        this.passwordLogin = passwordLogin;
     }
 }

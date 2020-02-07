@@ -107,7 +107,7 @@ To change this template use File | Settings | File Templates.
                     <div class="w-100 bottommargin"></div>
                     <div class="col-lg-6">
                         <h4 class="card-title">Wybierz sposób dostawy</h4>
-                            <form:select path="deliveryMethod" class="form-control" id="deliverySelect">
+                            <form:select path="deliveryMethod" class="form-control">
                                 <form:option value="0" label="wybierz..."/>
                                 <form:options items="${deliveryMethods}" itemValue="id"
                                               itemLabel="deliveryMethodNameAndCost"/>

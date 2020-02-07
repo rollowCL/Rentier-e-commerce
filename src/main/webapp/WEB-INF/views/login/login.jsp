@@ -61,16 +61,16 @@ To change this template use File | Settings | File Templates.
                         <form:form class="row" method="post" action="/login"
                                    id="loginForm" modelAttribute="login">
                             <div class="col-md-12 form-group">
-                                <form:label path="email">Email</form:label>
-                                <form:input path="email" id="email" class="form-control"
+                                <form:label path="emailLogin">Email</form:label>
+                                <form:input path="emailLogin" id="emailLogin" class="form-control"
                                             maxlength="50"/>
-                                <form:errors path="email" cssClass="error"/>
+                                <form:errors path="emailLogin" cssClass="error"/>
                             </div>
                             <div class="col-md-12 form-group">
-                                <form:label path="password">Hasło</form:label>
-                                <form:input type="password" path="password" id="password" class="form-control"
+                                <form:label path="passwordLogin">Hasło</form:label>
+                                <form:input type="password" path="passwordLogin" id="passwordLoginpassword" class="form-control"
                                             maxlength="50"/>
-                                <form:errors path="password" cssClass="error"/>
+                                <form:errors path="passwordLogin" cssClass="error"/>
                             </div>
                             <c:out value="${message}"/>
                             <div class="col-12">

@@ -73,9 +73,9 @@ public class LoginRegisterController {
 
         } else {
 
-            Optional<User> checkedUser = userRepository.findByEmailAndActiveTrue(login.getEmail());
+            Optional<User> checkedUser = userRepository.findByEmailAndActiveTrue(login.getEmailLogin());
 
-            if (checkedUser.isPresent() && BCrypt.checkpw(login.getPassword(), checkedUser.get().getPassword())) {
+            if (checkedUser.isPresent() && BCrypt.checkpw(login.getPasswordLogin(), checkedUser.get().getPassword())) {
 
                 model.addAttribute("loggedId", checkedUser.get().getId());
                 model.addAttribute("loggedFirstName", checkedUser.get().getFirstName());
@@ -90,10 +90,17 @@ public class LoginRegisterController {
 
                     model.addAttribute("loggedUser", 1);
 
+                    if (referer.contains("register")) {
+                        referer = null;
+                    }
+
                     if (referer != null) {
+
                         return "redirect:" + referer;
+
                     } else {
-                        return "/";
+
+                        return "redirect:/";
                     }
 
                 }
@@ -109,7 +116,6 @@ public class LoginRegisterController {
         }
 
     }
-
 
     @PostMapping("/register")
     public String registerStepOne(@ModelAttribute @Validated({UserBasicValidation.class}) User user, BindingResult resultUser,
