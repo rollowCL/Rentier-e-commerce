@@ -111,7 +111,7 @@ To change this template use File | Settings | File Templates.
                                 </c:forEach>
                             </tbody>
                         </table>
-                        <util:pagination thispage="${orders}"></util:pagination>
+                        <div class="text-center"><util:pagination thispage="${orders}"></util:pagination></div>
                     </div>
                 </div>
 

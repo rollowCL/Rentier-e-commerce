@@ -74,7 +74,7 @@ public class ProductShopController {
                                           @ModelAttribute(binding = false, name = "productCategoryFilter") ProductCategory productCategoryFilter,
                                           BindingResult result) {
 
-        model.addAttribute("productShops", productRepository.findByProductNameContaining(productNameSearch));
+        model.addAttribute("productShops", productShopRepository.findByProductProductNameContaining(productNameSearch));
 
         return "/admin/productShops";
     }
@@ -110,7 +110,8 @@ public class ProductShopController {
 
 
         if (resultProductShop.hasErrors()) {
-
+            Product product = productShop.getProduct();
+            model.addAttribute("productSizes", productSizeRepository.findByProductCategory(product.getProductCategory()));
             return "/admin/productShopForm";
 
         } else {

@@ -604,7 +604,7 @@ public class ConfigController extends HttpServlet {
     @ModelAttribute("orderStatuses")
     public List<OrderStatus> getOrderStatuses() {
 
-        return orderStatusRepository.findAll();
+        return orderStatusRepository.findAllByOrderByDeliveryMethod();
     }
 
     private String getFileName(Part part) {

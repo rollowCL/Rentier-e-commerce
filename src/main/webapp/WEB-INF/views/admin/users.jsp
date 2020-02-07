@@ -105,6 +105,7 @@ To change this template use File | Settings | File Templates.
                                                     class="icon-line-square-cross"></i></c:if>
                                         </td>
                                         <td>
+                                            <c:if test="${user.id != sessionScope.loggedId}">
                                             <a class="button button-mini button-red button-3d"
                                                href="/admin/users/changeRole?userId=${user.id}">Zmień rolę
                                             </a>
@@ -113,6 +114,7 @@ To change this template use File | Settings | File Templates.
                                                 <c:if test="${user.active}">Dezaktywuj</c:if>
                                                 <c:if test="${!user.active}">Aktywuj</c:if>
                                             </a>
+                                            </c:if>
 <%--                                            <c:if test="${user.userRole.orderType.orderTypeName eq 'internal'}">--%>
 <%--                                                <a class="button button-mini button-blue button-3d"--%>
 <%--                                                   href="/admin/users/shops?userId=${user.id}">Sklepy</a>--%>

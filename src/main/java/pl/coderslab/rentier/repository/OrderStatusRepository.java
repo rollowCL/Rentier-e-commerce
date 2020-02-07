@@ -12,5 +12,6 @@ public interface OrderStatusRepository extends JpaRepository<OrderStatus, Long> 
     boolean existsByOrderStatusNameAndDeliveryMethod(String orderStatusName, DeliveryMethod deliveryMethod);
     OrderStatus findByDeliveryMethodAndOrderStatusName(DeliveryMethod deliveryMethod, String orderStatusName);
     List<OrderStatus> findByDeliveryMethodOrderById(DeliveryMethod deliveryMethod);
+    List<OrderStatus> findAllByOrderByDeliveryMethod();
 
 }

@@ -73,6 +73,7 @@ To change this template use File | Settings | File Templates.
                                         value="Submit">Szukaj
                                 </button>
                             </form>
+                            <a href="javascript:window.history.back()" class="button button-mini button-blue button-3d">Wstecz</a>
                         </div>
 
 
@@ -103,6 +104,9 @@ To change this template use File | Settings | File Templates.
                                             </button>
                                             <a class="button button-mini button-red button-3d"
                                                href="/admin/productShops/del?productShopId=${productShop.id}">Usuń
+                                            </a>
+                                            <a class="button button-mini button-blue button-3d"
+                                               href="/admin/productShops/form?productId=${productShop.product.id}">Nowy stan dla produktu
                                             </a>
                                         </form>
                                     </td>
