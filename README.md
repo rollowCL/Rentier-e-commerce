@@ -22,6 +22,7 @@ This is v1 of the project. Still many things to be added.
 - [ ] Activation Tokens
 - [ ] Activation email
 - [ ] Password resets
+- [ ] User Panel
 - [ ] Multi Image for Products
 - [ ] Product reviews
 - [ ] Stock file operations
