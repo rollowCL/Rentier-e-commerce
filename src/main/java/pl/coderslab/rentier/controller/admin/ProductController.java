@@ -1,29 +1,26 @@
 package pl.coderslab.rentier.controller.admin;
 
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.rentier.RentierProperties;
 import pl.coderslab.rentier.entity.*;
+import pl.coderslab.rentier.exception.InvalidFileException;
 import pl.coderslab.rentier.repository.BrandRepository;
 import pl.coderslab.rentier.repository.ProductCategoryRepository;
 import pl.coderslab.rentier.repository.ProductRepository;
+import pl.coderslab.rentier.service.ProductServiceImpl;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import javax.validation.Valid;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Optional;
 
 
 @Controller
@@ -34,12 +31,16 @@ public class ProductController {
     private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;
     private final BrandRepository brandRepository;
+    private final ProductServiceImpl productService;
 
-    public ProductController(RentierProperties rentierProperties, ProductRepository productRepository, ProductCategoryRepository productCategoryRepository, BrandRepository brandRepository) {
+    public ProductController(RentierProperties rentierProperties, ProductRepository productRepository,
+                             ProductCategoryRepository productCategoryRepository, BrandRepository brandRepository,
+                             ProductServiceImpl productService) {
         this.rentierProperties = rentierProperties;
         this.productRepository = productRepository;
         this.productCategoryRepository = productCategoryRepository;
         this.brandRepository = brandRepository;
+        this.productService = productService;
     }
 
 
@@ -104,7 +105,7 @@ public class ProductController {
 
     @PostMapping("/form")
     public String saveProduct(Model model, @ModelAttribute @Valid Product product, BindingResult resultProduct,
-                              HttpServletRequest request) throws IOException, ServletException {
+                              HttpServletRequest request) throws ServletException {
 
 
         if (product.getId() == null) {
@@ -113,6 +114,7 @@ public class ProductController {
 
             if (productRepository.existsByProductName(product.getProductName())) {
                 resultProduct.rejectValue("productName", "error.name", "Produkt o takiej nazwie już istnieje");
+
             }
 
         } else {
@@ -121,34 +123,25 @@ public class ProductController {
 
         }
 
-        Part filePart = request.getPart("fileName");
-        String fileName = getFileName(filePart);
-        File file = null;
+        Part filePart = null;
+
+        try {
+            filePart = request.getPart("fileName");
+        } catch (IOException e) {
+            resultProduct.rejectValue("ImageFileName", "error.fileName", "Błąd odczytu pliku.");
+        }
+
+        String uploadPath = rentierProperties.getUploadPathProducts();
+        String uploadPathForView = rentierProperties.getUploadPathProdutsForView();
+        Optional<File> savedImage = Optional.empty();
+        String fileName = productService.getFileName(filePart);
 
         if (!"".equals(fileName)) {
-
-            if (isValidFile(filePart)) {
-
-                String suffix = "." + FilenameUtils.getExtension(fileName);
-                String prefix = "product-";
-                File uploads = new File(rentierProperties.getUploadPathProducts());
-                file = File.createTempFile(prefix, suffix, uploads);
-                String imageFileName = rentierProperties.getUploadPathProdutsForView() + file.getName();
-
-                try (InputStream input = filePart.getInputStream()) {
-                    Files.copy(input, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                    product.setImageFileName(imageFileName);
-
-                } catch (FileNotFoundException e) {
-                    resultProduct.rejectValue("productName", "error.fileName", "Błąd zapisu pliku");
-                }
-
-            } else {
-
-                resultProduct.rejectValue("productName", "error.productName",
-                        "Niepoprawny plik");
+            try {
+                savedImage = productService.saveProductImage(filePart,product,uploadPath, uploadPathForView);
+            } catch (InvalidFileException | IOException e) {
+                resultProduct.rejectValue("ImageFileName", "error.fileName", "Niepoprawny plik");
             }
-
         }
 
 
@@ -161,9 +154,6 @@ public class ProductController {
 
         if (resultProduct.hasErrors()) {
 
-            if (file.exists()) {
-                file.delete();
-            }
             return "/admin/productForm";
 
         } else {
@@ -219,30 +209,6 @@ public class ProductController {
     }
 
 
-    private String getFileName(Part part) {
-        for (String content : part.getHeader("content-disposition").split(";")) {
-            if (content.trim().startsWith("filename"))
-                return content.substring(content.indexOf("=") + 2, content.length() - 1);
-        }
-        return null;
-    }
 
-    private boolean isValidFile(Part filePart) throws IOException {
-
-        if (filePart.getSize() > 1024 * 1024) {
-            return false;
-        }
-
-        String regexp = ".*(jpe?g|png|bmp)$";
-        Pattern pattern = Pattern.compile(regexp);
-        Matcher matcher = pattern.matcher(filePart.getSubmittedFileName());
-
-        if (!matcher.matches()) {
-            return false;
-        }
-
-
-        return true;
-    }
 
 }
