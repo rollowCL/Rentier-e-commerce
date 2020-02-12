@@ -3,7 +3,6 @@ package pl.coderslab.rentier.entity;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
 import java.util.Objects;
 
 @Entity

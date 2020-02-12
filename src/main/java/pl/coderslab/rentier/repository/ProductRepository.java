@@ -2,18 +2,18 @@ package pl.coderslab.rentier.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import pl.coderslab.rentier.entity.Product;
-import pl.coderslab.rentier.entity.ProductCategory;
-import pl.coderslab.rentier.entity.ProductShop;
-
 import java.util.List;
 
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long>, QuerydslPredicateExecutor<Product> {
+
 
     boolean existsByProductName(String productName);
     List<Product> findByProductCategoryId(Long id);
-    List<Product> findByProductNameContaining(String productNameSearch);
+    List<Product>
+    findByProductNameContaining(String productNameSearch);
 
     @Query(value = "SELECT p.image_file_name FROM products p WHERE p.id = :id", nativeQuery = true)
     String selectImageFileNameByProductId(@Param("id") Long id);
@@ -30,5 +30,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "            WHERE p.active = true AND p2.active = true AND p2.available_online = true AND b.active = true\n" +
             "            AND p2.product_category_id =:categoryId", nativeQuery = true)
     List<Product> customFindDistinctProductsActiveForShopByCategoryId(@Param("categoryId") Long id);
+
 
 }

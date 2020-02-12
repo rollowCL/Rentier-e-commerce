@@ -1,5 +1,7 @@
 package pl.coderslab.rentier.controller.admin;
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.OrderSpecifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,6 +12,7 @@ import pl.coderslab.rentier.exception.InvalidFileException;
 import pl.coderslab.rentier.repository.BrandRepository;
 import pl.coderslab.rentier.repository.ProductCategoryRepository;
 import pl.coderslab.rentier.repository.ProductRepository;
+import pl.coderslab.rentier.service.ImageServiceImpl;
 import pl.coderslab.rentier.service.ProductServiceImpl;
 
 import javax.servlet.ServletException;
@@ -32,15 +35,17 @@ public class ProductController {
     private final ProductCategoryRepository productCategoryRepository;
     private final BrandRepository brandRepository;
     private final ProductServiceImpl productService;
+    private final ImageServiceImpl imageService;
 
     public ProductController(RentierProperties rentierProperties, ProductRepository productRepository,
                              ProductCategoryRepository productCategoryRepository, BrandRepository brandRepository,
-                             ProductServiceImpl productService) {
+                             ProductServiceImpl productService, ImageServiceImpl imageService) {
         this.rentierProperties = rentierProperties;
         this.productRepository = productRepository;
         this.productCategoryRepository = productCategoryRepository;
         this.brandRepository = brandRepository;
         this.productService = productService;
+        this.imageService = imageService;
     }
 
 
@@ -128,19 +133,19 @@ public class ProductController {
         try {
             filePart = request.getPart("fileName");
         } catch (IOException e) {
-            resultProduct.rejectValue("ImageFileName", "error.fileName", "Błąd odczytu pliku.");
+            resultProduct.rejectValue("productName", "error.fileName", "Błąd odczytu pliku.");
         }
 
         String uploadPath = rentierProperties.getUploadPathProducts();
         String uploadPathForView = rentierProperties.getUploadPathProdutsForView();
         Optional<File> savedImage = Optional.empty();
-        String fileName = productService.getFileName(filePart);
+        String fileName = imageService.getFileName(filePart);
 
         if (!"".equals(fileName)) {
             try {
                 savedImage = productService.saveProductImage(filePart,product,uploadPath, uploadPathForView);
             } catch (InvalidFileException | IOException e) {
-                resultProduct.rejectValue("ImageFileName", "error.fileName", "Niepoprawny plik");
+                resultProduct.rejectValue("productName", "error.fileName", "Niepoprawny plik");
             }
         }
 
@@ -154,6 +159,7 @@ public class ProductController {
 
         if (resultProduct.hasErrors()) {
 
+            productService.deleteProductImage(savedImage);
             return "/admin/productForm";
 
         } else {
@@ -189,6 +195,37 @@ public class ProductController {
 
         return "redirect:/admin/products";
     }
+
+    @GetMapping("/query")
+    @ResponseBody
+    public String show() {
+
+        List<Product> products = productService.FindOne();
+
+        return products.toString();
+    }
+
+    @GetMapping("/query2")
+    @ResponseBody
+    public String show2(@RequestParam(required = false) String productName,
+                        @RequestParam(required = false) String active) {
+
+        QProduct product = QProduct.product;
+        BooleanBuilder where = new BooleanBuilder();
+
+        OrderSpecifier<String> orderSpecifier = product.productName.desc();
+        if (productName != null) {
+            where.and(product.productName.contains(productName));
+        }
+        if (active != null) {
+            where.and(product.active.eq(Boolean.valueOf(active)));
+        }
+
+        Iterable<Product> products = productRepository.findAll(where, orderSpecifier);
+
+        return products.toString();
+    }
+
 
     @ModelAttribute("products")
     public List<Product> getProducts() {

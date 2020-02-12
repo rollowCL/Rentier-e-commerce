@@ -7,11 +7,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import pl.coderslab.rentier.entity.Order;
-import pl.coderslab.rentier.entity.OrderStatus;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
 

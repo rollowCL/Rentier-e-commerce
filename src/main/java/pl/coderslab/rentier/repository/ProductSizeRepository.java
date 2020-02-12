@@ -7,7 +7,6 @@ import pl.coderslab.rentier.entity.ProductCategory;
 import pl.coderslab.rentier.entity.ProductSize;
 
 import java.util.List;
-import java.util.Map;
 
 public interface ProductSizeRepository extends JpaRepository<ProductSize, Long> {
 

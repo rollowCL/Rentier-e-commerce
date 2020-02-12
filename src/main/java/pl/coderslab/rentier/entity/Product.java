@@ -5,7 +5,6 @@ import org.springframework.format.annotation.NumberFormat;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -193,17 +192,13 @@ public class Product {
         return "Product{" +
                 "id=" + id +
                 ", productName='" + productName + '\'' +
-                ", productDesc='" + productDesc + '\'' +
-                ", brand=" + brand +
                 ", productCategory=" + productCategory +
                 ", createdDate=" + createdDate +
                 ", updatedDate=" + updatedDate +
                 ", active=" + active +
                 ", priceGross=" + priceGross +
                 ", availableOnline=" + availableOnline +
-                ", imageFileName='" + imageFileName + '\'' +
-                ", productShops=" + productShops +
-                '}';
+                "}\n";
     }
 
 }

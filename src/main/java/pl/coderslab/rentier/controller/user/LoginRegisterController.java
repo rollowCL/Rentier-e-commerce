@@ -1,6 +1,5 @@
 package pl.coderslab.rentier.controller.user;
 
-import com.google.common.net.HttpHeaders;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,12 +16,10 @@ import pl.coderslab.rentier.entity.UserRole;
 import pl.coderslab.rentier.repository.OrderTypeRepository;
 import pl.coderslab.rentier.repository.UserRepository;
 import pl.coderslab.rentier.repository.UserRoleRepository;
-import pl.coderslab.rentier.utils.EmailUtil;
 import pl.coderslab.rentier.validation.UserBasicValidation;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.net.http.HttpRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

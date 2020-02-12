@@ -1,11 +1,9 @@
 package pl.coderslab.rentier.beans;
 
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
-import pl.coderslab.rentier.entity.ProductShop;
 import pl.coderslab.rentier.pojo.CartItem;
 
 import java.math.BigDecimal;

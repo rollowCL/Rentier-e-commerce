@@ -5,10 +5,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import pl.coderslab.rentier.entity.User;
-import pl.coderslab.rentier.entity.UserRole;
 
 import javax.transaction.Transactional;
-import java.awt.print.Book;
 import java.util.List;
 import java.util.Optional;
 

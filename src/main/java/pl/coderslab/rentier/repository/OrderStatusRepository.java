@@ -1,7 +1,6 @@
 package pl.coderslab.rentier.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import pl.coderslab.rentier.entity.DeliveryMethod;
 import pl.coderslab.rentier.entity.OrderStatus;
 

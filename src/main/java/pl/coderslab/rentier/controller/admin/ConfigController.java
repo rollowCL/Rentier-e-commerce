@@ -1,13 +1,15 @@
 package pl.coderslab.rentier.controller.admin;
 
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.rentier.RentierProperties;
 import pl.coderslab.rentier.entity.*;
+import pl.coderslab.rentier.exception.InvalidFileException;
 import pl.coderslab.rentier.repository.*;
+import pl.coderslab.rentier.service.BrandServiceImpl;
+import pl.coderslab.rentier.service.ImageServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,15 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import javax.validation.Valid;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Optional;
 
 
 @Controller
@@ -41,11 +38,15 @@ public class ConfigController extends HttpServlet {
     private final OrderStatusRepository orderStatusRepository;
     private final ProductRepository productRepository;
     private final ProductShopRepository productShopRepository;
+    private final ImageServiceImpl imageService;
+    private final BrandServiceImpl brandService;
 
     public ConfigController(RentierProperties rentierProperties, ProductCategoryRepository productCategoryRepository,
                             BrandRepository brandRepository, DeliveryMethodRepository deliveryMethodRepository,
                             PaymentMethodRepository paymentMethodRepository, ShopRepository shopRepository,
-                            ProductSizeRepository productSizeRepository, OrderStatusRepository orderStatusRepository, ProductRepository productRepository, ProductShopRepository productShopRepository) {
+                            ProductSizeRepository productSizeRepository, OrderStatusRepository orderStatusRepository,
+                            ProductRepository productRepository, ProductShopRepository productShopRepository,
+                            ImageServiceImpl imageService, BrandServiceImpl brandService) {
         this.rentierProperties = rentierProperties;
         this.productCategoryRepository = productCategoryRepository;
         this.brandRepository = brandRepository;
@@ -56,6 +57,8 @@ public class ConfigController extends HttpServlet {
         this.orderStatusRepository = orderStatusRepository;
         this.productRepository = productRepository;
         this.productShopRepository = productShopRepository;
+        this.imageService = imageService;
+        this.brandService = brandService;
     }
 
 
@@ -383,33 +386,28 @@ public class ConfigController extends HttpServlet {
 
         }
 
-        Part filePart = request.getPart("fileName");
-        String fileName = getFileName(filePart);
+
+        Part filePart = null;
+
+        try {
+            filePart = request.getPart("fileName");
+        } catch (IOException e) {
+            resultBrand.rejectValue("name", "error.fileName", "Błąd odczytu pliku.");
+        }
+
+        String uploadPath = rentierProperties.getUploadPathProducts();
+        String uploadPathForView = rentierProperties.getUploadPathProdutsForView();
+        Optional<File> savedImage = Optional.empty();
+        String fileName = imageService.getFileName(filePart);
 
         if (!"".equals(fileName)) {
-
-            if (isValidFile(filePart)) {
-
-                String suffix = "." + FilenameUtils.getExtension(fileName);
-                String prefix = "brand-";
-                File uploads = new File(rentierProperties.getUploadPathBrands());
-                File file = File.createTempFile(prefix, suffix, uploads);
-                String logoFileName = rentierProperties.getUploadPathBrandsForView() + file.getName();
-
-                try (InputStream input = filePart.getInputStream()) {
-                    Files.copy(input, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                    brand.setLogoFileName(logoFileName);
-
-                } catch (FileNotFoundException e) {
-                    resultBrand.rejectValue("name", "error.fileName", "Błąd zapisu pliku");
-                }
-
-            } else {
-
+            try {
+                savedImage = brandService.saveBrandImage(filePart, brand, uploadPath, uploadPathForView);
+            } catch (InvalidFileException | IOException e) {
                 resultBrand.rejectValue("name", "error.fileName", "Niepoprawny plik");
             }
-
         }
+
 
         if (resultBrand.hasErrors()) {
 
@@ -605,32 +603,6 @@ public class ConfigController extends HttpServlet {
     public List<OrderStatus> getOrderStatuses() {
 
         return orderStatusRepository.findAllByOrderByDeliveryMethod();
-    }
-
-    private String getFileName(Part part) {
-        for (String content : part.getHeader("content-disposition").split(";")) {
-            if (content.trim().startsWith("filename"))
-                return content.substring(content.indexOf("=") + 2, content.length() - 1);
-        }
-        return null;
-    }
-
-    private boolean isValidFile(Part filePart) throws IOException {
-
-        if (filePart.getSize() > 1024 * 1024) {
-            return false;
-        }
-
-        String regexp = ".*(jpe?g|png|bmp)$";
-        Pattern pattern = Pattern.compile(regexp);
-        Matcher matcher = pattern.matcher(filePart.getSubmittedFileName());
-
-        if (!matcher.matches()) {
-            return false;
-        }
-
-
-        return true;
     }
 
 }

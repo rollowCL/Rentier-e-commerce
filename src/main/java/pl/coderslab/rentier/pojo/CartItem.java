@@ -2,12 +2,10 @@ package pl.coderslab.rentier.pojo;
 
 
 import org.slf4j.LoggerFactory;
-import pl.coderslab.rentier.controller.shop.CartController;
 import pl.coderslab.rentier.entity.Product;
 import pl.coderslab.rentier.entity.ProductSize;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 
 public class CartItem {
 

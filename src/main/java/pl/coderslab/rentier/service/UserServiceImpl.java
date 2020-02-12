@@ -6,8 +6,6 @@ import pl.coderslab.rentier.entity.User;
 import pl.coderslab.rentier.repository.AddressRepository;
 import pl.coderslab.rentier.repository.UserRepository;
 
-import javax.persistence.SequenceGenerators;
-
 @Service
 public class UserServiceImpl implements UserService {
 
