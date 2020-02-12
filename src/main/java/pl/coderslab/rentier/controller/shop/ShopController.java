@@ -3,16 +3,13 @@ package pl.coderslab.rentier.controller.shop;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.rentier.beans.Cart;
-import pl.coderslab.rentier.entity.Product;
-import pl.coderslab.rentier.entity.ProductCategory;
-import pl.coderslab.rentier.entity.ProductShop;
-import pl.coderslab.rentier.entity.ProductSize;
-import pl.coderslab.rentier.repository.ProductCategoryRepository;
-import pl.coderslab.rentier.repository.ProductRepository;
-import pl.coderslab.rentier.repository.ProductShopRepository;
-import pl.coderslab.rentier.repository.ProductSizeRepository;
+import pl.coderslab.rentier.beans.ProductSearch;
+import pl.coderslab.rentier.entity.*;
+import pl.coderslab.rentier.repository.*;
+import pl.coderslab.rentier.service.ProductService;
 
 import java.util.*;
 
@@ -24,25 +21,59 @@ public class ShopController {
     private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;
     private final ProductSizeRepository productSizeRepository;
+    private final ProductService productService;
+    private final BrandRepository brandRepository;
 
     public ShopController(ProductCategoryRepository productCategoryRepository, ProductShopRepository productShopRepository,
-                          ProductRepository productRepository, ProductSizeRepository productSizeRepository, Cart cart) {
+                          ProductRepository productRepository, ProductSizeRepository productSizeRepository, Cart cart, ProductService productService, BrandRepository brandRepository) {
         this.productShopRepository = productShopRepository;
         this.productCategoryRepository = productCategoryRepository;
         this.productRepository = productRepository;
         this.productSizeRepository = productSizeRepository;
+        this.productService = productService;
+        this.brandRepository = brandRepository;
     }
 
 
     @GetMapping("/")
     public String showIndex(Model model, @RequestParam(required = false) Long categoryId) {
 
+        ProductSearch productSearch = new ProductSearch();
 
         if (categoryId != null) {
-            if(productCategoryRepository.findById(categoryId).isPresent()) {
+            ProductCategory productCategory = productCategoryRepository.getOne(categoryId);
+            productSearch.setProductCategory(productCategory);
+        }
 
-                model.addAttribute("products", productRepository.customFindDistinctProductsActiveForShopByCategoryId(categoryId));
-            }
+        productSearch.setActive(true);
+        productSearch.setAvailableOnline(true);
+        Iterable<Product> products = productService.searchProductsForShop(productSearch);
+
+        model.addAttribute("products", products);
+        model.addAttribute("productSearch", productSearch);
+
+        return "/shop/index";
+    }
+
+    @PostMapping("/search")
+    public String showSearchResults(Model model, @ModelAttribute("productSearch") ProductSearch productSearch,
+                                    BindingResult result) {
+
+        if (productSearch.getPriceGrossTo() != null && productSearch.getPriceGrossFrom() != null
+                && productSearch.getPriceGrossFrom().compareTo(productSearch.getPriceGrossTo()) > 0) {
+
+            result.rejectValue("priceGrossTo", "error.prices", "Cena do nie może być " +
+                    "mniejsza niż cena od");
+
+        }
+
+        if (!result.hasErrors()) {
+            productSearch.setActive(true);
+            productSearch.setAvailableOnline(true);
+            Iterable<Product> products = productService.searchProductsForShop(productSearch);
+
+            model.addAttribute("products", products);
+
         }
 
         return "/shop/index";
@@ -79,16 +110,22 @@ public class ShopController {
     }
 
 
-    @ModelAttribute("products")
-    public List<Product> getProductsForShop() {
-
-        return productRepository.customFindDistinctProductsActiveForShop();
-    }
+//    @ModelAttribute("products")
+//    public List<Product> getProductsForShop() {
+//
+//        return productRepository.customFindProductsActiveForShop();
+//    }
 
     @ModelAttribute("productCategories")
     public List<ProductCategory> getProductCategories() {
 
         return productCategoryRepository.findProductCategoriesByActiveTrueOrderByCategoryOrder();
+    }
+
+    @ModelAttribute("brands")
+    public List<Brand> getBrands() {
+
+        return brandRepository.findAllByActiveTrue();
     }
 
 

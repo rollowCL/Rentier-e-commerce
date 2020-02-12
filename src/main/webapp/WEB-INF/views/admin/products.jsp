@@ -58,22 +58,35 @@ To change this template use File | Settings | File Templates.
 
                     <div class="col-lg-12">
                         <div class="filterForm">
-                            <form:form class="myFormLeft" action="/admin/products/filterProductCategories" method="post" modelAttribute="productCategoryFilter">
-                                <form:radiobutton path="id" value="0" label="Wszystkie"/>
-                                <form:radiobuttons path="id" items="${productCategories}" itemLabel="categoryName" itemValue="id"/>
+                            <form:form class="myFormLeft" action="/admin/products/search" method="post" modelAttribute="productSearch">
+                                <form:label path="productName">Nazwa produktu</form:label>
+                                <form:input path="productName"/>
+                                <form:label path="brand">Marka</form:label>
+                                <form:select path="brand">
+                                    <form:option value="0" label="wybierz..."/>
+                                    <form:options items="${brands}" itemValue="id" itemLabel="name"/>
+                                </form:select>
+                                <form:label path="productCategory">Kategoria</form:label>
+                                <form:select path="productCategory">
+                                    <form:option value="0" label="wybierz..."/>
+                                    <form:options items="${productCategories}" itemValue="id" itemLabel="categoryName"/>
+                                </form:select>
+                                <form:label path="priceGrossFrom">Cena od</form:label>
+                                <form:input path="priceGrossFrom" type="number" step="1" min="0"/>
+                                <form:label path="priceGrossTo">Cena od</form:label>
+                                <form:input path="priceGrossTo" type="number" step="1" min="0"/>
+                                <br/>
+                                <form:label path="active">Aktywny</form:label>
+                                <form:checkbox path="active" value="true"/>
+                                <form:label path="availableOnline">Dostępny na www</form:label>
+                                <form:checkbox path="availableOnline" value="true"/>
+                                <br/>
                                 <button type="submit" class="button button-mini button-blue button-3d"
                                         value="Submit">Filtruj
                                 </button>
+                                <a href="/admin/products/form" class="button button-mini button-blue button-3d">Dodaj nowy</a>
                             </form:form>
-                            <form class="myFormRight" action="/admin/products/filterProductsName" method="post">
-                                <label for="productNameSearch">Szukaj</label>
-                                <input type="text" size="30" placeholder="podaj fragment nazwy produktu" minlength="3" name="productNameSearch" id="productNameSearch" maxlength="50"/>
-                                <button type="submit" class="button button-mini button-blue button-3d"
-                                        value="Submit">Szukaj
-                                </button>
-                            </form>
                         </div>
-                        <a href="/admin/products/form" class="button button-mini button-blue button-3d">Dodaj nowy</a>
                         <table class="table table-bordered">
                             <thead>
                                 <tr>

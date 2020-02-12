@@ -1,6 +1,9 @@
 package pl.coderslab.rentier.service;
 
+import com.querydsl.core.BooleanBuilder;
+import pl.coderslab.rentier.beans.ProductSearch;
 import pl.coderslab.rentier.entity.Product;
+import pl.coderslab.rentier.entity.QProduct;
 import pl.coderslab.rentier.exception.InvalidFileException;
 
 import javax.persistence.EntityManager;
@@ -17,6 +20,13 @@ public interface ProductService {
             throws IOException, FileNotFoundException, InvalidFileException;
 
     void deleteProductImage(Optional<File> file);
+
+    Iterable<Product> searchProductsForShop(ProductSearch productSearch);
+
+    Iterable<Product> searchProductsForAdmin(ProductSearch productSearch);
+
+    Iterable<Product> performProductSearch(QProduct product, BooleanBuilder where, ProductSearch productSearch);
+
 
 
 }

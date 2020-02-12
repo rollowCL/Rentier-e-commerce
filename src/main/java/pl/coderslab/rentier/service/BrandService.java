@@ -13,4 +13,6 @@ import java.util.Optional;
 public interface BrandService {
     public Optional<File> saveBrandImage(Part filePart, Brand brand, String uploadPath, String uploadPathForView)
             throws IOException, FileNotFoundException, InvalidFileException;
+
+    void deleteBrandLogo(Optional<File> file);
 }

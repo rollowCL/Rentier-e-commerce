@@ -53,7 +53,32 @@ To change this template use File | Settings | File Templates.
         <div class="content-wrap">
 
             <div class="container clearfix">
-
+                <div class="row">
+                    <div class="filterForm">
+                        <form:form class="myFormLeft" action="/search" method="post" modelAttribute="productSearch">
+                            <form:label path="productName">Nazwa produktu</form:label>
+                            <form:input path="productName"/>
+                            <form:label path="brand">Marka</form:label>
+                            <form:select path="brand">
+                                <form:option value="0" label="wybierz..."/>
+                                <form:options items="${brands}" itemValue="id" itemLabel="name"/>
+                            </form:select>
+                            <form:label path="productCategory">Kategoria</form:label>
+                            <form:select path="productCategory">
+                                <form:option value="0" label="wybierz..."/>
+                                <form:options items="${productCategories}" itemValue="id" itemLabel="categoryName"/>
+                            </form:select>
+                            <form:label path="priceGrossFrom">Cena od</form:label>
+                            <form:input path="priceGrossFrom" type="number" step="1" min="0"/>
+                            <form:label path="priceGrossTo">Cena od</form:label>
+                            <form:input path="priceGrossTo" type="number" step="1" min="0"/>
+                            <form:errors path="priceGrossTo" cssClass="error"/>
+                            <button type="submit" class="button button-mini button-blue button-3d"
+                                    value="Submit">Filtruj
+                            </button>
+                        </form:form>
+                    </div>
+                </div>
                 <div id="shop" class="shop product grid-container clearfix" data-layout="fitRows">
 
                     <c:forEach items="${products}" var="product">
@@ -69,8 +94,10 @@ To change this template use File | Settings | File Templates.
                                 <div class="product-title"><h3><a href="/product?productId=<c:out
                                         value="${product.id}"/>"><c:out
                                         value="${product.productName}"/></a></h3></div>
-                                <div class="product-price"><c:out value="${fn:replace(product.priceGross, '.', ',')} zł"/></div>
-                               <div><img width="50%" height="50%" src="<c:out value="${product.brand.logoFileName}"/>"/></div>
+                                <div class="product-price"><c:out
+                                        value="${fn:replace(product.priceGross, '.', ',')} zł"/></div>
+                                <div><img width="50%" height="50%"
+                                          src="<c:out value="${product.brand.logoFileName}"/>"/></div>
                             </div>
                         </div>
 

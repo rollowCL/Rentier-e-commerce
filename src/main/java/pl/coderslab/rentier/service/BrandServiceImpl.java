@@ -50,4 +50,9 @@ public class BrandServiceImpl implements BrandService {
 
         return Optional.of(file);
     }
+
+    @Override
+    public void deleteBrandLogo(Optional<File> file) {
+        file.ifPresent(File::delete);
+    }
 }

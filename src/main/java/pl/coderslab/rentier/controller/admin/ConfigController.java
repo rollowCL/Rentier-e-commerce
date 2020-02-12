@@ -408,9 +408,14 @@ public class ConfigController extends HttpServlet {
             }
         }
 
+        if (brand.getId() != null && "".equals(fileName)) {
+
+            brand.setLogoFileName(brandRepository.selectLogoFileNameByProductId(brand.getId()));
+
+        }
 
         if (resultBrand.hasErrors()) {
-
+            brandService.deleteBrandLogo(savedImage);
             return "/admin/config";
 
         } else {

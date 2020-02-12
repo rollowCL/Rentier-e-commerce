@@ -28,6 +28,7 @@ This is v1 of the project. Still many things to be added.
 - [ ] Stock file operations
 - [ ] Orders with invoice option
 - [ ] Sorting in views
+- [x] Multi condition filters in views (using QueryDSL)
 - [ ] Salesman role and process impl.
 - [ ] Spring Security instead of filters
 - [ ] Error pages

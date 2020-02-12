@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
+import pl.coderslab.rentier.beans.ProductSearch;
 import pl.coderslab.rentier.entity.Product;
 import pl.coderslab.rentier.entity.QProduct;
 import pl.coderslab.rentier.entity.QUser;
@@ -67,30 +68,62 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProductImage(Optional<File> file) {
 
-        if (file.isPresent()) {
+        file.ifPresent(File::delete);
 
-            file.get().delete();
+    }
 
+    @Override
+    public Iterable<Product> searchProductsForAdmin(ProductSearch productSearch) {
+
+        QProduct product = QProduct.product;
+        BooleanBuilder where = new BooleanBuilder();
+
+        return performProductSearch(product, where, productSearch);
+    }
+
+
+    @Override
+    public Iterable<Product> searchProductsForShop(ProductSearch productSearch) {
+
+        QProduct product = QProduct.product;
+        BooleanBuilder where = new BooleanBuilder();
+        where.and(product.brand.active.eq(true));
+        where.and(product.productCategory.active.eq(true));
+
+        return performProductSearch(product, where, productSearch);
+    }
+
+    @Override
+    public Iterable<Product> performProductSearch(QProduct product, BooleanBuilder where, ProductSearch productSearch) {
+
+        if (productSearch.getProductName() != null) {
+            where.and(product.productName.containsIgnoreCase(productSearch.getProductName()));
         }
 
-    }
+        if (productSearch.getBrand() != null) {
+            where.and(product.brand.id.eq(productSearch.getBrand().getId()));
+        }
 
-    public List<Product> FindOne() {
+        if (productSearch.getProductCategory() != null) {
+            where.and(product.productCategory.id.eq(productSearch.getProductCategory().getId()));
+        }
+        if (productSearch.isActive()) {
+            where.and(product.active.eq(productSearch.isActive()));
+        }
+        if (productSearch.isAvailableOnline()) {
+            where.and(product.availableOnline.eq(productSearch.isAvailableOnline()));
+        }
+        if (productSearch.getPriceGrossFrom() != null) {
+            where.and(product.priceGross.goe(productSearch.getPriceGrossFrom()));
+        }
+        if (productSearch.getPriceGrossTo() != null) {
+            where.and(product.priceGross.loe(productSearch.getPriceGrossTo()));
+        }
 
-        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
-        QProduct product = QProduct.product;
-
-        List <Product> products = queryFactory.selectFrom(product)
-                .where(product.productName.toLowerCase().contains("k"))
-                .fetch();
+        Iterable<Product> products = productRepository.findAll(where);
 
         return products;
-
     }
-
-
-
-
 
 
 }

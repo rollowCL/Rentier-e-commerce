@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.rentier.RentierProperties;
+import pl.coderslab.rentier.beans.ProductSearch;
 import pl.coderslab.rentier.entity.*;
 import pl.coderslab.rentier.exception.InvalidFileException;
 import pl.coderslab.rentier.repository.BrandRepository;
@@ -22,6 +23,7 @@ import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,42 +54,37 @@ public class ProductController {
     @GetMapping("")
     public String showProducts(Model model) {
 
-        ProductCategory productCategoryFilter = new ProductCategory();
-        productCategoryFilter.setId(0L);
+        ProductSearch productSearch = new ProductSearch();
 
-        model.addAttribute("productCategoryFilter", productCategoryFilter);
+        model.addAttribute("productSearch", productSearch);
 
 
         return "/admin/products";
     }
 
-    @PostMapping("/filterProductCategories")
-    public String showFilteredUsers(Model model, @ModelAttribute("productCategoryFilter") ProductCategory productCategoryFilter,
+    @PostMapping("/search")
+    public String showSearchResults(Model model, @ModelAttribute("productSearch") ProductSearch productSearch,
                                     BindingResult result) {
 
-        if (productCategoryFilter.getId() == 0) {
+        if (productSearch.getPriceGrossTo() != null && productSearch.getPriceGrossFrom() != null
+            && productSearch.getPriceGrossFrom().compareTo(productSearch.getPriceGrossTo()) > 0) {
 
-            model.addAttribute("products", productRepository.findAll());
+                result.rejectValue("priceGrossTo", "error.prices", "Cena do nie może być " +
+                        "mniejsza niż cena od");
 
-        } else {
+        }
 
-            model.addAttribute("products", productRepository.findByProductCategoryId(productCategoryFilter.getId()));
+        if (!result.hasErrors()) {
+
+            Iterable<Product> products = productService.searchProductsForAdmin(productSearch);
+
+            model.addAttribute("products", products);
+
         }
 
         return "/admin/products";
     }
 
-    @PostMapping("/filterProductsName")
-    public String showFilteredUsersByName(Model model, @RequestParam String productNameSearch,
-                                          @ModelAttribute(binding = false, name = "productCategoryFilter") ProductCategory productCategoryFilter,
-                                          BindingResult result) {
-
-        List<Product> foundProducts = productRepository.findByProductNameContaining(productNameSearch);
-
-        model.addAttribute("products", foundProducts);
-
-        return "/admin/products";
-    }
 
     @GetMapping("/form")
     public String showProductsForm(Model model, @RequestParam(required = false) Long productId) {
@@ -196,15 +193,6 @@ public class ProductController {
         return "redirect:/admin/products";
     }
 
-    @GetMapping("/query")
-    @ResponseBody
-    public String show() {
-
-        List<Product> products = productService.FindOne();
-
-        return products.toString();
-    }
-
     @GetMapping("/query2")
     @ResponseBody
     public String show2(@RequestParam(required = false) String productName,
@@ -244,8 +232,6 @@ public class ProductController {
 
         return brandRepository.findAll();
     }
-
-
 
 
 }
