@@ -73,6 +73,13 @@ To change this template use File | Settings | File Templates.
                             <form:label path="priceGrossTo">Cena od</form:label>
                             <form:input path="priceGrossTo" type="number" step="1" min="0"/>
                             <form:errors path="priceGrossTo" cssClass="error"/>
+                            <form:select path="sorting">
+                                <form:option value="" label="wybierz..."/>
+                                <form:option value="p" label="cena rosnąco"/>
+                                <form:option value="pd" label="cena malejąco"/>
+                                <form:option value="n" label="nazwa rosnąco"/>
+                                <form:option value="nd" label="nazwa malejąco"/>
+                            </form:select>
                             <button type="submit" class="button button-mini button-blue button-3d"
                                     value="Submit">Filtruj
                             </button>

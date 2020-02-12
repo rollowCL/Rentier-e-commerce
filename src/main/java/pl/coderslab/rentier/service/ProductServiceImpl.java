@@ -1,6 +1,7 @@
 package pl.coderslab.rentier.service;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.apache.commons.io.FilenameUtils;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
@@ -120,7 +122,40 @@ public class ProductServiceImpl implements ProductService {
             where.and(product.priceGross.loe(productSearch.getPriceGrossTo()));
         }
 
-        Iterable<Product> products = productRepository.findAll(where);
+
+        OrderSpecifier<?> orderSpecifier = null;
+
+        if (productSearch.getSorting() != null) {
+
+            String sortingVariant = productSearch.getSorting();
+
+            switch (sortingVariant) {
+
+                case "p":
+                    orderSpecifier = product.priceGross.asc();
+                    break;
+                case "pd":
+                    orderSpecifier = product.priceGross.desc();
+                    break;
+                case "n":
+                    orderSpecifier = product.productName.asc();
+                    break;
+                case "nd":
+                    orderSpecifier = product.productName.desc();
+                    break;
+
+            }
+
+        }
+
+        Iterable<Product> products;
+
+        if (orderSpecifier == null) {
+            products = productRepository.findAll(where);
+        } else {
+            products = productRepository.findAll(where, orderSpecifier);
+        }
+
 
         return products;
     }

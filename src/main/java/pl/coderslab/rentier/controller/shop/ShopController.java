@@ -47,6 +47,7 @@ public class ShopController {
 
         productSearch.setActive(true);
         productSearch.setAvailableOnline(true);
+        productSearch.setSorting("");
         Iterable<Product> products = productService.searchProductsForShop(productSearch);
 
         model.addAttribute("products", products);

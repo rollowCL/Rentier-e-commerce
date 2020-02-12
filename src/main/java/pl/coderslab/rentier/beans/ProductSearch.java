@@ -4,6 +4,7 @@ import org.springframework.format.annotation.NumberFormat;
 import org.springframework.stereotype.Component;
 import pl.coderslab.rentier.entity.Brand;
 import pl.coderslab.rentier.entity.ProductCategory;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -18,6 +19,7 @@ public class ProductSearch {
     private LocalDateTime createdDateTo;
     private boolean active;
     private boolean availableOnline;
+    private String sorting;
 
     @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "#####.##")
     private BigDecimal priceGrossFrom;
@@ -103,5 +105,13 @@ public class ProductSearch {
 
     public void setPriceGrossTo(BigDecimal priceGrossTo) {
         this.priceGrossTo = priceGrossTo;
+    }
+
+    public String getSorting() {
+        return sorting;
+    }
+
+    public void setSorting(String sorting) {
+        this.sorting = sorting;
     }
 }
