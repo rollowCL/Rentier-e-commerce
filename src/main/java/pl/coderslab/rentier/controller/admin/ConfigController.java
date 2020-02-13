@@ -1,10 +1,14 @@
 package pl.coderslab.rentier.controller.admin;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import pl.coderslab.rentier.RentierProperties;
+import pl.coderslab.rentier.beans.Cart;
 import pl.coderslab.rentier.entity.*;
 import pl.coderslab.rentier.exception.InvalidFileException;
 import pl.coderslab.rentier.repository.*;
@@ -13,8 +17,6 @@ import pl.coderslab.rentier.service.ImageServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
@@ -28,6 +30,7 @@ import java.util.Optional;
 @SessionAttributes("returnToTag")
 public class ConfigController extends HttpServlet {
 
+    private final org.slf4j.Logger logger = LoggerFactory.getLogger(ConfigController.class);
     private final RentierProperties rentierProperties;
     private final ProductCategoryRepository productCategoryRepository;
     private final BrandRepository brandRepository;
@@ -378,7 +381,7 @@ public class ConfigController extends HttpServlet {
                           @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
                           @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod,
                           @ModelAttribute(binding = false) OrderStatus orderStatus, BindingResult resultOrderStatus,
-                          HttpServletRequest request) throws IOException, ServletException {
+                          @RequestParam(value = "file", required = false) MultipartFile file) throws IOException, ServletException {
 
 
         if (brand.getId() == null && brandRepository.existsByName(brand.getName())) {
@@ -387,35 +390,24 @@ public class ConfigController extends HttpServlet {
         }
 
 
-        Part filePart = null;
-
-        try {
-            filePart = request.getPart("fileName");
-        } catch (IOException e) {
-            resultBrand.rejectValue("name", "error.fileName", "Błąd odczytu pliku.");
-        }
-
-        String uploadPath = rentierProperties.getUploadPathProducts();
-        String uploadPathForView = rentierProperties.getUploadPathProdutsForView();
-        Optional<File> savedImage = Optional.empty();
-        String fileName = imageService.getFileName(filePart);
-
-        if (!"".equals(fileName)) {
+        String savedFileName = null;
+        if (!"".equals(file.getOriginalFilename())) {
             try {
-                savedImage = brandService.saveBrandImage(filePart, brand, uploadPath, uploadPathForView);
-            } catch (InvalidFileException | IOException e) {
+                savedFileName = brandService.saveBrandLogo(file, brand);
+            } catch (InvalidFileException e) {
                 resultBrand.rejectValue("name", "error.fileName", "Niepoprawny plik");
+            } catch (IOException e) {
+                resultBrand.rejectValue("name", "error.fileName", "Błąd odczytu/zapisu plik");
             }
+
         }
 
-        if (brand.getId() != null && "".equals(fileName)) {
-
+        if (brand.getId() != null && "".equals(file.getOriginalFilename())) {
             brand.setLogoFileName(brandRepository.selectLogoFileNameByProductId(brand.getId()));
-
         }
 
         if (resultBrand.hasErrors()) {
-            brandService.deleteBrandLogo(savedImage);
+            brandService.deleteBrandLogo(savedFileName);
             return "/admin/config";
 
         } else {

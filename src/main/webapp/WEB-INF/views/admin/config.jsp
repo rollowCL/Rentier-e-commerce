@@ -271,9 +271,9 @@ To change this template use File | Settings | File Templates.
                                                     <form:errors path="active" cssClass="error"/>
                                                 </div>
                                                 <div class="col-md-6 form-group">
-                                                    <label for="fileName">Plik logo <small></small></label>
-                                                    <input accept="image/png, image/jpeg" type="file" id="fileName"
-                                                           name="fileName" class="form-control required" />
+                                                    <label for="file">Plik logo <small></small></label>
+                                                    <input accept="image/png, image/jpeg" type="file" id="file"
+                                                           name="file" class="form-control required" />
                                                 </div>
                                                 <div class="col-12">
                                                     <button type="submit"

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import pl.coderslab.rentier.RentierProperties;
 import pl.coderslab.rentier.beans.ProductSearch;
 import pl.coderslab.rentier.entity.*;
@@ -107,7 +108,7 @@ public class ProductController {
 
     @PostMapping("/form")
     public String saveProduct(Model model, @ModelAttribute @Valid Product product, BindingResult resultProduct,
-                              HttpServletRequest request) throws ServletException {
+                              @RequestParam(value = "file", required = false) MultipartFile file) {
 
 
         if (product.getId() == null) {
@@ -125,38 +126,26 @@ public class ProductController {
 
         }
 
-        Part filePart = null;
-
-        try {
-            filePart = request.getPart("fileName");
-        } catch (IOException e) {
-            resultProduct.rejectValue("productName", "error.fileName", "Błąd odczytu pliku.");
-        }
-
-        String uploadPath = rentierProperties.getUploadPathProducts();
-        String uploadPathForView = rentierProperties.getUploadPathProdutsForView();
-        Optional<File> savedImage = Optional.empty();
-        String fileName = imageService.getFileName(filePart);
-
-        if (!"".equals(fileName)) {
+        String savedFileName = null;
+        if (!"".equals(file.getOriginalFilename())) {
             try {
-                savedImage = productService.saveProductImage(filePart,product,uploadPath, uploadPathForView);
-            } catch (InvalidFileException | IOException e) {
+                savedFileName = productService.saveProductImage(file, product);
+            } catch (InvalidFileException e) {
                 resultProduct.rejectValue("productName", "error.fileName", "Niepoprawny plik");
+            } catch (IOException e) {
+                resultProduct.rejectValue("productName", "error.fileName", "Błąd odczytu/zapisu plik");
             }
+
         }
 
-
-        if (product.getId() != null && "".equals(fileName)) {
-
+        if (product.getId() != null && "".equals(file.getOriginalFilename())) {
             product.setImageFileName(productRepository.selectImageFileNameByProductId(product.getId()));
-
         }
 
 
         if (resultProduct.hasErrors()) {
 
-            productService.deleteProductImage(savedImage);
+            productService.deleteProductImage(savedFileName);
             return "/admin/productForm";
 
         } else {

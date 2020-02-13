@@ -2,75 +2,55 @@ package pl.coderslab.rentier.service;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import pl.coderslab.rentier.RentierProperties;
 import pl.coderslab.rentier.beans.ProductSearch;
+import pl.coderslab.rentier.entity.Brand;
 import pl.coderslab.rentier.entity.Product;
 import pl.coderslab.rentier.entity.QProduct;
-import pl.coderslab.rentier.entity.QUser;
 import pl.coderslab.rentier.exception.InvalidFileException;
 import pl.coderslab.rentier.repository.ProductRepository;
 
 import javax.persistence.EntityManager;
-import javax.servlet.http.Part;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
     private final ImageServiceImpl imageService;
     private final ProductRepository productRepository;
     private final EntityManager entityManager;
+    private final RentierProperties rentierProperties;
 
-    public ProductServiceImpl(ImageServiceImpl imageService, ProductRepository productRepository, EntityManager entityManager) {
+    public ProductServiceImpl(ImageServiceImpl imageService, ProductRepository productRepository, EntityManager entityManager, RentierProperties rentierProperties) {
         this.imageService = imageService;
         this.productRepository = productRepository;
         this.entityManager = entityManager;
+        this.rentierProperties = rentierProperties;
     }
 
 
     @Override
-    public Optional<File> saveProductImage(Part filePart, Product product, String uploadPath, String uploadPathForView)
-            throws IOException, FileNotFoundException, InvalidFileException {
+    public String saveProductImage(MultipartFile file, Product product) throws IOException, InvalidFileException {
+        String uploadPath = rentierProperties.getUploadPathProducts();
+        String uploadPathForView = rentierProperties.getUploadPathProdutsForView();
 
-        File file = null;
-        String fileName = imageService.getFileName(filePart);
+        String fileName = imageService.saveImageToPath(file, "product-", uploadPath, uploadPathForView);
 
-        if (imageService.isValidFile(filePart)) {
+        product.setImageFileName(fileName);
 
-            String suffix = "." + FilenameUtils.getExtension(fileName);
-            String prefix = "product-";
-            File uploads = new File(uploadPath);
-            file = File.createTempFile(prefix, suffix, uploads);
-            String imageFileName = uploadPathForView + file.getName();
+        return fileName;
+    }
 
-            InputStream input = filePart.getInputStream();
-            Files.copy(input, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            product.setImageFileName(imageFileName);
+    @Override
+    public void deleteProductImage(String fileName) {
+        String deletePath = rentierProperties.getUploadPathProductsForDelete();
+        File file = new File(deletePath + fileName);
 
-
-        } else {
-
-            throw new InvalidFileException("Błędny plik");
+        if (file.exists()) {
+            file.delete();
         }
-
-
-        return Optional.of(file);
-    }
-
-    @Override
-    public void deleteProductImage(Optional<File> file) {
-
-        file.ifPresent(File::delete);
 
     }
 

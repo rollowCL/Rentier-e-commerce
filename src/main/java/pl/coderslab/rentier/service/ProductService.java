@@ -1,7 +1,9 @@
 package pl.coderslab.rentier.service;
 
 import com.querydsl.core.BooleanBuilder;
+import org.springframework.web.multipart.MultipartFile;
 import pl.coderslab.rentier.beans.ProductSearch;
+import pl.coderslab.rentier.entity.Brand;
 import pl.coderslab.rentier.entity.Product;
 import pl.coderslab.rentier.entity.QProduct;
 import pl.coderslab.rentier.exception.InvalidFileException;
@@ -16,10 +18,8 @@ import java.util.Optional;
 
 public interface ProductService {
 
-    Optional<File> saveProductImage(Part filePart, Product product, String uploadPath, String uploadPathForView)
-            throws IOException, FileNotFoundException, InvalidFileException;
-
-    void deleteProductImage(Optional<File> file);
+    String saveProductImage(MultipartFile file, Product product) throws IOException, InvalidFileException;
+    void deleteProductImage(String fileName);
 
     Iterable<Product> searchProductsForShop(ProductSearch productSearch);
 

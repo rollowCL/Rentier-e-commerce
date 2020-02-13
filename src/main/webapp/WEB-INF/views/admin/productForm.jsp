@@ -85,9 +85,9 @@ To change this template use File | Settings | File Templates.
                                 <form:errors path="productName" cssClass="error"/>
                             </div>
                             <div class="col-md-4 form-group">
-                                <label for="fileName">Plik zdjęcia </label>
-                                <input accept="image/png, image/jpeg" type="file" id="fileName"
-                                       name="fileName" class="form-control required" />
+                                <label for="file">Plik zdjęcia </label>
+                                <input accept="image/png, image/jpeg" type="file" id="file"
+                                       name="file" class="form-control required" />
                             </div>
                             <div class="col-md-12 form-group">
                                 <label for="productDesc">Opis produktu </label>
