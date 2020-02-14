@@ -20,7 +20,7 @@ This is v1 of the project. Still many things to be added.
 ### ToDo list
 
 - [ ] Activation Tokens
-- [ ] Activation email
+- [x] Activation email
 - [ ] Password resets
 - [ ] User Panel
 - [ ] Multi Image for Products
@@ -31,7 +31,7 @@ This is v1 of the project. Still many things to be added.
 - [x] Multi condition filters in views (QueryDSL)
 - [ ] Salesman role and process impl.
 - [ ] Spring Security instead of filters
-- [ ] Error pages
+- [x] Error pages
 - [ ] Order/sales reporting
 
 

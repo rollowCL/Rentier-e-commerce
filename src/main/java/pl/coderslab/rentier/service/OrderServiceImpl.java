@@ -1,5 +1,7 @@
 package pl.coderslab.rentier.service;
 
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import pl.coderslab.rentier.RentierProperties;
@@ -24,7 +26,7 @@ public class OrderServiceImpl implements OrderService {
     private final UserServiceImpl userService;
     private final OrderNumberServiceImpl orderNumberService;
     private final OrderDetailServiceImpl orderDetailService;
-
+    private final org.slf4j.Logger logger = LoggerFactory.getLogger(ProductShopServiceImpl.class);
 
 
     public OrderServiceImpl(Cart cart, UserRepository userRepository, OrderStatusRepository orderStatusRepository,
@@ -44,7 +46,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public String placeOrder(Long id, Order order) {
-
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
             LocalDateTime now = LocalDateTime.now();

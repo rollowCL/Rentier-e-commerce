@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.rentier.entity.ProductCategory;
 import pl.coderslab.rentier.repository.ProductCategoryRepository;
+import pl.coderslab.rentier.service.RegisterServiceImpl;
 import pl.coderslab.rentier.utils.BCrypt;
 import pl.coderslab.rentier.pojo.Login;
 import pl.coderslab.rentier.entity.OrderType;
@@ -32,14 +33,17 @@ public class LoginRegisterController {
     private final UserRoleRepository userRoleRepository;
     private final UserRepository userRepository;
     private final ProductCategoryRepository productCategoryRepository;
+    private final RegisterServiceImpl registerService;
+
 
     public LoginRegisterController(OrderTypeRepository orderTypeRepository,
                                    UserRoleRepository userRoleRepository, UserRepository userRepository,
-                                   ProductCategoryRepository productCategoryRepository) {
+                                   ProductCategoryRepository productCategoryRepository, RegisterServiceImpl registerService) {
         this.orderTypeRepository = orderTypeRepository;
         this.userRoleRepository = userRoleRepository;
         this.userRepository = userRepository;
         this.productCategoryRepository = productCategoryRepository;
+        this.registerService = registerService;
     }
 
 
@@ -123,7 +127,7 @@ public class LoginRegisterController {
         user.setUserRole(userRole);
 
         user.setActive(true);
-        user.setVerified(true);
+        user.setVerified(false);
         user.setRegisterDate(LocalDateTime.now());
 
         if (userRepository.existsByEmail(user.getEmail())) {
@@ -144,7 +148,7 @@ public class LoginRegisterController {
 
             user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
             userRepository.save(user);
-
+            registerService.sendActivationEmail(user);
             return "/login/registerSuccess";
         }
 
