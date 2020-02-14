@@ -7,15 +7,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class RentierProperties {
 
-    private String uploadPathBrands = "/home/osint/Documents/Repos/CodersLab/Rentier/src/main/resources/static/images/brands/";
-    private String uploadPathBrandsForDelete = "/home/osint/Documents/Repos/CodersLab/Rentier/src/main/resources/static";
-    private String uploadPathBrandsForView = "/images/brands/";
+    private final String uploadPathBrands = "/home/osint/Documents/Repos/CodersLab/Rentier/src/main/resources/static/images/brands/";
+    private final String uploadPathBrandsForDelete = "/home/osint/Documents/Repos/CodersLab/Rentier/src/main/resources/static";
+    private final String uploadPathBrandsForView = "/images/brands/";
 
-    private String uploadPathProducts = "/home/osint/Documents/Repos/CodersLab/Rentier/src/main/resources/static/images/products/";
-    private String uploadPathProductsForDelete = "/home/osint/Documents/Repos/CodersLab/Rentier/src/main/resources/static";
-    private String uploadPathProdutsForView = "/images/products/";
+    private final String uploadPathProducts = "/home/osint/Documents/Repos/CodersLab/Rentier/src/main/resources/static/images/products/";
+    private final String uploadPathProductsForDelete = "/home/osint/Documents/Repos/CodersLab/Rentier/src/main/resources/static";
+    private final String uploadPathProdutsForView = "/images/products/";
 
-    private String orderStartStatus = "Nowy";
+    private final String orderStartStatus = "Nowy";
 
     public String getUploadPathBrands() {
         return uploadPathBrands;

@@ -2,6 +2,7 @@ package pl.coderslab.rentier;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.hibernate.jpa.HibernatePersistenceProvider;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

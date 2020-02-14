@@ -4,15 +4,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pl.coderslab.rentier.RentierProperties;
-import pl.coderslab.rentier.controller.admin.ConfigController;
 import pl.coderslab.rentier.entity.Brand;
 import pl.coderslab.rentier.exception.InvalidFileException;
-
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Optional;
 
 @Service
 public class BrandServiceImpl implements BrandService {
