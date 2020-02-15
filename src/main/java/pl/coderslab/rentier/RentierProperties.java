@@ -21,7 +21,7 @@ public class RentierProperties {
     private final String mailPort = "465";
     private final String mailFrom = "rentier.test@o2.pl";
     private final String mailSMTP = "poczta.o2.pl";
-    private final String mailPassword = "1234qwer";
+    private final String mailPassword = "";
     private final String mailPersonal = "Rentier | Sklep";
 
     private final int tokenTypeActivation = 1;
