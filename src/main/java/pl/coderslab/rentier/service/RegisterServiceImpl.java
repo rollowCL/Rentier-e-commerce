@@ -74,7 +74,7 @@ public class RegisterServiceImpl implements RegisterService {
         Token token = new Token();
         token.setTokenType(rentierProperties.getTokenTypeActivation());
         token.setCreateDate(LocalDateTime.now());
-        token.setExpiryDate(token.getCreateDate().plusMinutes(5));
+        token.setExpiryDate(token.getCreateDate().plusHours(1));
         token.setValid(true);
         token.setUser(user);
         token.setTokenValue(generatedToken);

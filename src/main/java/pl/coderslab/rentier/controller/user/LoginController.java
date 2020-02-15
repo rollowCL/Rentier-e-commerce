@@ -69,9 +69,10 @@ public class LoginController {
 
         } else {
 
-            Optional<User> checkedUser = userRepository.findByEmailAndActiveTrueAndVerifiedTrue(login.getEmailLogin());
+            Optional<User> checkedUser = userRepository.findByEmailAndActiveTrue(login.getEmailLogin());
 
-            if (checkedUser.isPresent() && BCrypt.checkpw(login.getPasswordLogin(), checkedUser.get().getPassword())) {
+            if (checkedUser.isPresent() && BCrypt.checkpw(login.getPasswordLogin(), checkedUser.get().getPassword())
+                    && checkedUser.get().isVerified()) {
 
                 model.addAttribute("loggedId", checkedUser.get().getId());
                 model.addAttribute("loggedFirstName", checkedUser.get().getFirstName());
@@ -86,7 +87,7 @@ public class LoginController {
 
                     model.addAttribute("loggedUser", 1);
 
-                    if (referer.contains("register")) {
+                    if (referer.contains("register") || referer.contains("logout")) {
                         referer = null;
                     }
 
@@ -101,6 +102,11 @@ public class LoginController {
 
                 }
 
+            } else if (checkedUser.isPresent() && BCrypt.checkpw(login.getPasswordLogin(), checkedUser.get().getPassword())
+                    && !checkedUser.get().isVerified()) {
+
+                model.addAttribute("message", "Konto nie zostało jeszcze aktywowane.");
+                return "/login/login";
 
             } else {
 
