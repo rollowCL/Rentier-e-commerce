@@ -6,11 +6,11 @@ import pl.coderslab.rentier.entity.User;
 import pl.coderslab.rentier.utils.EmailUtil;
 
 @Service
-public class RegisterServiceImpl implements RegisterService {
+public class LoginRegisterServiceImpl implements LoginRegisterService {
 
     private final RentierProperties rentierProperties;
 
-    public RegisterServiceImpl(RentierProperties rentierProperties) {
+    public LoginRegisterServiceImpl(RentierProperties rentierProperties) {
         this.rentierProperties = rentierProperties;
     }
 
