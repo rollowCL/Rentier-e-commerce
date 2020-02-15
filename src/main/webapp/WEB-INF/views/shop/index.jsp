@@ -128,6 +128,5 @@ To change this template use File | Settings | File Templates.
 <!--  JavaScripts
 ============================================= -->
 <jsp:include page="../scripts.jsp"/>
-
 </body>
 </html>

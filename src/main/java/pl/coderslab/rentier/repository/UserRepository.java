@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByEmail(String email);
 
-    Optional<User> findByEmailAndActiveTrue(String email);
+    Optional<User> findByEmailAndActiveTrueAndVerifiedTrue(String email);
 
     List<User> findByUserRoleId(Long id);
 
@@ -26,5 +26,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Transactional
     @Query(value = "UPDATE users u SET u.user_role_id = :userRoleId WHERE u.id = :id", nativeQuery = true)
     void customUpdateUserRole(@Param("id") Long id, @Param("userRoleId") Long userRoleId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE users u SET u.verified = true WHERE u.id =:id", nativeQuery = true)
+    void makeUserVerified(@Param("id") Long id);
+
 
 }

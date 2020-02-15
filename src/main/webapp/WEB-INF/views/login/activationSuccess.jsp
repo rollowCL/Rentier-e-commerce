@@ -41,7 +41,7 @@ To change this template use File | Settings | File Templates.
         <section id="page-title">
 
             <div class="container clearfix">
-                <h1>Potwierdzenie rejestracji</h1>
+                <h1>Potwierdzenie aktywacji konta</h1>
             </div>
 
         </section><!-- #page-title end -->
@@ -57,8 +57,7 @@ To change this template use File | Settings | File Templates.
 
 						<div>
 							<h3>
-								Dziękujemy za rejestrację! Sprawdź maila. Musisz aktywować konto.<br/>
-								Adresy do faktury i wysyłki podasz przed pierwszym zamówieniem.
+								Konto zostało aktywowane.
 							</h3>
 
 						</div>

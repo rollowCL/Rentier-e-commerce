@@ -207,3 +207,15 @@ CREATE TABLE order_numbers
     number INT(11) NOT NULL,
     PRIMARY KEY (id)
 );
+
+CREATE TABLE tokens (
+                        id BIGINT AUTO_INCREMENT NOT NULL,
+                        token_type TINYINT NOT NULL,
+                        create_date DATETIME NOT NULL,
+                        expiry_date DATETIME NOT NULL,
+                        valid BIT NOT NULL,
+                        user_id BIGINT NOT NULL,
+                        token_value VARCHAR(100) UNIQUE ,
+                        PRIMARY KEY (id),
+                        FOREIGN KEY (user_id) REFERENCES users(id)
+);

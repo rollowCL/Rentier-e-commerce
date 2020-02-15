@@ -4,24 +4,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.rentier.entity.OrderType;
 import pl.coderslab.rentier.entity.ProductCategory;
 import pl.coderslab.rentier.entity.User;
-import pl.coderslab.rentier.entity.UserRole;
 import pl.coderslab.rentier.pojo.Login;
 import pl.coderslab.rentier.repository.OrderTypeRepository;
 import pl.coderslab.rentier.repository.ProductCategoryRepository;
 import pl.coderslab.rentier.repository.UserRepository;
 import pl.coderslab.rentier.repository.UserRoleRepository;
-import pl.coderslab.rentier.service.LoginRegisterServiceImpl;
+import pl.coderslab.rentier.service.RegisterServiceImpl;
 import pl.coderslab.rentier.utils.BCrypt;
-import pl.coderslab.rentier.validation.UserBasicValidation;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,12 +28,12 @@ public class LoginController {
     private final UserRoleRepository userRoleRepository;
     private final UserRepository userRepository;
     private final ProductCategoryRepository productCategoryRepository;
-    private final LoginRegisterServiceImpl registerService;
+    private final RegisterServiceImpl registerService;
 
 
     public LoginController(OrderTypeRepository orderTypeRepository,
                            UserRoleRepository userRoleRepository, UserRepository userRepository,
-                           ProductCategoryRepository productCategoryRepository, LoginRegisterServiceImpl registerService) {
+                           ProductCategoryRepository productCategoryRepository, RegisterServiceImpl registerService) {
         this.orderTypeRepository = orderTypeRepository;
         this.userRoleRepository = userRoleRepository;
         this.userRepository = userRepository;
@@ -67,14 +62,14 @@ public class LoginController {
     public String logInUser(Model model, @ModelAttribute(binding = false) User user, BindingResult resultUser,
                             @ModelAttribute @Valid Login login, BindingResult resultLogin,
                             @SessionAttribute(value = "referer", required = false) String referer) {
-        logger.info("read: " + referer);
+
         if (resultLogin.hasErrors()) {
 
             return "/login/login";
 
         } else {
 
-            Optional<User> checkedUser = userRepository.findByEmailAndActiveTrue(login.getEmailLogin());
+            Optional<User> checkedUser = userRepository.findByEmailAndActiveTrueAndVerifiedTrue(login.getEmailLogin());
 
             if (checkedUser.isPresent() && BCrypt.checkpw(login.getPasswordLogin(), checkedUser.get().getPassword())) {
 
@@ -109,7 +104,7 @@ public class LoginController {
 
             } else {
 
-                model.addAttribute("message", "Nieprawidłowe dane logowania");
+                model.addAttribute("message", "Nieprawidłowe dane logowania.");
                 return "/login/login";
 
             }
