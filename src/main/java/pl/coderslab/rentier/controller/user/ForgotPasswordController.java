@@ -7,16 +7,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.rentier.RentierProperties;
-import pl.coderslab.rentier.entity.OrderType;
 import pl.coderslab.rentier.entity.ProductCategory;
 import pl.coderslab.rentier.entity.User;
-import pl.coderslab.rentier.entity.UserRole;
 import pl.coderslab.rentier.repository.ProductCategoryRepository;
 import pl.coderslab.rentier.repository.UserRepository;
-import pl.coderslab.rentier.service.RegisterServiceImpl;
+import pl.coderslab.rentier.service.ForgotPasswordServiceImpl;
+import pl.coderslab.rentier.service.TokenServiceImpl;
+import pl.coderslab.rentier.service.UserServiceImpl;
 import pl.coderslab.rentier.validation.UserPasswordValidation;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 //@SessionAttributes({"loggedAdmin", "loggedUser", "loggedId", "loggedFirstName", "loggedLastName", "referer"})
@@ -25,16 +24,22 @@ public class ForgotPasswordController {
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(ForgotPasswordController.class);
     private final UserRepository userRepository;
     private final ProductCategoryRepository productCategoryRepository;
-    private final RegisterServiceImpl registerService;
+    private final ForgotPasswordServiceImpl forgotPasswordService;
     private final RentierProperties rentierProperties;
+    private final TokenServiceImpl tokenService;
+    private final UserServiceImpl userService;
 
 
     public ForgotPasswordController(UserRepository userRepository,
-                                    ProductCategoryRepository productCategoryRepository, RegisterServiceImpl registerService, RentierProperties rentierProperties) {
+                                    ProductCategoryRepository productCategoryRepository,
+                                    ForgotPasswordServiceImpl forgotPasswordService, RentierProperties rentierProperties,
+                                    TokenServiceImpl tokenService, UserServiceImpl userService) {
         this.userRepository = userRepository;
         this.productCategoryRepository = productCategoryRepository;
-        this.registerService = registerService;
+        this.forgotPasswordService = forgotPasswordService;
         this.rentierProperties = rentierProperties;
+        this.tokenService = tokenService;
+        this.userService = userService;
     }
 
 
@@ -50,7 +55,7 @@ public class ForgotPasswordController {
 
         if (userRepository.existsByEmail(email)) {
 
-            registerService.resetPasswordProcess(email);
+            forgotPasswordService.resetPasswordProcess(email);
 
 
         }
@@ -61,12 +66,12 @@ public class ForgotPasswordController {
     @GetMapping("/resetpassword")
     public String showResetForm(@RequestParam String token, Model model) {
 
-        if (registerService.validateToken(token, rentierProperties.getTokenTypePasswordReset())) {
+        if (tokenService.validateToken(token, rentierProperties.getTokenTypePasswordReset())) {
 
-            registerService.invalidateToken(token);
+            tokenService.invalidateToken(token);
 
             User user = new User();
-            user.setId(registerService.getUserForToken(token).getId());
+            user.setId(tokenService.getUserForToken(token).getId());
             model.addAttribute("user", user);
             return "/login/resetPassword";
         }
@@ -88,7 +93,7 @@ public class ForgotPasswordController {
 
         } else {
 
-            registerService.updateUserPassword(user);
+            userService.updateUserPassword(user);
             return "/login/resetSuccess";
         }
     }

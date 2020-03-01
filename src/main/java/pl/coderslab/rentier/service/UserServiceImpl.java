@@ -5,6 +5,7 @@ import pl.coderslab.rentier.entity.Address;
 import pl.coderslab.rentier.entity.User;
 import pl.coderslab.rentier.repository.AddressRepository;
 import pl.coderslab.rentier.repository.UserRepository;
+import pl.coderslab.rentier.utils.BCrypt;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -54,5 +55,11 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         addressRepository.save(newUserShipAddress);
 
+    }
+
+    @Override
+    public void updateUserPassword(User user) {
+        user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+        userRepository.updateUserPassword(user.getId(), user.getPassword());
     }
 }

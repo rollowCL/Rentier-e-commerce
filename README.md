@@ -19,9 +19,9 @@ This is v1 of the project. Still many things to be added.
 
 ### ToDo list
 
-- [ ] Activation Tokens
+- [x] Activation Tokens
 - [x] Activation email
-- [ ] Password resets
+- [x] Password resets
 - [ ] User Panel
 - [ ] Multi Image for Products
 - [ ] Product reviews

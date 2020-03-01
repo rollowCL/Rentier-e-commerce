@@ -16,6 +16,7 @@ import pl.coderslab.rentier.entity.UserRole;
 import pl.coderslab.rentier.repository.OrderTypeRepository;
 import pl.coderslab.rentier.repository.UserRepository;
 import pl.coderslab.rentier.repository.UserRoleRepository;
+import pl.coderslab.rentier.service.TokenServiceImpl;
 import pl.coderslab.rentier.validation.UserBasicValidation;
 
 import java.time.LocalDateTime;
@@ -30,17 +31,19 @@ public class RegisterController {
     private final ProductCategoryRepository productCategoryRepository;
     private final RegisterServiceImpl registerService;
     private final RentierProperties rentierProperties;
+    private final TokenServiceImpl tokenService;
 
 
     public RegisterController(OrderTypeRepository orderTypeRepository,
                               UserRoleRepository userRoleRepository, UserRepository userRepository,
-                              ProductCategoryRepository productCategoryRepository, RegisterServiceImpl registerService, RentierProperties rentierProperties) {
+                              ProductCategoryRepository productCategoryRepository, RegisterServiceImpl registerService, RentierProperties rentierProperties, TokenServiceImpl tokenService) {
         this.orderTypeRepository = orderTypeRepository;
         this.userRoleRepository = userRoleRepository;
         this.userRepository = userRepository;
         this.productCategoryRepository = productCategoryRepository;
         this.registerService = registerService;
         this.rentierProperties = rentierProperties;
+        this.tokenService = tokenService;
     }
 
     @PostMapping("/register")
@@ -80,9 +83,9 @@ public class RegisterController {
     @GetMapping("/activate")
     public String activate(@RequestParam String token) {
 
-        if (registerService.validateToken(token, rentierProperties.getTokenTypeActivation())) {
+        if (tokenService.validateToken(token, rentierProperties.getTokenTypeActivation())) {
 
-            registerService.invalidateToken(token);
+            tokenService.invalidateToken(token);
             registerService.makeUserVerified(token);
             return "/login/activationSuccess";
         }
