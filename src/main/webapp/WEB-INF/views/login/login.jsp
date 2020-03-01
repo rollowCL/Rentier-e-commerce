@@ -73,6 +73,9 @@ To change this template use File | Settings | File Templates.
                                 <form:errors path="passwordLogin" cssClass="error"/>
                             </div>
                             <c:out value="${message}"/>
+                            <div class="col_full nobottommargin">
+                                <a href="/forgotpassword" class="fright ">Zapomniałem hasła</a>
+                            </div>
                             <div class="col-12">
                                 <button type="submit"
                                         class="button button-mini button-blue button-3d"
@@ -120,14 +123,12 @@ To change this template use File | Settings | File Templates.
                         <div class="clear"></div>
                         <div class="col-md-6 form-group">
 							<form:label path="password">Hasło</form:label>
-                            <form:input type="password" path="password" id="phone" class="form-control"
-                                        maxlength="9"/>
+                            <form:input type="password" path="password" id="pass1" class="form-control"/>
                             <form:errors path="password" cssClass="error"/>
                         </div>
                         <div class="col-md-6 form-group">
 							<form:label path="password2">Powtórz hasło</form:label>
-                            <form:input type="password" path="password2" id="phone" class="form-control"
-                                        maxlength="9"/>
+                            <form:input type="password" path="password2" id="pass2" class="form-control"/>
                             <form:errors path="password2" cssClass="error"/>
                         </div>
                         <div class="col-12">

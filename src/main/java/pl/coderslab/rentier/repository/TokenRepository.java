@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface TokenRepository extends JpaRepository<Token, Long> {
 
-    boolean existsTokenByTokenValueEqualsAndValidTrueAndExpiryDateAfter(String token, LocalDateTime now);
+    boolean existsTokenByTokenValueEqualsAndValidTrueAndExpiryDateAfterAndTokenType(String token, LocalDateTime now, int tokenType);
     Token findTokenByTokenValue(String tokenValue);
 
     @Modifying

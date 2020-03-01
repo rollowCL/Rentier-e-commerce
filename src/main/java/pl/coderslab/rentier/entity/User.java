@@ -3,6 +3,7 @@ package pl.coderslab.rentier.entity;
 
 import pl.coderslab.rentier.validation.UserBasicValidation;
 import pl.coderslab.rentier.validation.UserExtendedValidation;
+import pl.coderslab.rentier.validation.UserPasswordValidation;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -28,13 +29,13 @@ public class User {
     @Size(min = 5, max = 50, groups = {UserBasicValidation.class})
     private String email;
 
-    @NotBlank(groups = {UserBasicValidation.class})
-    @Size(min = 8, max = 100, groups = {UserBasicValidation.class})
+    @NotBlank(groups = {UserBasicValidation.class, UserPasswordValidation.class})
+    @Size(min = 8, max = 100, groups = {UserBasicValidation.class, UserPasswordValidation.class})
     private String password;
 
     @Transient
-    @NotBlank(groups = {UserBasicValidation.class})
-    @Size(min = 8, max = 100, groups = {UserBasicValidation.class})
+    @NotBlank(groups = {UserBasicValidation.class, UserPasswordValidation.class})
+    @Size(min = 8, max = 100, groups = {UserBasicValidation.class, UserPasswordValidation.class})
     private String password2;
 
     @NotBlank(groups = {UserBasicValidation.class})

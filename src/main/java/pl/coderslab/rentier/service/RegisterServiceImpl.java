@@ -1,7 +1,9 @@
 package pl.coderslab.rentier.service;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pl.coderslab.rentier.RentierProperties;
+import pl.coderslab.rentier.controller.user.ForgotPasswordController;
 import pl.coderslab.rentier.entity.Token;
 import pl.coderslab.rentier.entity.User;
 import pl.coderslab.rentier.repository.TokenRepository;
@@ -11,10 +13,11 @@ import pl.coderslab.rentier.utils.EmailUtil;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
-
+    private final org.slf4j.Logger logger = LoggerFactory.getLogger(RegisterServiceImpl.class);
     private final RentierProperties rentierProperties;
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
@@ -30,8 +33,17 @@ public class RegisterServiceImpl implements RegisterService {
         user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
         userRepository.save(user);
         String generatedToken = generateActivationToken(30);
-        saveToken(user, generatedToken);
+        saveToken(user, generatedToken, rentierProperties.getTokenTypeActivation());
         sendActivationEmail(user, generatedToken);
+    }
+
+    @Override
+    public void updateUserPassword(User user) {
+        logger.info("Password before: " + user.getPassword());
+        user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+        logger.info("Password after: " + user.getPassword());
+        logger.info("Id: " + user.getId());
+        userRepository.updateUserPassword(user.getId(), user.getPassword());
     }
 
     @Override
@@ -44,6 +56,26 @@ public class RegisterServiceImpl implements RegisterService {
 
         EmailUtil.createEmail(user.getEmail(),
                 "Witamy w sklepie Rentier",
+                msgBody,
+                rentierProperties.getMailFrom(),
+                rentierProperties.getMailPassword(),
+                rentierProperties.getMailSMTP(),
+                rentierProperties.getMailPort(),
+                rentierProperties.getMailPersonal()
+        );
+
+
+    }
+
+    @Override
+    public void sendPasswordReminderEmail(User user, String generatedToken) {
+
+        String msgBody = "<h3>Przyponienie hasła</h3><br>" +
+                "http://localhost:8080/resetpassword?token=" + generatedToken;
+
+
+        EmailUtil.createEmail(user.getEmail(),
+                "Przypomnienie hasła w sklepie Rentier",
                 msgBody,
                 rentierProperties.getMailFrom(),
                 rentierProperties.getMailPassword(),
@@ -69,10 +101,10 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public void saveToken(User user, String generatedToken) {
+    public void saveToken(User user, String generatedToken, int tokenType) {
 
         Token token = new Token();
-        token.setTokenType(rentierProperties.getTokenTypeActivation());
+        token.setTokenType(tokenType);
         token.setCreateDate(LocalDateTime.now());
         token.setExpiryDate(token.getCreateDate().plusHours(1));
         token.setValid(true);
@@ -84,9 +116,10 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public boolean validateToken(String token) {
+    public boolean validateToken(String token, int tokenType) {
 
-        return tokenRepository.existsTokenByTokenValueEqualsAndValidTrueAndExpiryDateAfter(token, LocalDateTime.now());
+        return tokenRepository.existsTokenByTokenValueEqualsAndValidTrueAndExpiryDateAfterAndTokenType
+                (token, LocalDateTime.now(), tokenType);
     }
 
     @Override
@@ -99,5 +132,27 @@ public class RegisterServiceImpl implements RegisterService {
     public void makeUserVerified(String token) {
         Token storedToken = tokenRepository.findTokenByTokenValue(token);
         userRepository.makeUserVerified(storedToken.getUser().getId());
+    }
+
+    @Override
+    public void resetPasswordProcess(String email) {
+
+        Optional<User> user = userRepository.findByEmailAndActiveTrue(email);
+
+        if (user.isPresent()) {
+
+            String generatedToken = generateActivationToken(30);
+            saveToken(user.get(), generatedToken, rentierProperties.getTokenTypePasswordReset());
+            sendPasswordReminderEmail(user.get(), generatedToken);
+
+        }
+
+
+    }
+
+    @Override
+    public User getUserForToken(String token) {
+
+        return tokenRepository.findTokenByTokenValue(token).getUser();
     }
 }

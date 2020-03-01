@@ -32,5 +32,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "UPDATE users u SET u.verified = true WHERE u.id =:id", nativeQuery = true)
     void makeUserVerified(@Param("id") Long id);
 
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE users u SET u.password =:newPassword WHERE u.id =:id", nativeQuery = true)
+    void updateUserPassword(@Param("id") Long id, @Param("newPassword") String newPassword);
+
 
 }
