@@ -4,12 +4,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.coderslab.rentier.entity.Role;
 import pl.coderslab.rentier.entity.Shop;
 import pl.coderslab.rentier.entity.User;
-import pl.coderslab.rentier.entity.UserRole;
+import pl.coderslab.rentier.repository.RoleRepository;
 import pl.coderslab.rentier.repository.ShopRepository;
 import pl.coderslab.rentier.repository.UserRepository;
-import pl.coderslab.rentier.repository.UserRoleRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +21,10 @@ import java.util.Optional;
 public class UserController {
 
     private final UserRepository userRepository;
-    private final UserRoleRepository userRoleRepository;
+    private final RoleRepository userRoleRepository;
     private final ShopRepository shopRepository;
 
-    public UserController(UserRepository userRepository, UserRoleRepository userRoleRepository, ShopRepository shopRepository) {
+    public UserController(UserRepository userRepository, RoleRepository userRoleRepository, ShopRepository shopRepository) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.shopRepository = shopRepository;
@@ -34,7 +34,7 @@ public class UserController {
     @GetMapping("")
     public String showUsers(Model model) {
 
-        UserRole userRoleFilter = new UserRole();
+        Role userRoleFilter = new Role();
         userRoleFilter.setId(0L);
 
         model.addAttribute("userRoleFilter", userRoleFilter);
@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @PostMapping("/filterUsers")
-    public String showFilteredUsers(Model model, @ModelAttribute("userRoleFilter") UserRole userRoleFilter, BindingResult result) {
+    public String showFilteredUsers(Model model, @ModelAttribute("userRoleFilter") Role userRoleFilter, BindingResult result) {
 
         if (userRoleFilter.getId() == 0) {
 
@@ -59,7 +59,7 @@ public class UserController {
 
     @PostMapping("/filterUsersName")
     public String showFilteredUsersByName(Model model, @RequestParam String userNameSearch,
-                                          @ModelAttribute(binding = false, name = "userRoleFilter") UserRole userRoleFilter,
+                                          @ModelAttribute(binding = false, name = "userRoleFilter") Role userRoleFilter,
                                           BindingResult result) {
 
         List<User> foundUsers = userRepository.findByLastNameContainingIgnoreCase(userNameSearch);
@@ -168,7 +168,7 @@ public class UserController {
 
 
     @ModelAttribute("userRoles")
-    public List<UserRole> getUserRoles() {
+    public List<Role> getUserRoles() {
 
         return userRoleRepository.findAll();
     }

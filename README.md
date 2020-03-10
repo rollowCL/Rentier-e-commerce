@@ -30,7 +30,7 @@ This is v1 of the project. Still many things to be added.
 - [x] Sorting in views (QueryDSL)
 - [x] Multi condition filters in views (QueryDSL)
 - [ ] Salesman role and process impl.
-- [ ] Spring Security instead of filters
+- [x] Spring Security
 - [x] Error pages
 - [ ] Order/sales reporting
 

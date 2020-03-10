@@ -13,7 +13,6 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-
     boolean existsByEmail(String email);
 
     Optional<User> findByEmailAndActiveTrue(String email);
@@ -36,6 +35,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Transactional
     @Query(value = "UPDATE users u SET u.password =:newPassword WHERE u.id =:id", nativeQuery = true)
     void updateUserPassword(@Param("id") Long id, @Param("newPassword") String newPassword);
+
+
+    @Query(value = "SELECT * FROM users u WHERE u.email = :email", nativeQuery = true)
+    User findByUserName(@Param("email") String email);
 
 
 }

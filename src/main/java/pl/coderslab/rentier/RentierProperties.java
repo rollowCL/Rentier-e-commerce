@@ -27,6 +27,8 @@ public class RentierProperties {
     private final int tokenTypeActivation = 1;
     private final int tokenTypePasswordReset = 2;
 
+    private final String adminRoleName = "ROLE_ADMIN";
+    private final String userRoleName = "ROLE_USER";
 
 
     public String getOrderStartStatus() {
@@ -87,5 +89,13 @@ public class RentierProperties {
 
     public int getTokenTypePasswordReset() {
         return tokenTypePasswordReset;
+    }
+
+    public String getAdminRoleName() {
+        return adminRoleName;
+    }
+
+    public String getUserRoleName() {
+        return userRoleName;
     }
 }

@@ -18,7 +18,6 @@ import pl.coderslab.rentier.validation.UserPasswordValidation;
 
 import java.util.List;
 
-//@SessionAttributes({"loggedAdmin", "loggedUser", "loggedId", "loggedFirstName", "loggedLastName", "referer"})
 @Controller
 public class ForgotPasswordController {
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(ForgotPasswordController.class);

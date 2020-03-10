@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "user_roles")
-public class UserRole {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,7 +65,7 @@ public class UserRole {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserRole userRole = (UserRole) o;
+        Role userRole = (Role) o;
         return Objects.equals(id, userRole.id);
     }
 
@@ -76,7 +76,7 @@ public class UserRole {
 
     @Override
     public String toString() {
-        return "UserRole{" +
+        return "Role{" +
                 "id=" + id +
                 ", roleName='" + roleName + '\'' +
                 ", orderType=" + orderType +

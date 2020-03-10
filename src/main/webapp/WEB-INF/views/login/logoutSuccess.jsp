@@ -58,7 +58,6 @@ To change this template use File | Settings | File Templates.
 						<div>
 							<h3>
 								<strong>Zostałeś wylogowany</strong>
-								<c:out value="${sessionScope.loggedId}"/>
 							</h3>
 							<h4>
 								<a href="/login">Zaloguj</a>

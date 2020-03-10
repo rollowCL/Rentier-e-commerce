@@ -19,7 +19,7 @@ public class LogoutController {
         this.productCategoryRepository = productCategoryRepository;
     }
 
-    @GetMapping("/logout")
+    @GetMapping("/logoutSuccess")
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.invalidate();

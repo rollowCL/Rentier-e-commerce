@@ -1,6 +1,8 @@
 package pl.coderslab.rentier.controller.shop;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,19 +38,22 @@ public class OrderController {
 
 
     @GetMapping("/order/checkout")
-    public String showCheckout(@SessionAttribute(value = "loggedId") Long id, Model model) {
+    public String showCheckout(Model model) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
 
         Order order = new Order();
-        Optional<User> user = userRepository.findById(id);
+        User user = userRepository.findByUserName(currentPrincipalName);
 
-        if (user.get().getBillAddress() != null) {
-            Address userBillAddress = user.get().getBillAddress();
+        if (user.getBillAddress() != null) {
+            Address userBillAddress = user.getBillAddress();
             Address orderBillAddress = orderService.createOrderAddress(userBillAddress);
             order.setBillAddress(orderBillAddress);
         }
 
-        if (user.get().getShipAddress() != null) {
-            Address userShipAddress = user.get().getShipAddress();
+        if (user.getShipAddress() != null) {
+            Address userShipAddress = user.getShipAddress();
             Address orderShipAddress = orderService.createOrderAddress(userShipAddress);
             order.setShipAddress(orderShipAddress);
         }
@@ -60,17 +65,20 @@ public class OrderController {
 
 
     @PostMapping("/order/checkout")
-    public String processCheckout(@SessionAttribute("loggedId") Long userId,
-                                  @ModelAttribute("order") @Valid  Order order,
-                                  BindingResult resultOrder, Model model
-                                  ) {
+    public String processCheckout(@ModelAttribute("order") @Valid  Order order,
+                                  BindingResult resultOrder, Model model) {
+
         if (resultOrder.hasErrors()) {
 
             return "/shop/checkout";
 
         } else {
 
-            String orderNumber = orderService.placeOrder(userId, order);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String currentPrincipalName = authentication.getName();
+            User user = userRepository.findByUserName(currentPrincipalName);
+
+            String orderNumber = orderService.placeOrder(user.getId(), order);
             model.addAttribute("orderNumber", orderNumber);
             return "/shop/orderSuccess";
         }

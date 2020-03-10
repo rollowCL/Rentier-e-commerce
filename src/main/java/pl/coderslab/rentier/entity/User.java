@@ -22,7 +22,7 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "user_role_id")
-    private UserRole userRole;
+    private Role userRole;
 
     @NotEmpty(groups = {UserBasicValidation.class})
     @Email(groups = {UserBasicValidation.class})
@@ -84,11 +84,11 @@ public class User {
         this.id = id;
     }
 
-    public UserRole getUserRole() {
+    public Role getUserRole() {
         return userRole;
     }
 
-    public void setUserRole(UserRole userRole) {
+    public void setUserRole(Role userRole) {
         this.userRole = userRole;
     }
 

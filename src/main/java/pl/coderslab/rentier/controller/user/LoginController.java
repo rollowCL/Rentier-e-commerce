@@ -10,8 +10,8 @@ import pl.coderslab.rentier.entity.User;
 import pl.coderslab.rentier.pojo.Login;
 import pl.coderslab.rentier.repository.OrderTypeRepository;
 import pl.coderslab.rentier.repository.ProductCategoryRepository;
+import pl.coderslab.rentier.repository.RoleRepository;
 import pl.coderslab.rentier.repository.UserRepository;
-import pl.coderslab.rentier.repository.UserRoleRepository;
 import pl.coderslab.rentier.service.RegisterServiceImpl;
 import pl.coderslab.rentier.utils.BCrypt;
 
@@ -20,19 +20,19 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-@SessionAttributes({"loggedAdmin", "loggedUser", "loggedId", "loggedFirstName", "loggedLastName", "referer"})
+
 @Controller
 public class LoginController {
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(LoginController.class);
     private final OrderTypeRepository orderTypeRepository;
-    private final UserRoleRepository userRoleRepository;
+    private final RoleRepository userRoleRepository;
     private final UserRepository userRepository;
     private final ProductCategoryRepository productCategoryRepository;
     private final RegisterServiceImpl registerService;
 
 
     public LoginController(OrderTypeRepository orderTypeRepository,
-                           UserRoleRepository userRoleRepository, UserRepository userRepository,
+                           RoleRepository userRoleRepository, UserRepository userRepository,
                            ProductCategoryRepository productCategoryRepository, RegisterServiceImpl registerService) {
         this.orderTypeRepository = orderTypeRepository;
         this.userRoleRepository = userRoleRepository;
@@ -52,75 +52,12 @@ public class LoginController {
         model.addAttribute("user", user);
         model.addAttribute("login", login);
 
-        String referer = request.getHeader("Referer");
-        model.addAttribute("referer", referer);
-        logger.info("set: " + referer);
         return "/login/login";
     }
 
-    @PostMapping("/login")
-    public String logInUser(Model model, @ModelAttribute(binding = false) User user, BindingResult resultUser,
-                            @ModelAttribute @Valid Login login, BindingResult resultLogin,
-                            @SessionAttribute(value = "referer", required = false) String referer) {
-
-        if (resultLogin.hasErrors()) {
-
-            return "/login/login";
-
-        } else {
-
-            Optional<User> checkedUser = userRepository.findByEmailAndActiveTrue(login.getEmailLogin());
-
-            if (checkedUser.isPresent() && BCrypt.checkpw(login.getPasswordLogin(), checkedUser.get().getPassword())
-                    && checkedUser.get().isVerified()) {
-
-                model.addAttribute("loggedId", checkedUser.get().getId());
-                model.addAttribute("loggedFirstName", checkedUser.get().getFirstName());
-                model.addAttribute("loggedLastName", checkedUser.get().getLastName());
-
-                if (checkedUser.get().getUserRole().getRoleCode().equals("admin")) {
-
-                    model.addAttribute("loggedAdmin", 1);
-                    return "redirect:/admin/config";
-
-                } else {
-
-                    model.addAttribute("loggedUser", 1);
-
-                    if (referer.contains("register") || referer.contains("logout")) {
-                        referer = null;
-                    }
-
-                    if (referer != null) {
-
-                        return "redirect:" + referer;
-
-                    } else {
-
-                        return "redirect:/";
-                    }
-
-                }
-
-            } else if (checkedUser.isPresent() && BCrypt.checkpw(login.getPasswordLogin(), checkedUser.get().getPassword())
-                    && !checkedUser.get().isVerified()) {
-
-                model.addAttribute("message", "Konto nie zostało jeszcze aktywowane.");
-                return "/login/login";
-
-            } else {
-
-                model.addAttribute("message", "Nieprawidłowe dane logowania.");
-                return "/login/login";
-
-            }
-
-        }
-
-    }
 
     @GetMapping("/loginSuccess")
-    public String showLoginSuccess(@SessionAttribute("loggedId") Long id) {
+    public String showLoginSuccess() {
 
         return "/login/loginSuccess";
     }
