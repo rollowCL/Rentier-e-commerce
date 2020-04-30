@@ -2,6 +2,7 @@ package pl.coderslab.rentier;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.hibernate.jpa.HibernatePersistenceProvider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +13,9 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.LocalEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import pl.coderslab.rentier.converter.*;
 import pl.coderslab.rentier.filter.adminURLFilter;
@@ -27,11 +30,31 @@ import javax.persistence.Persistence;
 
 @Configuration
 @ComponentScan(basePackages = "pl.coderslab.rentier")
+@EnableTransactionManagement
 public class AppConfig implements WebMvcConfigurer {
 
+    @Value("${rentier.dataSource}")
+    private String dataSource;
+
     @Override
-    public void addFormatters(FormatterRegistry registry)
-    {
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
+        if (dataSource.equals("LOCAL")) {
+            registry
+                    .addResourceHandler("/brands/**")
+                    .addResourceLocations("file:///C:\\opt\\rentier\\brands\\");
+
+            registry
+                    .addResourceHandler("/products/**")
+                    .addResourceLocations("file:///C:\\opt\\rentier\\products\\");
+
+        }
+
+    }
+
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(getBrandConverter());
         registry.addConverter(getDeliveryMethodConverter());
         registry.addConverter(getOrderStatusConverter());
@@ -41,6 +64,7 @@ public class AppConfig implements WebMvcConfigurer {
         registry.addConverter(getProductSizeConverter());
         registry.addConverter(getUserRoleConverter());
     }
+
     @Bean
     public BrandConverter getBrandConverter() {
 
@@ -105,8 +129,8 @@ public class AppConfig implements WebMvcConfigurer {
 
 
     @Bean
-    public FilterRegistrationBean <adminURLFilter> adminFilterRegistrationBean() {
-        FilterRegistrationBean < adminURLFilter > registrationBean = new FilterRegistrationBean();
+    public FilterRegistrationBean<adminURLFilter> adminFilterRegistrationBean() {
+        FilterRegistrationBean<adminURLFilter> registrationBean = new FilterRegistrationBean();
         adminURLFilter customURLFilter = new adminURLFilter();
 
         registrationBean.setFilter(customURLFilter);
@@ -116,8 +140,8 @@ public class AppConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public FilterRegistrationBean <userURLFilter> userFilterRegistrationBean() {
-        FilterRegistrationBean < userURLFilter > registrationBean = new FilterRegistrationBean();
+    public FilterRegistrationBean<userURLFilter> userFilterRegistrationBean() {
+        FilterRegistrationBean<userURLFilter> registrationBean = new FilterRegistrationBean();
         userURLFilter customURLFilter = new userURLFilter();
 
         registrationBean.setFilter(customURLFilter);
@@ -126,20 +150,33 @@ public class AppConfig implements WebMvcConfigurer {
         return registrationBean;
     }
 
-    @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-        LocalContainerEntityManagerFactoryBean factory =
-                new LocalContainerEntityManagerFactoryBean();
-        factory.setPersistenceProviderClass(HibernatePersistenceProvider.class);
-        return factory;
-    }
+//    @Bean
+//    public LocalEntityManagerFactoryBean entityManagerFactory() {
+//        LocalEntityManagerFactoryBean entityManagerFactoryBean = new LocalEntityManagerFactoryBean();
+//        entityManagerFactoryBean.setPersistenceUnitName("rentierPersistenceUnit");
+//        return entityManagerFactoryBean;
+//    }
+//
+//    @Bean
+//    public JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+//        JpaTransactionManager jpaTransactionManager = new JpaTransactionManager(entityManagerFactory);
+//        return jpaTransactionManager;
+//    }
 
-    @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
-        JpaTransactionManager txManager = new JpaTransactionManager();
-        txManager.setEntityManagerFactory(entityManagerFactory);
-        return txManager;
-    }
+//    @Bean
+//    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+//        LocalContainerEntityManagerFactoryBean factory =
+//                new LocalContainerEntityManagerFactoryBean();
+//        factory.setPersistenceProviderClass(HibernatePersistenceProvider.class);
+//        return factory;
+//    }
+//
+//    @Bean
+//    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+//        JpaTransactionManager txManager = new JpaTransactionManager();
+//        txManager.setEntityManagerFactory(entityManagerFactory);
+//        return txManager;
+//    }
 
     @Bean(name = "multipartResolver")
     public CommonsMultipartResolver multipartResolver() {

@@ -2,27 +2,19 @@ package pl.coderslab.rentier.service;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import pl.coderslab.rentier.RentierProperties;
 import pl.coderslab.rentier.entity.Token;
 import pl.coderslab.rentier.entity.User;
 import pl.coderslab.rentier.repository.TokenRepository;
-import pl.coderslab.rentier.repository.UserRepository;
-import pl.coderslab.rentier.utils.BCrypt;
-import pl.coderslab.rentier.utils.EmailUtil;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 public class TokenServiceImpl implements TokenService {
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(TokenServiceImpl.class);
-    private final RentierProperties rentierProperties;
     private final TokenRepository tokenRepository;
 
-    public TokenServiceImpl(RentierProperties rentierProperties,
-                            TokenRepository tokenRepository) {
-        this.rentierProperties = rentierProperties;
+    public TokenServiceImpl(TokenRepository tokenRepository) {
         this.tokenRepository = tokenRepository;
     }
 

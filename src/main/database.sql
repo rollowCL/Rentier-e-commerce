@@ -1,4 +1,4 @@
-CREATE DATABASE rentier CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE rentier CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER DATABASE rentier CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 CREATE TABLE brands
@@ -92,6 +92,7 @@ CREATE TABLE user_roles
     id BIGINT AUTO_INCREMENT NOT NULL,
     role_name VARCHAR(255) NOT NULL,
     order_type_id BIGINT NOT NULL,
+    role_code VARCHAR(10) NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (order_type_id) REFERENCES order_types(id)
 );
@@ -101,7 +102,7 @@ CREATE TABLE users
 (
     id BIGINT AUTO_INCREMENT NOT NULL,
     user_role_id BIGINT NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
+    email VARCHAR(40) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
@@ -109,8 +110,8 @@ CREATE TABLE users
     register_date DATETIME NOT NULL,
     active BIT NOT NULL,
     verified BIT NOT NULL,
-    bill_address_id BIGINT NOT NULL,
-    ship_address_id BIGINT NOT NULL,
+    bill_address_id BIGINT,
+    ship_address_id BIGINT,
     PRIMARY KEY (id),
     FOREIGN KEY (user_role_id) REFERENCES user_roles(id)
 );
@@ -145,7 +146,7 @@ CREATE TABLE order_statuses
     id BIGINT AUTO_INCREMENT NOT NULL,
     order_status_name VARCHAR(255) NOT NULL,
     active BIT NOT NULL,
-    delivery_method_id BIT NOT NULL,
+    delivery_method_id BIGINT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (delivery_method_id) REFERENCES delivery_methods(id)
 );

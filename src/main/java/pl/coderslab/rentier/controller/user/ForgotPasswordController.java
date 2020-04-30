@@ -1,12 +1,12 @@
 package pl.coderslab.rentier.controller.user;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.rentier.RentierProperties;
 import pl.coderslab.rentier.entity.ProductCategory;
 import pl.coderslab.rentier.entity.User;
 import pl.coderslab.rentier.repository.ProductCategoryRepository;
@@ -25,19 +25,19 @@ public class ForgotPasswordController {
     private final UserRepository userRepository;
     private final ProductCategoryRepository productCategoryRepository;
     private final ForgotPasswordServiceImpl forgotPasswordService;
-    private final RentierProperties rentierProperties;
     private final TokenServiceImpl tokenService;
     private final UserServiceImpl userService;
 
+    @Value("${rentier.tokenTypePasswordReset}")
+    private int tokenTypePasswordReset;
 
     public ForgotPasswordController(UserRepository userRepository,
                                     ProductCategoryRepository productCategoryRepository,
-                                    ForgotPasswordServiceImpl forgotPasswordService, RentierProperties rentierProperties,
+                                    ForgotPasswordServiceImpl forgotPasswordService,
                                     TokenServiceImpl tokenService, UserServiceImpl userService) {
         this.userRepository = userRepository;
         this.productCategoryRepository = productCategoryRepository;
         this.forgotPasswordService = forgotPasswordService;
-        this.rentierProperties = rentierProperties;
         this.tokenService = tokenService;
         this.userService = userService;
     }
@@ -66,7 +66,7 @@ public class ForgotPasswordController {
     @GetMapping("/resetpassword")
     public String showResetForm(@RequestParam String token, Model model) {
 
-        if (tokenService.validateToken(token, rentierProperties.getTokenTypePasswordReset())) {
+        if (tokenService.validateToken(token, tokenTypePasswordReset)) {
 
             tokenService.invalidateToken(token);
 

@@ -1,6 +1,7 @@
 package pl.coderslab.rentier.controller.shop;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +24,9 @@ public class ShopController {
     private final ProductSizeRepository productSizeRepository;
     private final ProductService productService;
     private final BrandRepository brandRepository;
+    @Value("${rentier.dataSource}")
+    private String dataSource;
+
 
     public ShopController(ProductCategoryRepository productCategoryRepository, ProductShopRepository productShopRepository,
                           ProductRepository productRepository, ProductSizeRepository productSizeRepository, Cart cart, ProductService productService, BrandRepository brandRepository) {
@@ -38,6 +42,7 @@ public class ShopController {
     @GetMapping("/")
     public String showIndex(Model model, @RequestParam(required = false) Long categoryId) {
 
+        logger.info("Datasource: " + dataSource);
         ProductSearch productSearch = new ProductSearch();
 
         if (categoryId != null) {

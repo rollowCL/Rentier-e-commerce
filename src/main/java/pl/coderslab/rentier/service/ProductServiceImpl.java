@@ -2,11 +2,11 @@ package pl.coderslab.rentier.service;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import pl.coderslab.rentier.RentierProperties;
 import pl.coderslab.rentier.beans.ProductSearch;
-import pl.coderslab.rentier.entity.Brand;
 import pl.coderslab.rentier.entity.Product;
 import pl.coderslab.rentier.entity.QProduct;
 import pl.coderslab.rentier.exception.InvalidFileException;
@@ -21,22 +21,30 @@ public class ProductServiceImpl implements ProductService {
     private final ImageServiceImpl imageService;
     private final ProductRepository productRepository;
     private final EntityManager entityManager;
-    private final RentierProperties rentierProperties;
+    private final org.slf4j.Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
+    @Value("${rentier.uploadPathProducts}")
+    private String uploadPathProducts;
 
-    public ProductServiceImpl(ImageServiceImpl imageService, ProductRepository productRepository, EntityManager entityManager, RentierProperties rentierProperties) {
+    @Value("${rentier.dataSource}")
+    private String dataSource;
+
+    public ProductServiceImpl(ImageServiceImpl imageService, ProductRepository productRepository,
+                              EntityManager entityManager) {
         this.imageService = imageService;
         this.productRepository = productRepository;
         this.entityManager = entityManager;
-        this.rentierProperties = rentierProperties;
     }
 
 
     @Override
     public String saveProductImage(MultipartFile file, Product product) throws IOException, InvalidFileException {
-        String uploadPath = rentierProperties.getUploadPathProducts();
-        String uploadPathForView = rentierProperties.getUploadPathProdutsForView();
+        String fileName = null;
 
-        String fileName = imageService.saveImageToPath(file, "product-", uploadPath, uploadPathForView);
+        if (dataSource.equals("AZURE")) {
+            fileName = imageService.saveImageToPath(file, "product-", uploadPathProducts);
+        } else if (dataSource.equals("LOCAL")) {
+            fileName = imageService.saveImageToPathLocal(file, "product-", uploadPathProducts, "/products/");
+        }
 
         product.setImageFileName(fileName);
 
@@ -45,13 +53,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProductImage(String fileName) {
-        String deletePath = rentierProperties.getUploadPathProductsForDelete();
-        File file = new File(deletePath + fileName);
 
-        if (file.exists()) {
-            file.delete();
+        if (dataSource.equals("AZURE")) {
+            imageService.deleteBlob(fileName);
+        } else if (dataSource.equals("LOCAL")) {
+            logger.info(uploadPathProducts + fileName.substring(fileName.lastIndexOf('/')));
+            imageService.deleteLocalFile(uploadPathProducts + fileName.substring(fileName.lastIndexOf('/')));
         }
-
     }
 
     @Override

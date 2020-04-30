@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pl.coderslab.rentier.RentierProperties;
 import pl.coderslab.rentier.beans.ProductSearch;
 import pl.coderslab.rentier.entity.*;
 import pl.coderslab.rentier.exception.InvalidFileException;
@@ -17,33 +16,26 @@ import pl.coderslab.rentier.repository.ProductRepository;
 import pl.coderslab.rentier.service.ImageServiceImpl;
 import pl.coderslab.rentier.service.ProductServiceImpl;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @Controller
 @RequestMapping("/admin/products")
 public class ProductController {
 
-    private final RentierProperties rentierProperties;
     private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;
     private final BrandRepository brandRepository;
     private final ProductServiceImpl productService;
     private final ImageServiceImpl imageService;
 
-    public ProductController(RentierProperties rentierProperties, ProductRepository productRepository,
+    public ProductController(ProductRepository productRepository,
                              ProductCategoryRepository productCategoryRepository, BrandRepository brandRepository,
                              ProductServiceImpl productService, ImageServiceImpl imageService) {
-        this.rentierProperties = rentierProperties;
         this.productRepository = productRepository;
         this.productCategoryRepository = productCategoryRepository;
         this.brandRepository = brandRepository;
@@ -172,10 +164,11 @@ public class ProductController {
 
         if (productRepository.findById(productId).isPresent()) {
             Product product = productRepository.findById(productId).get();
-            File file = new File(rentierProperties.getUploadPathProductsForDelete() + product.getImageFileName());
-            if (file.exists()) {
-                file.delete();
-            }
+            productService.deleteProductImage(product.getImageFileName());
+//            File file = new File(rentierProperties.getUploadPathProductsForDelete() + product.getImageFileName());
+//            if (file.exists()) {
+//                file.delete();
+//            }
             productRepository.delete(product);
         }
 

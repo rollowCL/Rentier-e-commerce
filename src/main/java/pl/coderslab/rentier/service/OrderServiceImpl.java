@@ -4,7 +4,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import pl.coderslab.rentier.RentierProperties;
 import pl.coderslab.rentier.beans.Cart;
 import pl.coderslab.rentier.entity.*;
 import pl.coderslab.rentier.repository.*;
@@ -18,10 +17,12 @@ import java.util.Optional;
 @Service
 public class OrderServiceImpl implements OrderService {
 
+    @Value("${rentier.orderStartStatus}")
+    private String orderStartStatus;
+
     private final Cart cart;
     private final UserRepository userRepository;
     private final OrderStatusRepository orderStatusRepository;
-    private final RentierProperties rentierProperties;
     private final OrderRepository orderRepository;
     private final UserServiceImpl userService;
     private final OrderNumberServiceImpl orderNumberService;
@@ -30,12 +31,11 @@ public class OrderServiceImpl implements OrderService {
 
 
     public OrderServiceImpl(Cart cart, UserRepository userRepository, OrderStatusRepository orderStatusRepository,
-                            RentierProperties rentierProperties, OrderRepository orderRepository,
+                            OrderRepository orderRepository,
                             UserServiceImpl userService, OrderNumberServiceImpl orderNumberService, OrderDetailServiceImpl orderDetailService) {
         this.cart = cart;
         this.userRepository = userRepository;
         this.orderStatusRepository = orderStatusRepository;
-        this.rentierProperties = rentierProperties;
         this.orderRepository = orderRepository;
         this.userService = userService;
         this.orderNumberService = orderNumberService;
@@ -66,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
             order.setOrderType(orderType);
 
             OrderStatus orderStatus = orderStatusRepository.findByDeliveryMethodAndOrderStatusName(order.getDeliveryMethod(),
-                    rentierProperties.getOrderStartStatus());
+                    orderStartStatus);
             order.setOrderStatus(orderStatus);
             order.setUser(user.get());
 

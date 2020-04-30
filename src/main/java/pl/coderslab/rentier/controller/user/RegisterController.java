@@ -1,11 +1,11 @@
 package pl.coderslab.rentier.controller.user;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.rentier.RentierProperties;
 import pl.coderslab.rentier.entity.ProductCategory;
 import pl.coderslab.rentier.repository.ProductCategoryRepository;
 import pl.coderslab.rentier.service.RegisterServiceImpl;
@@ -30,19 +30,20 @@ public class RegisterController {
     private final UserRepository userRepository;
     private final ProductCategoryRepository productCategoryRepository;
     private final RegisterServiceImpl registerService;
-    private final RentierProperties rentierProperties;
     private final TokenServiceImpl tokenService;
 
+    @Value("${rentier.tokenTypeActivation}")
+    private int tokenTypeActivation;
 
     public RegisterController(OrderTypeRepository orderTypeRepository,
                               UserRoleRepository userRoleRepository, UserRepository userRepository,
-                              ProductCategoryRepository productCategoryRepository, RegisterServiceImpl registerService, RentierProperties rentierProperties, TokenServiceImpl tokenService) {
+                              ProductCategoryRepository productCategoryRepository, RegisterServiceImpl registerService,
+                              TokenServiceImpl tokenService) {
         this.orderTypeRepository = orderTypeRepository;
         this.userRoleRepository = userRoleRepository;
         this.userRepository = userRepository;
         this.productCategoryRepository = productCategoryRepository;
         this.registerService = registerService;
-        this.rentierProperties = rentierProperties;
         this.tokenService = tokenService;
     }
 
@@ -83,7 +84,7 @@ public class RegisterController {
     @GetMapping("/activate")
     public String activate(@RequestParam String token) {
 
-        if (tokenService.validateToken(token, rentierProperties.getTokenTypeActivation())) {
+        if (tokenService.validateToken(token, tokenTypeActivation)) {
 
             tokenService.invalidateToken(token);
             registerService.makeUserVerified(token);
