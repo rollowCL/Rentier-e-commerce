@@ -1,14 +1,11 @@
 package pl.coderslab.rentier.controller.admin;
 
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pl.coderslab.rentier.RentierProperties;
-import pl.coderslab.rentier.beans.Cart;
 import pl.coderslab.rentier.entity.*;
 import pl.coderslab.rentier.exception.InvalidFileException;
 import pl.coderslab.rentier.repository.*;
@@ -18,11 +15,9 @@ import pl.coderslab.rentier.service.ImageServiceImpl;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Optional;
 
 
 @Controller
@@ -31,7 +26,6 @@ import java.util.Optional;
 public class ConfigController extends HttpServlet {
 
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(ConfigController.class);
-    private final RentierProperties rentierProperties;
     private final ProductCategoryRepository productCategoryRepository;
     private final BrandRepository brandRepository;
     private final DeliveryMethodRepository deliveryMethodRepository;
@@ -44,13 +38,12 @@ public class ConfigController extends HttpServlet {
     private final ImageServiceImpl imageService;
     private final BrandServiceImpl brandService;
 
-    public ConfigController(RentierProperties rentierProperties, ProductCategoryRepository productCategoryRepository,
+    public ConfigController(ProductCategoryRepository productCategoryRepository,
                             BrandRepository brandRepository, DeliveryMethodRepository deliveryMethodRepository,
                             PaymentMethodRepository paymentMethodRepository, ShopRepository shopRepository,
                             ProductSizeRepository productSizeRepository, OrderStatusRepository orderStatusRepository,
                             ProductRepository productRepository, ProductShopRepository productShopRepository,
                             ImageServiceImpl imageService, BrandServiceImpl brandService) {
-        this.rentierProperties = rentierProperties;
         this.productCategoryRepository = productCategoryRepository;
         this.brandRepository = brandRepository;
         this.deliveryMethodRepository = deliveryMethodRepository;
@@ -267,10 +260,7 @@ public class ConfigController extends HttpServlet {
         if (brandId != null) {
             if (brandRepository.findById(brandId).isPresent()) {
                 Brand brand = brandRepository.findById(brandId).get();
-                File file = new File(rentierProperties.getUploadPathBrandsForDelete() + brand.getLogoFileName());
-                if (file.exists()) {
-                    file.delete();
-                }
+                brandService.deleteBrandLogo(brand.getLogoFileName());
                 brandRepository.delete(brand);
 
             }

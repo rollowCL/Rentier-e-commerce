@@ -12,6 +12,11 @@ public interface ImageService {
 
     String getFileName(Part part);
     boolean isValidFile(MultipartFile filePart) throws IOException;
-    String saveImageToPath(MultipartFile filePart, String prefix, String uploadPath, String uploadPathForView)
+    String saveImageToPath(MultipartFile filePart, String prefix, String uploadPath)
             throws InvalidFileException, IOException;
+    String saveImageToPathLocal(MultipartFile filePart, String prefix, String uploadPath, String resourcePath)
+            throws InvalidFileException, IOException;
+    void deleteBlob(String fileName);
+    String getBlobName(String fileName);
+    public void deleteLocalFile(String fileName);
 }

@@ -23,21 +23,13 @@ public class EmailUtil {
                                  String personal) {
         try {
             MimeMessage msg = new MimeMessage(session);
-            //set message headers
-            msg.addHeader("Content-type", "text/HTML; charset=UTF-8");
-            msg.addHeader("format", "flowed");
-            msg.addHeader("Content-Transfer-Encoding", "8bit");
-
+            msg.setHeader("Content-Type", "text/html; charset=iso-8859-2");
+            msg.setHeader("Content-Language", "pl");
             msg.setFrom(new InternetAddress(fromEmail, personal));
-
             msg.setReplyTo(InternetAddress.parse(fromEmail, false));
-
-            msg.setSubject(subject, "UTF-8");
-
+            msg.setSubject(subject, "iso-8859-2");
             msg.setSentDate(new Date());
-
-            msg.setContent(body, "text/html");
-
+            msg.setContent(body, "text/html; charset=iso-8859-2");
             msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
             Transport.send(msg);
 

@@ -1,32 +1,40 @@
 package pl.coderslab.rentier.service;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import pl.coderslab.rentier.RentierProperties;
 import pl.coderslab.rentier.entity.Brand;
 import pl.coderslab.rentier.exception.InvalidFileException;
-import java.io.File;
+
 import java.io.IOException;
 
 @Service
 public class BrandServiceImpl implements BrandService {
+
+    @Value("${rentier.uploadPathBrands}")
+    private String uploadPathBrands;
+
+    @Value("${rentier.dataSource}")
+    private String dataSource;
+
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(BrandServiceImpl.class);
     private final ImageServiceImpl imageService;
-    private final RentierProperties rentierProperties;
 
-    public BrandServiceImpl(ImageServiceImpl imageService, RentierProperties rentierProperties) {
+    public BrandServiceImpl(ImageServiceImpl imageService) {
         this.imageService = imageService;
-        this.rentierProperties = rentierProperties;
     }
 
 
     @Override
     public String saveBrandLogo(MultipartFile file, Brand brand) throws IOException, InvalidFileException {
-        String uploadPath = rentierProperties.getUploadPathBrands();
-        String uploadPathForView = rentierProperties.getUploadPathBrandsForView();
+        String fileName = null;
 
-        String fileName = imageService.saveImageToPath(file, "brand-", uploadPath, uploadPathForView);
+        if (dataSource.equals("AZURE")) {
+            fileName = imageService.saveImageToPath(file, "brand-", uploadPathBrands);
+        } else if (dataSource.equals("LOCAL")) {
+            fileName = imageService.saveImageToPathLocal(file, "brand-", uploadPathBrands, "/brands/");
+        }
 
         brand.setLogoFileName(fileName);
 
@@ -35,11 +43,12 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public void deleteBrandLogo(String fileName) {
-        String deletePath = rentierProperties.getUploadPathBrandsForDelete();
-        File file = new File(deletePath + fileName);
 
-        if (file.exists()) {
-            file.delete();
+        if (dataSource.equals("AZURE")) {
+            imageService.deleteBlob(fileName);
+        } else if (dataSource.equals("LOCAL")) {
+            logger.info(uploadPathBrands + fileName.substring(fileName.lastIndexOf('/')));
+            imageService.deleteLocalFile(uploadPathBrands + fileName.substring(fileName.lastIndexOf('/')));
         }
 
     }

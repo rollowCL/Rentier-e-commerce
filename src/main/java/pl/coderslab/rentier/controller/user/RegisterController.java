@@ -1,21 +1,21 @@
 package pl.coderslab.rentier.controller.user;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.rentier.RentierProperties;
 import pl.coderslab.rentier.entity.ProductCategory;
-import pl.coderslab.rentier.entity.Role;
 import pl.coderslab.rentier.repository.ProductCategoryRepository;
-import pl.coderslab.rentier.repository.RoleRepository;
 import pl.coderslab.rentier.service.RegisterServiceImpl;
 import pl.coderslab.rentier.pojo.Login;
 import pl.coderslab.rentier.entity.OrderType;
 import pl.coderslab.rentier.entity.User;
+import pl.coderslab.rentier.entity.UserRole;
 import pl.coderslab.rentier.repository.OrderTypeRepository;
 import pl.coderslab.rentier.repository.UserRepository;
+import pl.coderslab.rentier.repository.UserRoleRepository;
 import pl.coderslab.rentier.service.TokenServiceImpl;
 import pl.coderslab.rentier.validation.UserBasicValidation;
 
@@ -26,23 +26,24 @@ import java.util.List;
 public class RegisterController {
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(RegisterController.class);
     private final OrderTypeRepository orderTypeRepository;
-    private final RoleRepository userRoleRepository;
+    private final UserRoleRepository userRoleRepository;
     private final UserRepository userRepository;
     private final ProductCategoryRepository productCategoryRepository;
     private final RegisterServiceImpl registerService;
-    private final RentierProperties rentierProperties;
     private final TokenServiceImpl tokenService;
 
+    @Value("${rentier.tokenTypeActivation}")
+    private int tokenTypeActivation;
 
     public RegisterController(OrderTypeRepository orderTypeRepository,
-                              RoleRepository userRoleRepository, UserRepository userRepository,
-                              ProductCategoryRepository productCategoryRepository, RegisterServiceImpl registerService, RentierProperties rentierProperties, TokenServiceImpl tokenService) {
+                              UserRoleRepository userRoleRepository, UserRepository userRepository,
+                              ProductCategoryRepository productCategoryRepository, RegisterServiceImpl registerService,
+                              TokenServiceImpl tokenService) {
         this.orderTypeRepository = orderTypeRepository;
         this.userRoleRepository = userRoleRepository;
         this.userRepository = userRepository;
         this.productCategoryRepository = productCategoryRepository;
         this.registerService = registerService;
-        this.rentierProperties = rentierProperties;
         this.tokenService = tokenService;
     }
 
@@ -68,7 +69,7 @@ public class RegisterController {
         } else {
 
             OrderType orderType = orderTypeRepository.findExternalOrderTypeIdByOrderTypeNameEquals("external");
-            Role userRole = userRoleRepository.findByOrderTypeId(orderType.getId());
+            UserRole userRole = userRoleRepository.findByOrderTypeId(orderType.getId());
             user.setUserRole(userRole);
             user.setActive(true);
             user.setVerified(false);
@@ -83,7 +84,7 @@ public class RegisterController {
     @GetMapping("/activate")
     public String activate(@RequestParam String token) {
 
-        if (tokenService.validateToken(token, rentierProperties.getTokenTypeActivation())) {
+        if (tokenService.validateToken(token, tokenTypeActivation)) {
 
             tokenService.invalidateToken(token);
             registerService.makeUserVerified(token);

@@ -1,21 +1,19 @@
 package pl.coderslab.rentier;
 
+import com.microsoft.azure.storage.blob.CloudBlobClient;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import pl.coderslab.rentier.utils.EmailUtil;
-
-import java.nio.charset.Charset;
+import pl.coderslab.rentier.controller.shop.ShopController;
 
 @SpringBootApplication
 public class RentierApplication {
 
+    private final static org.slf4j.Logger logger = LoggerFactory.getLogger(RentierApplication.class);
+
     public static void main(String[] args) {
         SpringApplication.run(RentierApplication.class, args);
-
 
     }
 
