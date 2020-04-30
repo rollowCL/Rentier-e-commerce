@@ -15,7 +15,6 @@ clothing shops.
 
 ## Status
 
-This is v1 of the project. Still many things to be added.
 
 ### ToDo list
 
@@ -33,6 +32,9 @@ This is v1 of the project. Still many things to be added.
 - [ ] Spring Security instead of filters
 - [x] Error pages
 - [ ] Order/sales reporting
+- [x] Microsoft Azzure MySQL support
+- [x] Microsoft Azzure Storage support
+- [x] Separate properties for local and azzure env.
 
 
 
