@@ -64,7 +64,7 @@ public class RegisterController {
 
         if (resultUser.hasErrors()) {
 
-            return "/login/login";
+            return "login/login";
 
         } else {
 
@@ -75,7 +75,7 @@ public class RegisterController {
             user.setVerified(false);
             user.setRegisterDate(LocalDateTime.now());
             registerService.registerUser(user);
-            return "/login/registerSuccess";
+            return "login/registerSuccess";
         }
 
 
@@ -88,10 +88,10 @@ public class RegisterController {
 
             tokenService.invalidateToken(token);
             registerService.makeUserVerified(token);
-            return "/login/activationSuccess";
+            return "login/activationSuccess";
         }
 
-        return "/login/activationError";
+        return "login/activationError";
     }
 
     @ModelAttribute("productCategories")

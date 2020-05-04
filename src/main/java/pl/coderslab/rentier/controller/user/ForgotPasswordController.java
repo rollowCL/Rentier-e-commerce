@@ -45,7 +45,7 @@ public class ForgotPasswordController {
     @GetMapping("/forgotpassword")
     public String showEmailForm() {
 
-        return "/login/forgot";
+        return "login/forgot";
     }
 
 
@@ -59,7 +59,7 @@ public class ForgotPasswordController {
 
         }
 
-        return "/login/forgotSuccess";
+        return "login/forgotSuccess";
     }
 
     @GetMapping("/resetpassword")
@@ -72,10 +72,10 @@ public class ForgotPasswordController {
             User user = new User();
             user.setId(tokenService.getUserForToken(token).getId());
             model.addAttribute("user", user);
-            return "/login/resetPassword";
+            return "login/resetPassword";
         }
 
-        return "/login/resetError";
+        return "login/resetError";
     }
 
 
@@ -88,12 +88,12 @@ public class ForgotPasswordController {
 
         if (resultUser.hasErrors()) {
 
-            return "/login/resetPassword";
+            return "login/resetPassword";
 
         } else {
 
             userService.updateUserPassword(user);
-            return "/login/resetSuccess";
+            return "login/resetSuccess";
         }
     }
 

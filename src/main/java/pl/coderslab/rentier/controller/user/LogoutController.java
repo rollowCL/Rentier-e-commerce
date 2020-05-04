@@ -24,7 +24,7 @@ public class LogoutController {
         HttpSession session = request.getSession();
         session.invalidate();
 
-        return "/login/logoutSuccess";
+        return "login/logoutSuccess";
     }
 
     @ModelAttribute("productCategories")

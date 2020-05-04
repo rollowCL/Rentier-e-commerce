@@ -59,7 +59,7 @@ public class ShopController {
         model.addAttribute("products", products);
         model.addAttribute("productSearch", productSearch);
 
-        return "/shop/index";
+        return "shop/index";
     }
 
     @PostMapping("/search")
@@ -83,7 +83,7 @@ public class ShopController {
 
         }
 
-        return "/shop/index";
+        return "shop/index";
     }
 
     @GetMapping("/product")
@@ -112,7 +112,7 @@ public class ShopController {
         }
 
 
-        return "/shop/product";
+        return "shop/product";
     }
 
 

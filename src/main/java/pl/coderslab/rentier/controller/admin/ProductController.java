@@ -52,7 +52,7 @@ public class ProductController {
         model.addAttribute("productSearch", productSearch);
 
 
-        return "/admin/products";
+        return "admin/products";
     }
 
     @PostMapping("/search")
@@ -75,7 +75,7 @@ public class ProductController {
 
         }
 
-        return "/admin/products";
+        return "admin/products";
     }
 
 
@@ -95,7 +95,7 @@ public class ProductController {
 
         model.addAttribute("product", product);
 
-        return "/admin/productForm";
+        return "admin/productForm";
     }
 
     @PostMapping("/form")
@@ -138,7 +138,7 @@ public class ProductController {
         if (resultProduct.hasErrors()) {
 
             productService.deleteProductImage(savedFileName);
-            return "/admin/productForm";
+            return "admin/productForm";
 
         } else {
 
@@ -155,7 +155,7 @@ public class ProductController {
             model.addAttribute("product", productRepository.findById(productId).get());
         }
 
-        return "/admin/del";
+        return "admin/del";
     }
 
     @PostMapping("/del")

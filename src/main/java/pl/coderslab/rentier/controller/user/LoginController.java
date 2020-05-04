@@ -52,14 +52,14 @@ public class LoginController {
         model.addAttribute("user", user);
         model.addAttribute("login", login);
 
-        return "/login/login";
+        return "login/login";
     }
 
 
     @GetMapping("/loginSuccess")
     public String showLoginSuccess() {
 
-        return "/login/loginSuccess";
+        return "login/loginSuccess";
     }
 
     @ModelAttribute("productCategories")

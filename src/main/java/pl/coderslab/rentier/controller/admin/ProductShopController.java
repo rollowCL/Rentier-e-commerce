@@ -50,7 +50,7 @@ public class ProductShopController {
 
         model.addAttribute("productCategoryFilter", productCategoryFilter);
 
-        return "/admin/productShops";
+        return "admin/productShops";
     }
 
     @PostMapping("/filterProductCategories")
@@ -66,7 +66,7 @@ public class ProductShopController {
             model.addAttribute("productShops", productShopRepository.findByProductProductCategoryId(productCategoryFilter.getId()));
         }
 
-        return "/admin/productShops";
+        return "admin/productShops";
     }
 
     @PostMapping("/filterProductsName")
@@ -76,7 +76,7 @@ public class ProductShopController {
 
         model.addAttribute("productShops", productShopRepository.findByProductProductNameContaining(productNameSearch));
 
-        return "/admin/productShops";
+        return "admin/productShops";
     }
 
 
@@ -94,7 +94,7 @@ public class ProductShopController {
 
         }
 
-        return "/admin/productShopForm";
+        return "admin/productShopForm";
     }
 
     @PostMapping("/form")
@@ -112,7 +112,7 @@ public class ProductShopController {
         if (resultProductShop.hasErrors()) {
             Product product = productShop.getProduct();
             model.addAttribute("productSizes", productSizeRepository.findByProductCategory(product.getProductCategory()));
-            return "/admin/productShopForm";
+            return "admin/productShopForm";
 
         } else {
 
@@ -144,7 +144,7 @@ public class ProductShopController {
             model.addAttribute("productShop", productShopRepository.findById(productShopId).get());
         }
 
-        return "/admin/del";
+        return "admin/del";
     }
 
     @PostMapping("/del")

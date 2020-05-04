@@ -44,7 +44,7 @@ public class CartController {
 
             model.addAttribute("message", e.getMessage());
             model.addAttribute("productId", productId);
-            return "/shop/cartError";
+            return "shop/cartError";
         }
 
     }
@@ -53,7 +53,7 @@ public class CartController {
 
     public String viewCart() {
 
-        return "/shop/cart";
+        return "shop/cart";
     }
 
 
@@ -61,7 +61,7 @@ public class CartController {
     public String removeFromCart(Model model, @RequestParam Long productId, @RequestParam Long productSizeId) {
 
         cartService.cartRemove(productId, productSizeId, cart);
-        return "/shop/cart";
+        return "shop/cart";
     }
 
     @ModelAttribute("productCategories")

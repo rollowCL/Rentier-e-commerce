@@ -39,7 +39,7 @@ public class UserController {
 
         model.addAttribute("userRoleFilter", userRoleFilter);
 
-        return "/admin/users";
+        return "admin/users";
     }
 
     @PostMapping("/filterUsers")
@@ -54,7 +54,7 @@ public class UserController {
             model.addAttribute("users", userRepository.findByUserRoleId(userRoleFilter.getId()));
         }
 
-        return "/admin/users";
+        return "admin/users";
     }
 
     @PostMapping("/filterUsersName")
@@ -66,7 +66,7 @@ public class UserController {
 
         model.addAttribute("users", foundUsers);
 
-        return "/admin/users";
+        return "admin/users";
     }
 
 
@@ -99,7 +99,7 @@ public class UserController {
             model.addAttribute("user", user.get());
         }
 
-        return "/admin/userChangeRole";
+        return "admin/userChangeRole";
 
     }
 
@@ -125,7 +125,7 @@ public class UserController {
             } else {
 
                 model.addAttribute("user", user.get());
-                return "/admin/userShops";
+                return "admin/userShops";
 
             }
 

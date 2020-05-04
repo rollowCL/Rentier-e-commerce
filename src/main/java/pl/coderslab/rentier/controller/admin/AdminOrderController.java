@@ -33,7 +33,7 @@ public class AdminOrderController {
 
         Page<Order> page = orderRepository.findAllByOrderByOrderDateDesc(pageable);
         model.addAttribute("orders", page);
-        return "/admin/orders";
+        return "admin/orders";
     }
 
     @GetMapping("/details")
@@ -42,7 +42,7 @@ public class AdminOrderController {
         Order order = orderRepository.getOne(orderId);
         model.addAttribute("order", order);
 
-        return "/admin/orderDetails";
+        return "admin/orderDetails";
     }
 
 
@@ -53,7 +53,7 @@ public class AdminOrderController {
         Page<Order> page = orderRepository.findByOrderNumberContainingOrderByOrderDateDesc(orderNumberSearch, pageable);
         model.addAttribute("orders", page);
 
-        return "/admin/orders";
+        return "admin/orders";
     }
 
     @GetMapping("/changeStatus")
@@ -63,7 +63,7 @@ public class AdminOrderController {
         model.addAttribute("order", order);
         model.addAttribute("orderStatuses", orderStatusRepository.findByDeliveryMethodOrderById(order.getDeliveryMethod()));
 
-        return "/admin/orderChangeStatus";
+        return "admin/orderChangeStatus";
     }
 
     @PostMapping("/changeStatus")

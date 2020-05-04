@@ -153,7 +153,7 @@ public class ConfigController extends HttpServlet {
         model.addAttribute("deliveryMethod", deliveryMethod);
         model.addAttribute("orderStatus", orderStatus);
 
-        return "/admin/config";
+        return "admin/config";
     }
 
     @GetMapping("/del")
@@ -231,7 +231,7 @@ public class ConfigController extends HttpServlet {
             }
         }
 
-        return "/admin/del";
+        return "admin/del";
     }
 
     @PostMapping("/del")
@@ -353,7 +353,7 @@ public class ConfigController extends HttpServlet {
 
         if (resultShop.hasErrors()) {
 
-            return "/admin/config";
+            return "admin/config";
 
         } else {
 
@@ -398,7 +398,7 @@ public class ConfigController extends HttpServlet {
 
         if (resultBrand.hasErrors()) {
             brandService.deleteBrandLogo(savedFileName);
-            return "/admin/config";
+            return "admin/config";
 
         } else {
 
@@ -430,7 +430,7 @@ public class ConfigController extends HttpServlet {
 
         if (resultProductCategory.hasErrors()) {
 
-            return "/admin/config";
+            return "admin/config";
 
         } else {
 
@@ -460,7 +460,7 @@ public class ConfigController extends HttpServlet {
 
         if (resultProductSize.hasErrors()) {
 
-            return "/admin/config";
+            return "admin/config";
 
         } else {
 
@@ -487,7 +487,7 @@ public class ConfigController extends HttpServlet {
 
         if (resultPaymentMethod.hasErrors()) {
 
-            return "/admin/config";
+            return "admin/config";
 
         } else {
 
@@ -513,7 +513,7 @@ public class ConfigController extends HttpServlet {
         }
 
         if (resultDeliveryMethod.hasErrors()) {
-            return "/admin/config";
+            return "admin/config";
 
         } else {
 
@@ -540,7 +540,7 @@ public class ConfigController extends HttpServlet {
         }
 
         if (resultOrderStatus.hasErrors()) {
-            return "/admin/config";
+            return "admin/config";
 
         } else {
 

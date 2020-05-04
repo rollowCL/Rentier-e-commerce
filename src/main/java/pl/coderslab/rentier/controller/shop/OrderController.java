@@ -59,7 +59,7 @@ public class OrderController {
         }
 
         model.addAttribute("order", order);
-        return "/shop/checkout";
+        return "shop/checkout";
 
     }
 
@@ -70,7 +70,7 @@ public class OrderController {
 
         if (resultOrder.hasErrors()) {
 
-            return "/shop/checkout";
+            return "shop/checkout";
 
         } else {
 
@@ -80,7 +80,7 @@ public class OrderController {
 
             String orderNumber = orderService.placeOrder(user.getId(), order);
             model.addAttribute("orderNumber", orderNumber);
-            return "/shop/orderSuccess";
+            return "shop/orderSuccess";
         }
 
 
