@@ -19,7 +19,7 @@
             ============================================= -->
             <div id="logo">
                 <div class="myLogo">
-                    <a href="/" class="standard-logo"><img src="/images/logo.png" alt="Rentier Logo"></a>
+                    <a href="${pageContext.request.contextPath}/" class="standard-logo"><img src="${pageContext.request.contextPath}/images/logo.png" alt="Rentier Logo"></a>
                 </div>
 
             </div><!-- #logo end -->
@@ -32,7 +32,7 @@
 
                     <c:forEach items="${productCategories}" var="productCategory">
                         <li>
-                            <a href="/?categoryId=<c:out value="${productCategory.id}"/>">
+                            <a href="${pageContext.request.contextPath}/?categoryId=<c:out value="${productCategory.id}"/>">
                                 <div><c:out value="${productCategory.categoryName}"/></div>
                             </a>
                         </li>
@@ -42,7 +42,7 @@
                 </ul>
 
                 <div id="top-cart">
-                    <a href="/cart">
+                    <a href="${pageContext.request.contextPath}/cart">
                         <i class="icon-shopping-cart"></i>
                         <span>
                             <c:choose>
@@ -56,8 +56,8 @@
                         </span></a>
                 </div><!-- #top-cart end -->
                 <div id="top-search">
-                    <c:if test="${loggedId == null}"><a href="/login"><i class="icon-user-alt"></i></a></c:if>
-                    <c:if test="${loggedId != null}"><a href="/logout"><i class="icon-user-slash"></i></a></c:if>
+                    <c:if test="${loggedId == null}"><a href="${pageContext.request.contextPath}/login"><i class="icon-user-alt"></i></a></c:if>
+                    <c:if test="${loggedId != null}"><a href="${pageContext.request.contextPath}/logout"><i class="icon-user-slash"></i></a></c:if>
                 </div>
 
             </nav><!-- #primary-menu end -->

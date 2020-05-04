@@ -55,7 +55,7 @@ To change this template use File | Settings | File Templates.
             <div class="container clearfix">
 
                 <h1>Coś poszło nie tak</H1>
-                <a href="/">Wróć</a> na stronę główną
+                <a href="${pageContext.request.contextPath}/">Wróć</a> na stronę główną
 
             </div>
 

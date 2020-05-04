@@ -30,30 +30,30 @@
 
                 <ul>
 
-                    <li><a href="/admin/config">
+                    <li><a href="${pageContext.request.contextPath}/admin/config">
                         <div>Konfiguracja</div>
                     </a>
 
                     </li>
 
-                    <li><a href="/admin/users">
+                    <li><a href="${pageContext.request.contextPath}/admin/users">
                         <div>Użytkownicy</div>
                     </a>
 
                     </li>
 
-                    <li><a href="/admin/products">
+                    <li><a href="${pageContext.request.contextPath}/admin/products">
                         <div>Produkty</div>
                     </a>
 
                     </li>
 
-                    <li><a href="/admin/productShops">
+                    <li><a href="${pageContext.request.contextPath}/admin/productShops">
                         <div>Stan magazynowy</div>
                     </a>
                     </li>
 
-                    <li><a href="/admin/orders">
+                    <li><a href="${pageContext.request.contextPath}/admin/orders">
                         <div>Zamówienia</div>
                     </a>
                     </li>
@@ -61,8 +61,8 @@
                 </ul>
 
                 <div id="top-search">
-                    <c:if test="${loggedId == null}"><a href="/login"><i class="icon-user-alt"></i></a></c:if>
-                    <c:if test="${loggedId != null}"><a href="/logout"><i class="icon-user-slash"></i></a></c:if>
+                    <c:if test="${loggedId == null}"><a href="${pageContext.request.contextPath}/login"><i class="icon-user-alt"></i></a></c:if>
+                    <c:if test="${loggedId != null}"><a href="${pageContext.request.contextPath}/logout"><i class="icon-user-slash"></i></a></c:if>
                 </div>
 
             </nav><!-- #primary-menu end -->

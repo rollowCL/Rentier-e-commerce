@@ -61,7 +61,7 @@ To change this template use File | Settings | File Templates.
 								<c:out value="${sessionScope.loggedId}"/>
 							</h3>
 							<h4>
-								<a href="/login">Zaloguj</a>
+								<a href="${pageContext.request.contextPath}/login">Zaloguj</a>
 							</h4>
 						</div>
 

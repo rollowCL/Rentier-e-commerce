@@ -92,13 +92,13 @@ To change this template use File | Settings | File Templates.
 
                         <div class="product clearfix">
                             <div class="product-image center">
-                                <a href="/product?productId=<c:out value="${product.id}"/>">
+                                <a href="${pageContext.request.contextPath}/product?productId=<c:out value="${product.id}"/>">
                                     <img src="<c:out value="${product.imageFileName}"/>"
                                          alt="<c:out value="${product.productName}"/>">
                                 </a>
                             </div>
                             <div class="product-desc center">
-                                <div class="product-title"><h3><a href="/product?productId=<c:out
+                                <div class="product-title"><h3><a href="${pageContext.request.contextPath}/product?productId=<c:out
                                         value="${product.id}"/>"><c:out
                                         value="${product.productName}"/></a></h3></div>
                                 <div class="product-price"><c:out

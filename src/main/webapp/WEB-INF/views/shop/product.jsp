@@ -85,7 +85,7 @@ To change this template use File | Settings | File Templates.
 
                                 <!-- Product Single - Quantity & Cart Button
                                 ============================================= -->
-                                <form class="cart nobottommargin clearfix" method="post" action="/cart/add">
+                                <form class="cart nobottommargin clearfix" method="post" action="${pageContext.request.contextPath}/cart/add">
                                     <div> Wybierz rozmiar:
                                         <select id="sizeSelect" name="productSizeId" class="sm-form-control">
                                             <option value="0">wybierz...</option>
@@ -116,7 +116,7 @@ To change this template use File | Settings | File Templates.
                                 <div class="card product-meta">
                                     <div class="card-body">
                                         <span itemprop="productID" class="sku_wrapper">Kod produktu: <span class="sku"><c:out value="${product.productText}"/></span></span><br/>
-                                        <span class="posted_in">Kategoria: <a href="/?categoryId=<c:out value="${product.productCategory.id}"/>" rel="tag"><c:out value="${product.productCategory.categoryName}"/></a>.</span>
+                                        <span class="posted_in">Kategoria: <a href="${pageContext.request.contextPath}/?categoryId=<c:out value="${product.productCategory.id}"/>" rel="tag"><c:out value="${product.productCategory.categoryName}"/></a>.</span>
                                     </div>
                                 </div><!-- Product Single - Meta End -->
 

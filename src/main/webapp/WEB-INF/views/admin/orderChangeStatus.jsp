@@ -61,7 +61,7 @@ To change this template use File | Settings | File Templates.
                             <div class="col-4">
                             </div>
                             <div class="col-4">
-                                <form action="/admin/orders/changeStatus" method="post">
+                                <form action="${pageContext.request.contextPath}/admin/orders/changeStatus" method="post">
                                     <input type="hidden" value="${order.id}" name="orderId"/>
                                     <select name="orderStatusId">
                                         <c:forEach items="${orderStatuses}" var="orderStatus">

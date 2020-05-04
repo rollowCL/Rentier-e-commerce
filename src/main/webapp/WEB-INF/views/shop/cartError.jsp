@@ -58,7 +58,7 @@ To change this template use File | Settings | File Templates.
 						<div>
 							<h3>
 								<strong>${message}</strong><br/>
-								<a href="/product?productId=<c:out value="${productId}"/>">Wróc</a> na stronę produktu.
+								<a href="${pageContext.request.contextPath}/product?productId=<c:out value="${productId}"/>">Wróc</a> na stronę produktu.
 							</h3>
 						</div>
 

@@ -132,7 +132,6 @@ public class Shop {
                 ", email='" + email + '\'' +
                 ", photoFileName='" + photoFileName + '\'' +
                 ", active=" + active +
-                ", productShops=" + productShops +
                 '}';
     }
 }
