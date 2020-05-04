@@ -7,6 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <header id="header">
 
     <div id="header-wrap">
@@ -61,10 +63,13 @@
                 </ul>
 
                 <div id="top-search">
-                    <c:if test="${loggedId == null}"><a href="${pageContext.request.contextPath}/login"><i class="icon-user-alt"></i></a></c:if>
-                    <c:if test="${loggedId != null}"><a href="${pageContext.request.contextPath}/logout"><i class="icon-user-slash"></i></a></c:if>
+                    <sec:authorize access="!isAuthenticated()">
+                        <a href="${pageContext.request.contextPath}/login"><i class="icon-user-alt"></i></a>
+                    </sec:authorize>
+                    <sec:authorize access="isAuthenticated()">
+                        <a href="${pageContext.request.contextPath}/logout"><i class="icon-user-slash"></i></a>
+                    </sec:authorize>
                 </div>
-
             </nav><!-- #primary-menu end -->
 
         </div>
