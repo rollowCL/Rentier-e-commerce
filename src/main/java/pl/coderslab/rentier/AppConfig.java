@@ -130,27 +130,27 @@ public class AppConfig implements WebMvcConfigurer {
     }
 
 
-    @Bean
-    public FilterRegistrationBean<adminURLFilter> adminFilterRegistrationBean() {
-        FilterRegistrationBean<adminURLFilter> registrationBean = new FilterRegistrationBean();
-        adminURLFilter customURLFilter = new adminURLFilter();
-
-        registrationBean.setFilter(customURLFilter);
-        registrationBean.addUrlPatterns("/admin/*");
-        registrationBean.setOrder(2); //set precedence
-        return registrationBean;
-    }
-
-    @Bean
-    public FilterRegistrationBean<userURLFilter> userFilterRegistrationBean() {
-        FilterRegistrationBean<userURLFilter> registrationBean = new FilterRegistrationBean();
-        userURLFilter customURLFilter = new userURLFilter();
-
-        registrationBean.setFilter(customURLFilter);
-        registrationBean.addUrlPatterns("/user/*");
-        registrationBean.setOrder(2); //set precedence
-        return registrationBean;
-    }
+//    @Bean
+//    public FilterRegistrationBean<adminURLFilter> adminFilterRegistrationBean() {
+//        FilterRegistrationBean<adminURLFilter> registrationBean = new FilterRegistrationBean();
+//        adminURLFilter customURLFilter = new adminURLFilter();
+//
+//        registrationBean.setFilter(customURLFilter);
+//        registrationBean.addUrlPatterns("/admin/*");
+//        registrationBean.setOrder(2); //set precedence
+//        return registrationBean;
+//    }
+//
+//    @Bean
+//    public FilterRegistrationBean<userURLFilter> userFilterRegistrationBean() {
+//        FilterRegistrationBean<userURLFilter> registrationBean = new FilterRegistrationBean();
+//        userURLFilter customURLFilter = new userURLFilter();
+//
+//        registrationBean.setFilter(customURLFilter);
+//        registrationBean.addUrlPatterns("/user/*");
+//        registrationBean.setOrder(2); //set precedence
+//        return registrationBean;
+//    }
 
     @Bean
     public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory>
