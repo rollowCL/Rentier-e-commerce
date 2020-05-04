@@ -31,10 +31,6 @@ public class ImageServiceImpl implements ImageService {
 
     @Value("${rentier.storageConnectionString}")
     private String storageConnectionString;
-//    =
-//            "DefaultEndpointsProtocol=http;" +
-//                    "AccountName=csb10032000b93e64dd;" +
-//                    "AccountKey=VjctOgvBg2JigVuV2RcEIvyAK1tCRw1N8NhEq2ox1za1odfJmnkamjxZ1bg8Hh7T/aM9VWp+l4mafWB/WsnN+Q==";
 
     @Override
     public String getFileName(Part part) {

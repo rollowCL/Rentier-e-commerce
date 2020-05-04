@@ -7,15 +7,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.rentier.entity.ProductCategory;
+import pl.coderslab.rentier.entity.Role;
 import pl.coderslab.rentier.repository.ProductCategoryRepository;
+import pl.coderslab.rentier.repository.RoleRepository;
 import pl.coderslab.rentier.service.RegisterServiceImpl;
 import pl.coderslab.rentier.pojo.Login;
 import pl.coderslab.rentier.entity.OrderType;
 import pl.coderslab.rentier.entity.User;
-import pl.coderslab.rentier.entity.UserRole;
 import pl.coderslab.rentier.repository.OrderTypeRepository;
 import pl.coderslab.rentier.repository.UserRepository;
-import pl.coderslab.rentier.repository.UserRoleRepository;
 import pl.coderslab.rentier.service.TokenServiceImpl;
 import pl.coderslab.rentier.validation.UserBasicValidation;
 
@@ -26,7 +26,7 @@ import java.util.List;
 public class RegisterController {
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(RegisterController.class);
     private final OrderTypeRepository orderTypeRepository;
-    private final UserRoleRepository userRoleRepository;
+    private final RoleRepository userRoleRepository;
     private final UserRepository userRepository;
     private final ProductCategoryRepository productCategoryRepository;
     private final RegisterServiceImpl registerService;
@@ -36,7 +36,7 @@ public class RegisterController {
     private int tokenTypeActivation;
 
     public RegisterController(OrderTypeRepository orderTypeRepository,
-                              UserRoleRepository userRoleRepository, UserRepository userRepository,
+                              RoleRepository userRoleRepository, UserRepository userRepository,
                               ProductCategoryRepository productCategoryRepository, RegisterServiceImpl registerService,
                               TokenServiceImpl tokenService) {
         this.orderTypeRepository = orderTypeRepository;
@@ -69,7 +69,7 @@ public class RegisterController {
         } else {
 
             OrderType orderType = orderTypeRepository.findExternalOrderTypeIdByOrderTypeNameEquals("external");
-            UserRole userRole = userRoleRepository.findByOrderTypeId(orderType.getId());
+            Role userRole = userRoleRepository.findByOrderTypeId(orderType.getId());
             user.setUserRole(userRole);
             user.setActive(true);
             user.setVerified(false);

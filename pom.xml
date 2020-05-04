@@ -118,7 +118,35 @@
       <groupId>org.springframework.boot</groupId>  
       <artifactId>spring-boot-configuration-processor</artifactId>  
       <optional>true</optional> 
-    </dependency>  
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-taglibs</artifactId>
+      <version>5.3.1.RELEASE</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-core</artifactId>
+      <version>5.3.1.RELEASE</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-config</artifactId>
+      <version>5.3.1.RELEASE</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.springframework.security/org.springframework.security.crypto -->
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>org.springframework.security.crypto</artifactId>
+      <version>3.1.4.RELEASE</version>
+    </dependency>
     <!-- https://mvnrepository.com/artifact/com.microsoft.azure/azure-storage -->  
     <dependency> 
       <groupId>com.microsoft.azure</groupId>  
@@ -137,7 +165,7 @@
     </dependency> 
   </dependencies>  
   <build> 
-    <finalName>${artifactId}</finalName>  
+    <finalName>${project.artifactId}</finalName>
     <plugins> 
       <plugin> 
         <groupId>com.microsoft.azure</groupId>  

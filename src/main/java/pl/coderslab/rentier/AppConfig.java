@@ -20,8 +20,6 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import pl.coderslab.rentier.converter.*;
-import pl.coderslab.rentier.filter.adminURLFilter;
-import pl.coderslab.rentier.filter.userURLFilter;
 import pl.coderslab.rentier.utils.BCrypt;
 import pl.coderslab.rentier.utils.EmailUtil;
 
@@ -116,7 +114,7 @@ public class AppConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public BCrypt passwordEncoder() {
+    public BCrypt passwordEncoderOther() {
 
         return new BCrypt();
 
