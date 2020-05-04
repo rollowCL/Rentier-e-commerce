@@ -92,6 +92,7 @@ public class ProductShop {
         return "ProductShop{" +
                 "id=" + id +
                 ", quantity=" + quantity +
+                ", size=" + productSize +
                 '}';
     }
 }

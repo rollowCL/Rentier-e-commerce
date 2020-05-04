@@ -60,7 +60,7 @@ To change this template use File | Settings | File Templates.
 
                     <div class="col-lg-12">
                         <div class="filterForm">
-                            <form class="myFormRight" action="/admin/orders/filterOrderNumber" method="post">
+                            <form class="myFormRight" action="${pageContext.request.contextPath}/admin/orders/filterOrderNumber" method="post">
                                 <label for="orderNumberSearch">Szukaj</label>
                                 <input type="text" size="15" placeholder="numer zamówienia" minlength="1" name="orderNumberSearch" id="orderNumberSearch" maxlength="50"/>
                                 <button type="submit" class="button button-mini button-blue button-3d"
@@ -101,10 +101,10 @@ To change this template use File | Settings | File Templates.
                                         <td><c:out value="${fn:replace(totalValue, '.', ',')} zł"/></td>
                                         <td>
                                             <a class="button button-mini button-blue button-3d"
-                                               href="/admin/orders/changeStatus?orderId=${order.id}">Zmień status
+                                               href="${pageContext.request.contextPath}/admin/orders/changeStatus?orderId=${order.id}">Zmień status
                                             </a>
                                             <a class="button button-mini button-blue button-3d"
-                                               href="/admin/orders/details?orderId=${order.id}">Szczegóły
+                                               href="${pageContext.request.contextPath}/admin/orders/details?orderId=${order.id}">Szczegóły
                                             </a>
                                         </td>
                                     </tr>

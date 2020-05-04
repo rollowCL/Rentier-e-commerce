@@ -121,10 +121,10 @@ To change this template use File | Settings | File Templates.
                                                         </td>
                                                         <td>
                                                             <a class="button button-mini button-blue button-3d"
-                                                               href="/admin/config?shopId=${shop.id}">Edytuj
+                                                               href="${pageContext.request.contextPath}/admin/config?shopId=${shop.id}">Edytuj
                                                             </a>
                                                             <a class="button button-mini button-blue button-3d"
-                                                               href="/admin/productShops?shopId=${shop.id}">Magazyn
+                                                               href="${pageContext.request.contextPath}/admin/productShops?shopId=${shop.id}">Magazyn
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -136,7 +136,7 @@ To change this template use File | Settings | File Templates.
                                                 <c:if test="${empty shop.id}">Dodaj nowy sklep</c:if>
                                                 <c:if test="${not empty shop.id}">Edytuj sklep</c:if>
                                             </h4>
-                                            <form:form class="row" method="post" action="/admin/config/shop/add"
+                                            <form:form class="row" method="post" action="${pageContext.request.contextPath}/admin/config/shop/add"
                                                        id="addForm" modelAttribute="shop">
                                                 <form:hidden path="id"/>
                                                 <div class="col-md-6 form-group">
@@ -235,10 +235,10 @@ To change this template use File | Settings | File Templates.
                                                         </td>
                                                         <td>
                                                             <a class="button button-mini button-red button-3d"
-                                                                    href="/admin/config/del?brandId=${brand.id}">Usuń
+                                                                    href="${pageContext.request.contextPath}/admin/config/del?brandId=${brand.id}">Usuń
                                                             </a>
                                                             <a class="button button-mini button-blue button-3d"
-                                                                    href="/admin/config?brandId=${brand.id}">Edytuj
+                                                                    href="${pageContext.request.contextPath}/admin/config?brandId=${brand.id}">Edytuj
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -250,7 +250,7 @@ To change this template use File | Settings | File Templates.
                                                 <c:if test="${empty brand.id}">Dodaj nową markę</c:if>
                                                 <c:if test="${not empty brand.id}">Edytuj markę</c:if>
                                             </h4>
-                                            <form:form class="row" method="post" action="/admin/config/brand/add"
+                                            <form:form class="row" method="post" action="${pageContext.request.contextPath}/admin/config/brand/add"
                                                        id="brandAddForm" modelAttribute="brand" enctype="multipart/form-data">
                                                 <form:hidden path="id"/>
                                                 <div class="col-md-6 form-group">
@@ -313,10 +313,10 @@ To change this template use File | Settings | File Templates.
                                                         </td>
                                                         <td>
                                                             <a class="button button-mini button-red button-3d"
-                                                               href="/admin/config/del?productCategoryId=${productCategory.id}">Usuń
+                                                               href="${pageContext.request.contextPath}/admin/config/del?productCategoryId=${productCategory.id}">Usuń
                                                             </a>
                                                             <a class="button button-mini button-blue button-3d"
-                                                               href="/admin/config?productCategoryId=${productCategory.id}">Edytuj
+                                                               href="${pageContext.request.contextPath}/admin/config?productCategoryId=${productCategory.id}">Edytuj
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -328,7 +328,7 @@ To change this template use File | Settings | File Templates.
                                                 <c:if test="${empty brand.id}">Dodaj nową kategorię</c:if>
                                                 <c:if test="${not empty brand.id}">Edytuj kategorię</c:if>
                                             </h4>
-                                            <form:form class="row" method="post" action="/admin/config/productCategory/add"
+                                            <form:form class="row" method="post" action="${pageContext.request.contextPath}/admin/config/productCategory/add"
                                                        id="categoryAddForm" modelAttribute="productCategory">
                                                 <form:hidden path="id"/>
                                                 <div class="col-md-6 form-group">
@@ -385,10 +385,10 @@ To change this template use File | Settings | File Templates.
                                                         </td>
                                                         <td>
                                                             <a class="button button-mini button-red button-3d"
-                                                               href="/admin/config/del?productSizeId=${productSize.id}">Usuń
+                                                               href="${pageContext.request.contextPath}/admin/config/del?productSizeId=${productSize.id}">Usuń
                                                             </a>
                                                             <a class="button button-mini button-blue button-3d"
-                                                               href="/admin/config?productSizeId=${productSize.id}">Edytuj
+                                                               href="${pageContext.request.contextPath}/admin/config?productSizeId=${productSize.id}">Edytuj
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -400,7 +400,7 @@ To change this template use File | Settings | File Templates.
                                                 <c:if test="${empty productSize.id}">Dodaj nowy rozmiar</c:if>
                                                 <c:if test="${not empty productSize.id}">Edytuj rozmiar</c:if>
                                             </h4>
-                                            <form:form class="row" method="post" action="/admin/config/productSize/add"
+                                            <form:form class="row" method="post" action="${pageContext.request.contextPath}/admin/config/productSize/add"
                                                        id="sizeAddForm" modelAttribute="productSize">
                                                 <form:hidden path="id"/>
                                                 <div class="col-md-6 form-group">
@@ -459,7 +459,7 @@ To change this template use File | Settings | File Templates.
                                                         </td>
                                                         <td>
                                                             <a class="button button-mini button-blue button-3d"
-                                                               href="/admin/config?paymentMethodId=${paymentMethod.id}">Edytuj
+                                                               href="${pageContext.request.contextPath}/admin/config?paymentMethodId=${paymentMethod.id}">Edytuj
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -471,7 +471,7 @@ To change this template use File | Settings | File Templates.
                                                 <c:if test="${empty paymentMethod.id}">Dodaj nową metodę płatności</c:if>
                                                 <c:if test="${not empty paymentMethod.id}">Edytuj metodę płatności</c:if>
                                             </h4>
-                                            <form:form class="row" method="post" action="/admin/config/paymentMethod/add"
+                                            <form:form class="row" method="post" action="${pageContext.request.contextPath}/admin/config/paymentMethod/add"
                                                        id="paymentMethodAddForm" modelAttribute="paymentMethod">
                                                 <form:hidden path="id"/>
                                                 <div class="col-md-6 form-group">
@@ -524,7 +524,7 @@ To change this template use File | Settings | File Templates.
                                                         </td>
                                                         <td>
                                                             <a class="button button-mini button-blue button-3d"
-                                                               href="/admin/config?deliveryMethodId=${deliveryMethod.id}">Edytuj
+                                                               href="${pageContext.request.contextPath}/admin/config?deliveryMethodId=${deliveryMethod.id}">Edytuj
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -536,7 +536,7 @@ To change this template use File | Settings | File Templates.
                                                 <c:if test="${empty deliveryMethod.id}">Dodaj nowy sposób dostawy</c:if>
                                                 <c:if test="${not empty deliveryMethod.id}">Edytuj sposób dostawy</c:if>
                                             </h4>
-                                            <form:form class="row" method="post" action="/admin/config/deliveryMethod/add"
+                                            <form:form class="row" method="post" action="${pageContext.request.contextPath}/admin/config/deliveryMethod/add"
                                                        id="deliveryMethodAddForm" modelAttribute="deliveryMethod">
                                                 <form:hidden path="id"/>
                                                 <div class="col-md-6 form-group">
@@ -595,7 +595,7 @@ To change this template use File | Settings | File Templates.
                                                         </td>
                                                         <td>
                                                             <a class="button button-mini button-blue button-3d"
-                                                               href="/admin/config?orderStatusId=${orderStatus.id}">Edytuj
+                                                               href="${pageContext.request.contextPath}/admin/config?orderStatusId=${orderStatus.id}">Edytuj
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -607,7 +607,7 @@ To change this template use File | Settings | File Templates.
                                                 <c:if test="${empty orderStatus.id}">Dodaj nowy status</c:if>
                                                 <c:if test="${not empty orderStatus.id}">Edytuj status</c:if>
                                             </h4>
-                                            <form:form class="row" method="post" action="/admin/config/orderStatus/add"
+                                            <form:form class="row" method="post" action="${pageContext.request.contextPath}/admin/config/orderStatus/add"
                                                        id="orderStatusAddForm" modelAttribute="orderStatus">
                                                 <form:hidden path="id"/>
                                                 <div class="col-md-6 form-group">

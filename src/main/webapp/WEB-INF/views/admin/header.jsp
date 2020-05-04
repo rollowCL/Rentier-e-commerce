@@ -7,7 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <header id="header">
 
     <div id="header-wrap">
@@ -31,30 +30,30 @@
 
                 <ul>
 
-                    <li><a href="/admin/config">
+                    <li><a href="${pageContext.request.contextPath}/admin/config">
                         <div>Konfiguracja</div>
                     </a>
 
                     </li>
 
-                    <li><a href="/admin/users">
+                    <li><a href="${pageContext.request.contextPath}/admin/users">
                         <div>Użytkownicy</div>
                     </a>
 
                     </li>
 
-                    <li><a href="/admin/products">
+                    <li><a href="${pageContext.request.contextPath}/admin/products">
                         <div>Produkty</div>
                     </a>
 
                     </li>
 
-                    <li><a href="/admin/productShops">
+                    <li><a href="${pageContext.request.contextPath}/admin/productShops">
                         <div>Stan magazynowy</div>
                     </a>
                     </li>
 
-                    <li><a href="/admin/orders">
+                    <li><a href="${pageContext.request.contextPath}/admin/orders">
                         <div>Zamówienia</div>
                     </a>
                     </li>
@@ -62,12 +61,8 @@
                 </ul>
 
                 <div id="top-search">
-                    <sec:authorize access="!isAuthenticated()">
-                        <a href="/login"><i class="icon-user-alt"></i></a>
-                    </sec:authorize>
-                    <sec:authorize access="isAuthenticated()">
-                        <a href="/logout"><i class="icon-user-slash"></i></a>
-                    </sec:authorize>
+                    <c:if test="${loggedId == null}"><a href="${pageContext.request.contextPath}/login"><i class="icon-user-alt"></i></a></c:if>
+                    <c:if test="${loggedId != null}"><a href="${pageContext.request.contextPath}/logout"><i class="icon-user-slash"></i></a></c:if>
                 </div>
 
             </nav><!-- #primary-menu end -->

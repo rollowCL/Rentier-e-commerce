@@ -46,6 +46,7 @@ public class ShopController {
         ProductSearch productSearch = new ProductSearch();
 
         if (categoryId != null) {
+            logger.info("categoryId" + categoryId);
             ProductCategory productCategory = productCategoryRepository.getOne(categoryId);
             productSearch.setProductCategory(productCategory);
         }
@@ -57,6 +58,13 @@ public class ShopController {
 
         model.addAttribute("products", products);
         model.addAttribute("productSearch", productSearch);
+
+        List<Product> productList = productRepository.customFindProductsActiveForShop();
+
+        for (Product product: productList) {
+            logger.info(product.getProductName() + " " + product.getImageFileName());
+        }
+
 
         return "/shop/index";
     }
@@ -93,13 +101,12 @@ public class ShopController {
             List<ProductShop> productShops = productShopRepository.customFindAllProductShopsActiveForShopByProductId(productId);
             List<ProductSize> productSizes = productSizeRepository.customFindDistinctProductSizesActiveForShopByProductId(productId);
             Map<ProductSize, Integer> productSizesWithMaxMap = new HashMap<>();
-
+            logger.info(productShops.toString());
             for (ProductSize productSize: productSizes) {
-
                 int maxAvailable = productShops.stream()
-                        .filter(s -> s.getProductSize() == productSize)
+                        .filter(s -> s.getProductSize().equals(productSize))
                         .map(ProductShop::getQuantity).mapToInt(Integer::intValue).sum();
-
+                logger.info("ProductSize: " + productSize + ", max: " + maxAvailable);
                 productSizesWithMaxMap.put(productSize, maxAvailable);
             }
 
@@ -115,12 +122,6 @@ public class ShopController {
         return "/shop/product";
     }
 
-
-//    @ModelAttribute("products")
-//    public List<Product> getProductsForShop() {
-//
-//        return productRepository.customFindProductsActiveForShop();
-//    }
 
     @ModelAttribute("productCategories")
     public List<ProductCategory> getProductCategories() {

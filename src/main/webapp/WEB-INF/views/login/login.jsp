@@ -58,7 +58,7 @@ To change this template use File | Settings | File Templates.
                     <div class="well well-lg nobottommargin">
 
                         <h3>Zaloguj się do swojego konta</h3>
-                        <form:form class="row" method="post" action="/login"
+                        <form:form class="row" method="post" action="${pageContext.request.contextPath}/login"
                                    id="loginForm" modelAttribute="login">
                             <div class="col-md-12 form-group">
                                 <form:label path="emailLogin">Email</form:label>
@@ -74,7 +74,7 @@ To change this template use File | Settings | File Templates.
                             </div>
                             <c:out value="${message}"/>
                             <div class="col_full nobottommargin">
-                                <a href="/forgotpassword" class="fright ">Zapomniałem hasła</a>
+                                <a href="${pageContext.request.contextPath}/forgotpassword" class="fright ">Zapomniałem hasła</a>
                             </div>
                             <div class="col-12">
                                 <button type="submit"
@@ -93,7 +93,7 @@ To change this template use File | Settings | File Templates.
 
                     <h3>Nie masz konta? Zarejstruj się.</h3>
 
-                    <form:form class="row" method="post" action="/register"
+                    <form:form class="row" method="post" action="${pageContext.request.contextPath}/register"
                                id="registerForm" modelAttribute="user">
                         <form:hidden path="id"/>
                         <div class="col-md-6 form-group">

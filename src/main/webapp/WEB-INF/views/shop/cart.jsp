@@ -72,18 +72,18 @@ To change this template use File | Settings | File Templates.
                         <c:forEach items="${sessionScope.cart.cartItems}" var="cartItem">
                             <tr class="cart_item">
                                 <td class="cart-product-remove">
-                                    <a href="/cart/remove?productId=${cartItem.product.id}&productSizeId=${cartItem.productSize.id}"
+                                    <a href="${pageContext.request.contextPath}/cart/remove?productId=${cartItem.product.id}&productSizeId=${cartItem.productSize.id}"
                                        class="remove" title="Usuń produkt z koszyka"><i class="icon-trash2"></i></a>
                                 </td>
 
                                 <td class="cart-product-thumbnail">
-                                    <a href="/product?productId=${cartItem.product.id}"><img height="64" width="auto"
+                                    <a href="${pageContext.request.contextPath}/product?productId=${cartItem.product.id}"><img height="64" width="auto"
                                                                                              src="<c:out value="${cartItem.product.imageFileName}"/>"
                                                                                              alt="<c:out value="${cartItem.product.productName}"/>"></a>
                                 </td>
 
                                 <td class="cart-product-name">
-                                    <a href="/product?productId=${cartItem.product.id}"><c:out
+                                    <a href="${pageContext.request.contextPath}/product?productId=${cartItem.product.id}"><c:out
                                             value="${cartItem.product.productName}"/></a>
                                 </td>
 
@@ -114,9 +114,9 @@ To change this template use File | Settings | File Templates.
 
                                     </div>
                                     <div class="col-lg-8 col-8 nopadding">
-                                        <a href="/" class="button button-mini button-blue fright button-3d">Kontynuuj zakupy</a>
+                                        <a href="${pageContext.request.contextPath}/" class="button button-mini button-blue fright button-3d">Kontynuuj zakupy</a>
                                         <c:if test="${not empty sessionScope.cart.totalQuantity}">
-                                        <a href="/user/order/checkout" class="button button-mini button-blue fright button-3d">Zamówienie</a>
+                                        <a href="${pageContext.request.contextPath}/user/order/checkout" class="button button-mini button-blue fright button-3d">Zamówienie</a>
                                         </c:if>
                                     </div>
                                 </div>

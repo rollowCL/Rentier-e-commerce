@@ -66,7 +66,7 @@ To change this template use File | Settings | File Templates.
                                         value="Submit">Filtruj
                                 </button>
                             </form:form>
-                            <form class="myFormRight" action="/admin/productShops/filterProductsName" method="post">
+                            <form class="myFormRight" action="${pageContext.request.contextPath}/admin/productShops/filterProductsName" method="post">
                                 <label for="productNameSearch">Szukaj</label>
                                 <input type="text" size="30" placeholder="podaj fragment nazwy produktu" minlength="3" name="productNameSearch" id="productNameSearch" maxlength="50"/>
                                 <button type="submit" class="button button-mini button-blue button-3d"
@@ -95,7 +95,7 @@ To change this template use File | Settings | File Templates.
                                     <td><c:out value="${productShop.productSize.sizeName}"/></td>
                                     <td><c:out value="${productShop.quantity}"/></td>
                                     <td>
-                                        <form action="/admin/productShops/update" method="post">
+                                        <form action="${pageContext.request.contextPath}/admin/productShops/update" method="post">
                                             <input type="hidden" name="productShopId" value="${productShop.id}"/>
                                             <input type="number" step="1" min="1" max="999" value="${productShop.quantity}" name="newQuantity"/>
                                             <button type="submit"
@@ -103,10 +103,10 @@ To change this template use File | Settings | File Templates.
                                                     value="Submit">Aktualizuj
                                             </button>
                                             <a class="button button-mini button-red button-3d"
-                                               href="/admin/productShops/del?productShopId=${productShop.id}">Usuń
+                                               href="${pageContext.request.contextPath}/admin/productShops/del?productShopId=${productShop.id}">Usuń
                                             </a>
                                             <a class="button button-mini button-blue button-3d"
-                                               href="/admin/productShops/form?productId=${productShop.product.id}">Nowy stan dla produktu
+                                               href="${pageContext.request.contextPath}/admin/productShops/form?productId=${productShop.product.id}">Nowy stan dla produktu
                                             </a>
                                         </form>
                                     </td>

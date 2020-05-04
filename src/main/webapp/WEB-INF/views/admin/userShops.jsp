@@ -61,7 +61,7 @@ To change this template use File | Settings | File Templates.
 
                         <h4>Sklepy dostęþne dla użytkownika ${user.firstName} ${user.lastName}</h4>
 
-                        <form action="/admin/users/shops" method="post">
+                        <form action="${pageContext.request.contextPath}/admin/users/shops" method="post">
                             <input type="hidden" value="${user.id}" name="userId"/>
                             <select name="userShops" multiple="multiple">
                                 <c:forEach items="${shops}" var="shop">

@@ -57,7 +57,7 @@ To change this template use File | Settings | File Templates.
 
                     <h3>Podaj email</h3>
                     <div class="col-md-12 form-group">
-                        <form action="/forgotpassword" method="post">
+                        <form action="${pageContext.request.contextPath}/forgotpassword" method="post">
                             <label for="email">Email:</label>
                             <input class="form-control" id="email" name="email" type="text" maxlength="50"/>
 

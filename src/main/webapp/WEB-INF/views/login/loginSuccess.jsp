@@ -60,7 +60,7 @@ To change this template use File | Settings | File Templates.
 								<strong>Jesteś zalogowany </strong>
 							</h3>
                             <h4>
-								<a href="/logout">Wyloguj</a>
+								<a href="${pageContext.request.contextPath}/logout">Wyloguj</a>
 							</h4>
 						</div>
 

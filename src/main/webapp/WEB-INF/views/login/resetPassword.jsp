@@ -57,7 +57,7 @@ To change this template use File | Settings | File Templates.
 
                     <h3>Podaj nowe hasło</h3>
                     <div class="col-md-12 form-group">
-                        <form:form class="row" method="post" action="/resetpassword"
+                        <form:form class="row" method="post" action="${pageContext.request.contextPath}/resetpassword"
                                    id="resetForm" modelAttribute="user">
                             <form:input type="hidden" path="id"/>
                             <div class="col-md-6 form-group">

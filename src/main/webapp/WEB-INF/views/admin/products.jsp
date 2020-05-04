@@ -58,7 +58,7 @@ To change this template use File | Settings | File Templates.
 
                     <div class="col-lg-12">
                         <div class="filterForm">
-                            <form:form class="myFormLeft" action="/admin/products/search" method="post" modelAttribute="productSearch">
+                            <form:form class="myFormLeft" action="${pageContext.request.contextPath}/admin/products/search" method="post" modelAttribute="productSearch">
                                 <form:label path="productName">Nazwa produktu</form:label>
                                 <form:input path="productName"/>
                                 <form:label path="brand">Marka</form:label>
@@ -84,7 +84,7 @@ To change this template use File | Settings | File Templates.
                                 <button type="submit" class="button button-mini button-blue button-3d"
                                         value="Submit">Filtruj
                                 </button>
-                                <a href="/admin/products/form" class="button button-mini button-blue button-3d">Dodaj nowy</a>
+                                <a href="${pageContext.request.contextPath}/admin/products/form" class="button button-mini button-blue button-3d">Dodaj nowy</a>
                             </form:form>
                         </div>
                         <table class="table table-bordered">
@@ -131,16 +131,16 @@ To change this template use File | Settings | File Templates.
                                         </td>
                                         <td>
                                             <a class="button button-mini button-red button-3d"
-                                               href="/admin/products/del?productId=${product.id}">Usuń
+                                               href="${pageContext.request.contextPath}/admin/products/del?productId=${product.id}">Usuń
                                             </a>
                                             <a class="button button-mini button-blue button-3d"
-                                               href="/admin/products/form?productId=${product.id}">Edytuj
+                                               href="${pageContext.request.contextPath}/admin/products/form?productId=${product.id}">Edytuj
                                             </a>
                                             <a class="button button-mini button-blue button-3d"
-                                               href="/admin/productShops/?productId=${product.id}">Stan sprawdź
+                                               href="${pageContext.request.contextPath}/admin/productShops/?productId=${product.id}">Stan sprawdź
                                             </a>
                                             <a class="button button-mini button-blue button-3d"
-                                               href="/admin/productShops/form?productId=${product.id}">Stan dodaj
+                                               href="${pageContext.request.contextPath}/admin/productShops/form?productId=${product.id}">Stan dodaj
                                             </a>
                                         </td>
                                     </tr>

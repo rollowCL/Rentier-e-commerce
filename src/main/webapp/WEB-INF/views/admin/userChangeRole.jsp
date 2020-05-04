@@ -61,7 +61,7 @@ To change this template use File | Settings | File Templates.
 
                         <h4>Zmiana roli dla użytkownika ${user.firstName} ${user.lastName}</h4>
 
-                        <form action="/admin/users/changeRole" method="post">
+                        <form action="${pageContext.request.contextPath}/admin/users/changeRole" method="post">
                             <input type="hidden" value="${user.id}" name="userId"/>
                             <select name="newRoleId">
                                 <c:forEach items="${userRoles}" var="userRole">

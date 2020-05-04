@@ -66,7 +66,7 @@ To change this template use File | Settings | File Templates.
                                         value="Submit">Filtruj
                                 </button>
                             </form:form>
-                            <form class="myFormRight" action="/admin/users/filterUsersName" method="post">
+                            <form class="myFormRight" action="${pageContext.request.contextPath}/admin/users/filterUsersName" method="post">
                                 <label for="userNameSearch">Szukaj</label>
                                 <input type="text" placeholder="podaj fragment nazwiska" minlength="3" name="userNameSearch" id="userNameSearch" maxlength="20"/>
                                 <button type="submit" class="button button-mini button-blue button-3d"
@@ -106,10 +106,10 @@ To change this template use File | Settings | File Templates.
                                         </td>
                                         <td>
                                             <a class="button button-mini button-red button-3d"
-                                               href="/admin/users/changeRole?userId=${user.id}">Zmień rolę
+                                               href="${pageContext.request.contextPath}/admin/users/changeRole?userId=${user.id}">Zmień rolę
                                             </a>
                                             <a class="button button-mini button-blue button-3d"
-                                               href="/admin/users/change?userId=${user.id}">
+                                               href="${pageContext.request.contextPath}/admin/users/change?userId=${user.id}">
                                                 <c:if test="${user.active}">Dezaktywuj</c:if>
                                                 <c:if test="${!user.active}">Aktywuj</c:if>
                                             </a>
