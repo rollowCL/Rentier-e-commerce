@@ -59,13 +59,6 @@ public class ShopController {
         model.addAttribute("products", products);
         model.addAttribute("productSearch", productSearch);
 
-        List<Product> productList = productRepository.customFindProductsActiveForShop();
-
-        for (Product product: productList) {
-            logger.info(product.getProductName() + " " + product.getImageFileName());
-        }
-
-
         return "/shop/index";
     }
 
