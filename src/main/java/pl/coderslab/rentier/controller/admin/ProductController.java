@@ -131,7 +131,7 @@ public class ProductController {
         }
 
         if (files.length > productMaxImagesCount) {
-            resultProduct.rejectValue("productName", "error.files", "Możesz dodać maksymalnie " + productMaxImagesCount + " plików");
+            resultProduct.rejectValue("productImages", "error.files", "Możesz dodać maksymalnie " + productMaxImagesCount + " plików");
         }
 
         String savedFileName = null;
@@ -140,33 +140,36 @@ public class ProductController {
                 savedFileName = productService.saveProductImage(file, product);
                 product.setImageFileName(savedFileName);
             } catch (InvalidFileException e) {
-                resultProduct.rejectValue("productName", "error.fileName", "Niepoprawny plik");
+                resultProduct.rejectValue("imageFileName", "error.fileName", "Niepoprawny plik");
             } catch (IOException e) {
-                resultProduct.rejectValue("productName", "error.fileName", "Błąd odczytu/zapisu plik");
+                resultProduct.rejectValue("imageFileName", "error.fileName", "Błąd odczytu/zapisu plik");
             }
 
         } else {
-
-            resultProduct.rejectValue("productName", "error.fileName", "Musisz wybrać zdjęcie główne");
-
+            resultProduct.rejectValue("imageFileName", "error.fileName", "Wybierz główne zdjęcie");
         }
 
         List<ProductImage> savedImages = new ArrayList<>();
-        for (MultipartFile imageFile: files) {
-            try {
-                savedFileName = productService.saveProductImage(imageFile, product);
-                ProductImage productImage = new ProductImage();
-                productImage.setImageFileName(savedFileName);
-                productImage.setProduct(product);
-                productImage.setMain_image(false);
-                savedImages.add(productImage);
-                logger.info("Saved image " + savedFileName);
-            } catch (InvalidFileException e) {
-                resultProduct.rejectValue("productImages", "error.fileName", "Niepoprawny plik " + imageFile.getOriginalFilename());
-            } catch (IOException e) {
-                resultProduct.rejectValue("productImages", "error.fileName", "Błąd odczytu/zapisu pliku " + imageFile.getOriginalFilename());
+
+            for (MultipartFile imageFile: files) {
+                if (!"".equals(imageFile.getOriginalFilename())) {
+                    try {
+                        savedFileName = productService.saveProductImage(imageFile, product);
+                        ProductImage productImage = new ProductImage();
+                        productImage.setImageFileName(savedFileName);
+                        productImage.setProduct(product);
+                        productImage.setMain_image(false);
+                        savedImages.add(productImage);
+                        logger.info("Saved image " + savedFileName);
+                    } catch (InvalidFileException e) {
+                        resultProduct.rejectValue("productImages", "error.fileName", "Niepoprawny plik(i) " + imageFile.getOriginalFilename());
+                    } catch (IOException e) {
+                        resultProduct.rejectValue("productImages", "error.fileName", "Błąd odczytu/zapisu pliku " + imageFile.getOriginalFilename());
+                    }
+                }
             }
-        }
+
+
 
 
         if (savedImages.size() > 0) {

@@ -20,7 +20,6 @@ public class ProductCategoryConverter implements Converter<String, ProductCatego
         }
 
         Optional<ProductCategory> group = productCategoryRepository.findById(Long.parseLong(source));
-        System.out.println(group.get().toString());
         return group.orElse(null);
     }
 }
