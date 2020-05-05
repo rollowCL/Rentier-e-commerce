@@ -225,7 +225,11 @@ public class ProductController {
 
         if (productRepository.findById(productId).isPresent()) {
             Product product = productRepository.findById(productId).get();
-            logger.info("Images to delete: " + product.getProductImages().toString());
+            List<ProductImage> productImages = product.getProductImages();
+            logger.info("Images to delete: " + productImages);
+            for (ProductImage productImage: productImages) {
+                productService.deleteProductImage(productImage.getImageFileName());
+            }
             productService.deleteProductImage(product.getImageFileName());
             productRepository.delete(product);
         }

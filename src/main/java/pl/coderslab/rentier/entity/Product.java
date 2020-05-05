@@ -69,11 +69,10 @@ public class Product {
     @Column(name = "image_file_name")
     private String imageFileName;
 
-    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<ProductShop> productShops = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<ProductImage> productImages = new ArrayList<>();
 
     public Long getId() {
@@ -212,6 +211,7 @@ public class Product {
                 ", active=" + active +
                 ", priceGross=" + priceGross +
                 ", availableOnline=" + availableOnline +
+                ", productImages=" + productImages +
                 "}\n";
     }
 

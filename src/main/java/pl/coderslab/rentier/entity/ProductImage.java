@@ -17,7 +17,7 @@ public class ProductImage {
     private Long id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 

@@ -18,7 +18,6 @@ import java.util.*;
 public class ShopController {
 
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(ShopController.class);
-    private final ProductShopRepository productShopRepository;
     private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;
     private final ProductSizeRepository productSizeRepository;
@@ -28,9 +27,9 @@ public class ShopController {
     private String dataSource;
 
 
-    public ShopController(ProductCategoryRepository productCategoryRepository, ProductShopRepository productShopRepository,
-                          ProductRepository productRepository, ProductSizeRepository productSizeRepository, Cart cart, ProductService productService, BrandRepository brandRepository) {
-        this.productShopRepository = productShopRepository;
+    public ShopController(ProductCategoryRepository productCategoryRepository,
+                          ProductRepository productRepository, ProductSizeRepository productSizeRepository,
+                          ProductService productService, BrandRepository brandRepository) {
         this.productCategoryRepository = productCategoryRepository;
         this.productRepository = productRepository;
         this.productSizeRepository = productSizeRepository;
@@ -91,15 +90,13 @@ public class ShopController {
 
         if (productRepository.findById(productId).isPresent()) {
             Product product = productRepository.findById(productId).get();
-            List<ProductShop> productShops = productShopRepository.customFindAllProductShopsActiveForShopByProductId(productId);
+            List<ProductShop> productShops = product.getProductShops();
             List<ProductSize> productSizes = productSizeRepository.customFindDistinctProductSizesActiveForShopByProductId(productId);
             Map<ProductSize, Integer> productSizesWithMaxMap = new HashMap<>();
-            logger.info(productShops.toString());
             for (ProductSize productSize: productSizes) {
                 int maxAvailable = productShops.stream()
                         .filter(s -> s.getProductSize().equals(productSize))
                         .map(ProductShop::getQuantity).mapToInt(Integer::intValue).sum();
-                logger.info("ProductSize: " + productSize + ", max: " + maxAvailable);
                 productSizesWithMaxMap.put(productSize, maxAvailable);
             }
 

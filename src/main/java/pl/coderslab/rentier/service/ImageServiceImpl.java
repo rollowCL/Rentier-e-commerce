@@ -1,6 +1,7 @@
 package pl.coderslab.rentier.service;
 
 import com.microsoft.azure.storage.blob.*;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +20,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.security.InvalidKeyException;
+import java.security.SecureRandom;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -27,7 +29,7 @@ import java.util.regex.Pattern;
 @Service
 public class ImageServiceImpl implements ImageService {
 
-    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(RegisterServiceImpl.class);
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ImageServiceImpl.class);
 
     @Value("${rentier.storageConnectionString}")
     private String storageConnectionString;
@@ -66,7 +68,9 @@ public class ImageServiceImpl implements ImageService {
                 CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageConnectionString);
                 CloudBlobClient blobClient = storageAccount.createCloudBlobClient();
                 CloudBlobContainer container = blobClient.getContainerReference("rentier");
-                blob = container.getBlockBlobReference(uploadPath + filePart.getOriginalFilename());
+                String fileSuffix = "." + FilenameUtils.getExtension(filePart.getOriginalFilename());
+                String blobName = generateRandomName(20) + fileSuffix;
+                blob = container.getBlockBlobReference(uploadPath + blobName);
                 blob.upload(filePart.getInputStream(), filePart.getSize());
                 logger.info(String.valueOf(blob.getUri()));
 
@@ -135,6 +139,22 @@ public class ImageServiceImpl implements ImageService {
         if (file.exists()) {
             file.delete();
         }
+
+    }
+
+    @Override
+    public String generateRandomName(int len) {
+
+        final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        SecureRandom rnd = new SecureRandom();
+
+        StringBuilder sb = new StringBuilder(len);
+        for (int i = 0; i < len; i++) {
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        }
+
+        return sb.toString();
+
 
     }
 

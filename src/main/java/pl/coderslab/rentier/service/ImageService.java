@@ -18,5 +18,6 @@ public interface ImageService {
             throws InvalidFileException, IOException;
     void deleteBlob(String fileName);
     String getBlobName(String fileName);
-    public void deleteLocalFile(String fileName);
+    void deleteLocalFile(String fileName);
+    String generateRandomName(int len);
 }
