@@ -62,6 +62,7 @@ To change this template use File | Settings | File Templates.
                             <form:hidden path="id"/>
                             <form:hidden path="createdDate"/>
                             <form:hidden path="updatedDate"/>
+                            <form:errors path="*" cssClass="error"/>
                             <div class="col-md-6 form-group">
                                 <label for="active">Wybierz kategorię </label>
                                 <form:select path="productCategory" class="formElement">
@@ -85,9 +86,14 @@ To change this template use File | Settings | File Templates.
                                 <form:errors path="productName" cssClass="error"/>
                             </div>
                             <div class="col-md-4 form-group">
-                                <label for="file">Plik zdjęcia </label>
+                                <label for="file">Plik zdjęcia głównego</label>
                                 <input accept="image/png, image/jpeg" type="file" id="file"
                                        name="file" class="form-control required" />
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label for="files">Zdjęcia dodatkowe</label>
+                                <input accept="image/png, image/jpeg" type="file" id="files" multiple="multiple"
+                                       name="files" class="form-control required" />
                             </div>
                             <div class="col-md-12 form-group">
                                 <label for="productDesc">Opis produktu </label>

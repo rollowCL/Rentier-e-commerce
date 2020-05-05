@@ -46,8 +46,6 @@ public class ProductServiceImpl implements ProductService {
             fileName = imageService.saveImageToPathLocal(file, "product-", uploadPathProducts, "/products/");
         }
 
-        product.setImageFileName(fileName);
-
         return fileName;
     }
 

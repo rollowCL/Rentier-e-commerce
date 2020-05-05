@@ -1,5 +1,7 @@
 package pl.coderslab.rentier.entity;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
@@ -67,8 +69,12 @@ public class Product {
     @Column(name = "image_file_name")
     private String imageFileName;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<ProductShop> productShops = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<ProductImage> productImages = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -172,6 +178,14 @@ public class Product {
 
     public void setProductShops(List<ProductShop> productShops) {
         this.productShops = productShops;
+    }
+
+    public List<ProductImage> getProductImages() {
+        return productImages;
+    }
+
+    public void setProductImages(List<ProductImage> productImages) {
+        this.productImages = productImages;
     }
 
     @Override

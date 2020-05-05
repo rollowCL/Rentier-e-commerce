@@ -173,7 +173,7 @@ CREATE TABLE orders
     payment_method_id BIGINT NOT NULL,
     bill_address_id BIGINT NOT NULL,
     ship_address_id BIGINT NOT NULL,
-    pickup_ship_id BIGINT NOT NULL,
+    pickup_shop_id BIGINT,
     total_quantity INT NOT NULL,
     total_value DECIMAL(10,2) NOT NULL,
     PRIMARY KEY (id),
@@ -219,4 +219,13 @@ CREATE TABLE tokens (
                         token_value VARCHAR(100) UNIQUE ,
                         PRIMARY KEY (id),
                         FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+create table product_images (
+        id BIGINT AUTO_INCREMENT NOT NULL,
+        product_id BIGINT NOT NULL,
+        image_file_name VARCHAR(255),
+        main_image BIT NOT NULL,
+        PRIMARY KEY (id),
+        FOREIGN KEY (product_id) REFERENCES products(id)
 );
