@@ -91,7 +91,7 @@ To change this template use File | Settings | File Templates.
                                 <form:errors path="imageFileName" cssClass="error"/>
                             </div>
                             <div class="col-md-4 form-group">
-                                <label for="productImages">Zdjęcia dodatkowe</label>
+                                <label for="productImages">Zdjęcia dodatkowe (max ${productMaxImagesCount})</label>
                                 <input accept="image/png, image/jpeg" type="file" id="productImages" multiple="multiple"
                                        name="files" class="form-control required" />
                                 <form:errors path="productImages" cssClass="error"/>

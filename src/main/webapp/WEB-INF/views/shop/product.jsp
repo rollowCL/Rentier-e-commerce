@@ -66,12 +66,13 @@ To change this template use File | Settings | File Templates.
                                 <!-- Product Single - Gallery
                                 ============================================= -->
                                 <div class="product-single-image">
-                                        <a href="<c:out value="${product.imageFileName}"/>" title="<c:out value="${product.imageFileName}"/>"
-                                           data-lightbox="gallery-item" target="_blank">
-                                            <img src="<c:out value="${product.imageFileName}"/>" alt="<c:out value="${product.productName}"/>">
-                                        </a>
+                                    <img id="mainImage" src="<c:out value="${product.imageFileName}"/>" alt="<c:out value="${product.productName}"/>">
                                 </div><!-- Product Single - Gallery End -->
-
+                                <div>
+                                    <for:forEach items="${productImages}" var="image">
+                                        <img class="product-multi-image" src="<c:out value="${image.imageFileName}"/>" alt="<c:out value="Photo"/>">
+                                    </for:forEach>
+                                </div>
                             </div>
 
                             <div class="col_half col_last product-desc">

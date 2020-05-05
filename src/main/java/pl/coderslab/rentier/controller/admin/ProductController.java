@@ -12,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.coderslab.rentier.beans.ProductSearch;
 import pl.coderslab.rentier.entity.*;
 import pl.coderslab.rentier.exception.InvalidFileException;
-import pl.coderslab.rentier.pojo.FileImport;
 import pl.coderslab.rentier.repository.BrandRepository;
 import pl.coderslab.rentier.repository.ProductCategoryRepository;
 import pl.coderslab.rentier.repository.ProductImageRepository;
@@ -275,6 +274,12 @@ public class ProductController {
     public List<Brand> getBrands() {
 
         return brandRepository.findAll();
+    }
+
+    @ModelAttribute("productMaxImagesCount")
+    public int getMmaxImageCount() {
+
+        return productMaxImagesCount;
     }
 
 

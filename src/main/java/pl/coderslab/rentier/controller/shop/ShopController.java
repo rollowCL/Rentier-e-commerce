@@ -100,7 +100,7 @@ public class ShopController {
                 productSizesWithMaxMap.put(productSize, maxAvailable);
             }
 
-
+            model.addAttribute("productImages", product.getProductImages());
             model.addAttribute("product", product);
             model.addAttribute("productShops", productShops);
             model.addAttribute("productSizes", productSizes);

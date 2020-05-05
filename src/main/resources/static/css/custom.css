@@ -70,6 +70,20 @@ input[type=number] {
     overflow: hidden;
 }
 
+.product-multi-image {
+    margin: 10px;
+    position: relative;
+    width: auto;
+    height: 100px;
+    overflow: hidden;
+    cursor:pointer;
+}
+
+.product-multi-image img {
+    width: 50%;
+    height: auto;
+}
+
 .product-single-image > a,
 .product-single-image .slide a,
 .product-single-image img {
