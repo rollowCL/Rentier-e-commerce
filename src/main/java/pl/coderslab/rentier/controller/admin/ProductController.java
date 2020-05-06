@@ -4,6 +4,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -70,10 +71,10 @@ public class ProductController {
                                     BindingResult result) {
 
         if (productSearch.getPriceGrossTo() != null && productSearch.getPriceGrossFrom() != null
-            && productSearch.getPriceGrossFrom().compareTo(productSearch.getPriceGrossTo()) > 0) {
+                && productSearch.getPriceGrossFrom().compareTo(productSearch.getPriceGrossTo()) > 0) {
 
-                result.rejectValue("priceGrossTo", "error.prices", "Cena do nie może być " +
-                        "mniejsza niż cena od");
+            result.rejectValue("priceGrossTo", "error.prices", "Cena do nie może być " +
+                    "mniejsza niż cena od");
 
         }
 
@@ -110,9 +111,9 @@ public class ProductController {
 
     @PostMapping("/form")
     public String saveProduct(Model model, @ModelAttribute @Valid Product product, BindingResult resultProduct,
-                              @RequestParam(value = "file", required = false) MultipartFile file,
                               @RequestParam(value = "files", required = false) MultipartFile[] files) {
 
+        List<ProductImage> savedImages = new ArrayList<>();
 
         if (product.getId() == null) {
 
@@ -123,52 +124,44 @@ public class ProductController {
 
             }
 
+
         } else {
 
             product.setUpdatedDate(LocalDateTime.now());
-
+            savedImages = product.getProductImages();
         }
 
-        if (files.length > productMaxImagesCount) {
-            resultProduct.rejectValue("productImages", "error.files", "Możesz dodać maksymalnie " + productMaxImagesCount + " plików");
+
+        boolean productHasMainImage = productImageRepository.existsProductImagesByMainImageAndProduct_Id(true, product.getId());
+        int counter = 1;
+
+        if (files.length + savedImages.size() > productMaxImagesCount) {
+            resultProduct.rejectValue("productImages", "error.files", "Możesz dodać maksymalnie " + productMaxImagesCount + " zdjęć");
         }
 
-        String savedFileName = null;
-        if (!"".equals(file.getOriginalFilename())) {
-            try {
-                savedFileName = productService.saveProductImage(file, product);
-                product.setImageFileName(savedFileName);
-            } catch (InvalidFileException e) {
-                resultProduct.rejectValue("imageFileName", "error.fileName", "Niepoprawny plik");
-            } catch (IOException e) {
-                resultProduct.rejectValue("imageFileName", "error.fileName", "Błąd odczytu/zapisu plik");
-            }
-
-        } else {
-//            resultProduct.rejectValue("imageFileName", "error.fileName", "Wybierz główne zdjęcie");
-        }
-
-        List<ProductImage> savedImages = new ArrayList<>();
-
-            for (MultipartFile imageFile: files) {
-                if (!"".equals(imageFile.getOriginalFilename())) {
-                    try {
-                        savedFileName = productService.saveProductImage(imageFile, product);
-                        ProductImage productImage = new ProductImage();
-                        productImage.setImageFileName(savedFileName);
-                        productImage.setProduct(product);
+        for (MultipartFile imageFile : files) {
+            if (!"".equals(imageFile.getOriginalFilename())) {
+                try {
+                    String savedFileName = productService.saveProductImage(imageFile, product);
+                    ProductImage productImage = new ProductImage();
+                    productImage.setImageFileName(savedFileName);
+                    productImage.setProduct(product);
+                    if (!productHasMainImage && counter == 1) {
+                        productImage.setMainImage(true);
+                    } else {
                         productImage.setMainImage(false);
-                        savedImages.add(productImage);
-                        logger.info("Saved image " + savedFileName);
-                    } catch (InvalidFileException e) {
-                        resultProduct.rejectValue("productImages", "error.fileName", "Niepoprawny plik(i) " + imageFile.getOriginalFilename());
-                    } catch (IOException e) {
-                        resultProduct.rejectValue("productImages", "error.fileName", "Błąd odczytu/zapisu pliku " + imageFile.getOriginalFilename());
                     }
+
+                    savedImages.add(productImage);
+                    logger.info("Saved image " + savedFileName);
+                } catch (InvalidFileException e) {
+                    resultProduct.rejectValue("productImages", "error.fileName", "Niepoprawny plik(i) " + imageFile.getOriginalFilename());
+                } catch (IOException e) {
+                    resultProduct.rejectValue("productImages", "error.fileName", "Błąd odczytu/zapisu pliku " + imageFile.getOriginalFilename());
                 }
             }
-
-
+            counter++;
+        }
 
 
         if (savedImages.size() > 0) {
@@ -177,27 +170,15 @@ public class ProductController {
         }
 
 
-        if (product.getId() != null && "".equals(file.getOriginalFilename())) {
-            product.setImageFileName(productRepository.selectImageFileNameByProductId(product.getId()));
-        }
-
         if (product.getId() != null && (files.length > 0 || (files.length == 0 && "".equals(files[0].getOriginalFilename())))) {
             product.setProductImages(productImageRepository.findAllByProduct_Id(product.getId()));
         }
 
-
         if (resultProduct.hasErrors()) {
             product.setProductImages(new ArrayList<>());
-            product.setImageFileName(null);
-            if (product.getImageFileName() != null) {
-                logger.info("savedFileName: " + savedFileName);
-                productService.deleteProductImage(savedFileName);
-            }
-            if (savedImages.size()>0) {
+            if (savedImages.size() > 0) {
                 logger.info("Images to delete: " + savedImages.toString());
-                savedImages.stream()
-                        .forEach(s->productService.deleteProductImage(s.getImageFileName()));
-
+                savedImages.forEach(s -> productService.deleteProductImage(s.getImageFileName()));
             }
 
             return "admin/productForm";
@@ -205,8 +186,7 @@ public class ProductController {
         } else {
             product.setProductImages(savedImages);
             productRepository.save(product);
-            savedImages.stream()
-                    .forEach(s->productImageRepository.save(s));
+            savedImages.forEach(s -> productImageRepository.save(s));
             return "redirect:/admin/products";
         }
 
@@ -230,10 +210,9 @@ public class ProductController {
             Product product = productRepository.findById(productId).get();
             List<ProductImage> productImages = product.getProductImages();
             logger.info("Images to delete: " + productImages);
-            for (ProductImage productImage: productImages) {
+            for (ProductImage productImage : productImages) {
                 productService.deleteProductImage(productImage.getImageFileName());
             }
-            productService.deleteProductImage(product.getImageFileName());
             productRepository.delete(product);
         }
 

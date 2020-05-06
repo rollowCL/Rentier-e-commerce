@@ -66,12 +66,20 @@ To change this template use File | Settings | File Templates.
                                 <!-- Product Single - Gallery
                                 ============================================= -->
                                 <div class="product-single-image">
-                                    <img id="mainImage" src="<c:out value="${product.imageFileName}"/>" alt="<c:out value="${product.productName}"/>">
+                                    <c:forEach items="${product.productImages}" var="productImage">
+                                        <c:if test="${productImage.mainImage}">
+                                            <img id="mainImage" src="<c:out value="${productImage.imageFileName}"/>"
+                                                 alt="<c:out value="${product.productName}"/>">
+                                        </c:if>
+                                    </c:forEach>
                                 </div><!-- Product Single - Gallery End -->
                                 <div>
-                                    <for:forEach items="${productImages}" var="image">
-                                        <img class="product-multi-image" src="<c:out value="${image.imageFileName}"/>" alt="<c:out value="Photo"/>">
-                                    </for:forEach>
+                                    <c:forEach items="${product.productImages}" var="productImage">
+                                        <c:if test="${!productImage.mainImage}">
+                                            <img class="product-multi-image" src="<c:out value="${productImage.imageFileName}"/>"
+                                                 alt="<c:out value="${product.productName}"/>">
+                                        </c:if>
+                                    </c:forEach>
                                 </div>
                             </div>
 

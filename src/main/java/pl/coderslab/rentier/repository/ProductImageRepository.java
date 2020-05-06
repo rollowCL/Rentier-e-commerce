@@ -14,6 +14,8 @@ public interface ProductImageRepository extends JpaRepository<ProductImage, Long
 
     List<ProductImage> findAllByProduct_Id(Long id);
 
+    boolean existsProductImagesByMainImageAndProduct_Id(boolean MainImage, Long productId);
+
     @Modifying
     @Transactional
     @Query(value = "UPDATE product_images t JOIN products p ON t.product_id = p.id SET t.main_image = FALSE WHERE p.id =:id", nativeQuery = true)

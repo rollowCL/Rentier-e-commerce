@@ -78,11 +78,17 @@ To change this template use File | Settings | File Templates.
                                 </form:select>
                                 <form:errors path="brand" cssClass="error"/>
                             </div>
-                            <div class="col-md-12 form-group">
+                            <div class="col-md-6 form-group">
                                 <label for="productName">Nazwa produktu</label>
                                 <form:input path="productName" id="productName" class="form-control"
                                             maxlength="50"/>
                                 <form:errors path="productName" cssClass="error"/>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label for="productImages">Wybierz zdjęcia (max ${productMaxImagesCount})</label>
+                                <input accept="image/png, image/jpeg" type="file" id="productImages" multiple="multiple"
+                                       name="files" class="form-control required"/>
+                                <form:errors path="productImages" cssClass="error"/>
                             </div>
                             <div class="col-md-12 form-group">
                                 <label for="productDesc">Opis produktu </label>
@@ -112,18 +118,6 @@ To change this template use File | Settings | File Templates.
                                 <label for="availableOnline">Dostępny na www </label>
                                 <form:checkbox path="availableOnline" id="availableOnline" class="form-control"/>
                                 <form:errors path="availableOnline" cssClass="error"/>
-                            </div>
-                            <div class="col-md-4 form-group">
-                                <label for="imageFileName">Plik zdjęcia głównego</label>
-                                <input accept="image/png, image/jpeg" type="file" id="imageFileName"
-                                       name="file" class="form-control required"/>
-                                <form:errors path="imageFileName" cssClass="error"/>
-                            </div>
-                            <div class="col-md-4 form-group">
-                                <label for="productImages">Zdjęcia dodatkowe (max ${productMaxImagesCount})</label>
-                                <input accept="image/png, image/jpeg" type="file" id="productImages" multiple="multiple"
-                                       name="files" class="form-control required"/>
-                                <form:errors path="productImages" cssClass="error"/>
                             </div>
                             <div class="col-12">
                                 <button type="submit"

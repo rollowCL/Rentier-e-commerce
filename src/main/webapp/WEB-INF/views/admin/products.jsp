@@ -105,10 +105,12 @@ To change this template use File | Settings | File Templates.
                                 <c:forEach items="${products}" var="product">
                                     <tr>
                                         <td>
-                                            <c:if test="${not empty product.imageFileName}">
-                                                <img height="100" src="<c:out value="${product.imageFileName}"/>"
-                                                     alt="ProductImage"/>
-                                            </c:if>
+                                            <c:forEach items="${product.productImages}" var="productImage">
+                                                <c:if test="${productImage.mainImage}">
+                                                    <img height="150" src="<c:out value="${productImage.imageFileName}"/>"
+                                                         alt="<c:out value="${product.productName}"/>">
+                                                </c:if>
+                                            </c:forEach>
                                         </td>
                                         <td><c:out value="${product.brand.name}"/></td>
                                         <td><c:out value="${product.productCategory.categoryName}"/></td>
