@@ -1,19 +1,19 @@
 package pl.coderslab.rentier.service;
 
 import com.microsoft.azure.storage.blob.*;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import pl.coderslab.rentier.entity.Product;
+import pl.coderslab.rentier.entity.ProductImage;
 import pl.coderslab.rentier.exception.InvalidFileException;
 import com.microsoft.azure.storage.*;
-import com.microsoft.azure.storage.file.*;
+import pl.coderslab.rentier.repository.ProductImageRepository;
 
 import javax.servlet.http.Part;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.security.InvalidKeyException;
 import java.security.SecureRandom;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -30,9 +31,14 @@ import java.util.regex.Pattern;
 public class ImageServiceImpl implements ImageService {
 
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ImageServiceImpl.class);
+    private final ProductImageRepository productImageRepository;
 
     @Value("${rentier.storageConnectionString}")
     private String storageConnectionString;
+
+    public ImageServiceImpl(ProductImageRepository productImageRepository) {
+        this.productImageRepository = productImageRepository;
+    }
 
     @Override
     public String getFileName(Part part) {
@@ -157,5 +163,7 @@ public class ImageServiceImpl implements ImageService {
 
 
     }
+
+
 
 }

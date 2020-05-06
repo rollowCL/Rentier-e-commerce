@@ -1,11 +1,8 @@
 package pl.coderslab.rentier.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -27,7 +24,7 @@ public class ProductImage {
 
     @NotNull
     @Column(name = "main_image")
-    private boolean main_image;
+    private boolean mainImage;
 
     public Long getId() {
         return id;
@@ -53,12 +50,12 @@ public class ProductImage {
         this.imageFileName = imageFileName;
     }
 
-    public boolean isMain_image() {
-        return main_image;
+    public boolean isMainImage() {
+        return mainImage;
     }
 
-    public void setMain_image(boolean main_image) {
-        this.main_image = main_image;
+    public void setMainImage(boolean mainImage) {
+        this.mainImage = mainImage;
     }
 
     @Override
@@ -66,7 +63,7 @@ public class ProductImage {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProductImage that = (ProductImage) o;
-        return main_image == that.main_image &&
+        return mainImage == that.mainImage &&
                 Objects.equals(id, that.id) &&
                 Objects.equals(product, that.product) &&
                 Objects.equals(imageFileName, that.imageFileName);
@@ -74,7 +71,7 @@ public class ProductImage {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, product, imageFileName, main_image);
+        return Objects.hash(id, product, imageFileName, mainImage);
     }
 
     @Override
@@ -82,7 +79,7 @@ public class ProductImage {
         return "ProductImage{" +
                 "id=" + id +
                 ", imageFileName='" + imageFileName + '\'' +
-                ", main_image=" + main_image +
+                ", main_image=" + mainImage +
                 '}';
     }
 }

@@ -8,18 +8,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pl.coderslab.rentier.beans.ProductSearch;
 import pl.coderslab.rentier.entity.Product;
+import pl.coderslab.rentier.entity.ProductImage;
 import pl.coderslab.rentier.entity.QProduct;
 import pl.coderslab.rentier.exception.InvalidFileException;
+import pl.coderslab.rentier.repository.ProductImageRepository;
 import pl.coderslab.rentier.repository.ProductRepository;
 
 import javax.persistence.EntityManager;
-import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
     private final ImageServiceImpl imageService;
     private final ProductRepository productRepository;
+    private final ProductImageRepository productImageRepository;
     private final EntityManager entityManager;
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
     @Value("${rentier.uploadPathProducts}")
@@ -29,9 +32,10 @@ public class ProductServiceImpl implements ProductService {
     private String dataSource;
 
     public ProductServiceImpl(ImageServiceImpl imageService, ProductRepository productRepository,
-                              EntityManager entityManager) {
+                              ProductImageRepository productImageRepository, EntityManager entityManager) {
         this.imageService = imageService;
         this.productRepository = productRepository;
+        this.productImageRepository = productImageRepository;
         this.entityManager = entityManager;
     }
 
@@ -146,5 +150,30 @@ public class ProductServiceImpl implements ProductService {
         return products;
     }
 
+    @Override
+    public void restDeleteImage(Long imageId) {
+
+        Optional<ProductImage> productImage = productImageRepository.findById(imageId);
+        if (productImage.isPresent()) {
+
+            deleteProductImage(productImage.get().getImageFileName());
+            productImageRepository.delete(productImage.get());
+
+        }
+
+    }
+
+    @Override
+    public void restMakeMainImage(Long imageId) {
+
+        Optional<ProductImage> productImage = productImageRepository.findById(imageId);
+        if (productImage.isPresent()) {
+
+            productImageRepository.setAllProductImagesNotMain(productImage.get().getProduct().getId());
+            productImageRepository.setImageMain(productImage.get().getId());
+
+        }
+
+    }
 
 }

@@ -27,6 +27,8 @@ public interface ProductService {
 
     Iterable<Product> performProductSearch(QProduct product, BooleanBuilder where, ProductSearch productSearch);
 
+    void restDeleteImage(Long imageId);
 
+    void restMakeMainImage(Long imageId);
 
 }

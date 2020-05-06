@@ -22,7 +22,7 @@ clothing shops.
 - [x] Activation email
 - [x] Password resets
 - [ ] User Panel
-- [ ] Multi Image for Products
+- [x] Multi Image for Products
 - [ ] Product reviews
 - [ ] Stock file operations
 - [ ] Orders with invoice option

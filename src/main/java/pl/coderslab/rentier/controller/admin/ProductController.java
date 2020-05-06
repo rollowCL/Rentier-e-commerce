@@ -145,7 +145,7 @@ public class ProductController {
             }
 
         } else {
-            resultProduct.rejectValue("imageFileName", "error.fileName", "Wybierz główne zdjęcie");
+//            resultProduct.rejectValue("imageFileName", "error.fileName", "Wybierz główne zdjęcie");
         }
 
         List<ProductImage> savedImages = new ArrayList<>();
@@ -157,7 +157,7 @@ public class ProductController {
                         ProductImage productImage = new ProductImage();
                         productImage.setImageFileName(savedFileName);
                         productImage.setProduct(product);
-                        productImage.setMain_image(false);
+                        productImage.setMainImage(false);
                         savedImages.add(productImage);
                         logger.info("Saved image " + savedFileName);
                     } catch (InvalidFileException e) {
@@ -179,6 +179,10 @@ public class ProductController {
 
         if (product.getId() != null && "".equals(file.getOriginalFilename())) {
             product.setImageFileName(productRepository.selectImageFileNameByProductId(product.getId()));
+        }
+
+        if (product.getId() != null && (files.length > 0 || (files.length == 0 && "".equals(files[0].getOriginalFilename())))) {
+            product.setProductImages(productImageRepository.findAllByProduct_Id(product.getId()));
         }
 
 

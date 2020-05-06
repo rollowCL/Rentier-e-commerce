@@ -78,28 +78,17 @@ To change this template use File | Settings | File Templates.
                                 </form:select>
                                 <form:errors path="brand" cssClass="error"/>
                             </div>
-                            <div class="col-md-4 form-group">
+                            <div class="col-md-12 form-group">
                                 <label for="productName">Nazwa produktu</label>
                                 <form:input path="productName" id="productName" class="form-control"
                                             maxlength="50"/>
                                 <form:errors path="productName" cssClass="error"/>
                             </div>
-                            <div class="col-md-4 form-group">
-                                <label for="imageFileName">Plik zdjęcia głównego</label>
-                                <input accept="image/png, image/jpeg" type="file" id="imageFileName"
-                                       name="file" class="form-control required" />
-                                <form:errors path="imageFileName" cssClass="error"/>
-                            </div>
-                            <div class="col-md-4 form-group">
-                                <label for="productImages">Zdjęcia dodatkowe (max ${productMaxImagesCount})</label>
-                                <input accept="image/png, image/jpeg" type="file" id="productImages" multiple="multiple"
-                                       name="files" class="form-control required" />
-                                <form:errors path="productImages" cssClass="error"/>
-                            </div>
                             <div class="col-md-12 form-group">
                                 <label for="productDesc">Opis produktu </label>
-                                <form:textarea cols="20" rows="5" path="productDesc" id="productDesc" class="form-control"
-                                            maxlength="1000"/>
+                                <form:textarea cols="20" rows="5" path="productDesc" id="productDesc"
+                                               class="form-control"
+                                               maxlength="1000"/>
                                 <form:errors path="productDesc" cssClass="error"/>
                             </div>
                             <div class="col-md-6 form-group">
@@ -124,14 +113,75 @@ To change this template use File | Settings | File Templates.
                                 <form:checkbox path="availableOnline" id="availableOnline" class="form-control"/>
                                 <form:errors path="availableOnline" cssClass="error"/>
                             </div>
+                            <div class="col-md-4 form-group">
+                                <label for="imageFileName">Plik zdjęcia głównego</label>
+                                <input accept="image/png, image/jpeg" type="file" id="imageFileName"
+                                       name="file" class="form-control required"/>
+                                <form:errors path="imageFileName" cssClass="error"/>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label for="productImages">Zdjęcia dodatkowe (max ${productMaxImagesCount})</label>
+                                <input accept="image/png, image/jpeg" type="file" id="productImages" multiple="multiple"
+                                       name="files" class="form-control required"/>
+                                <form:errors path="productImages" cssClass="error"/>
+                            </div>
                             <div class="col-12">
                                 <button type="submit"
                                         class="button button-mini button-blue button-3d"
                                         value="Submit">Zapisz
                                 </button>
-                                <a href="javascript:window.history.back()" class="button button-mini button-blue button-3d">Wstecz</a>
+                                <a href="javascript:window.history.back()"
+                                   class="button button-mini button-blue button-3d">Wstecz</a>
                             </div>
                         </form:form>
+                    </div>
+                    <div>
+                        <hr/>
+                    </div>
+                    <div class="col-lg-12">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th scope="col">Zdjęcie</th>
+                                <th scope="col">Główne</th>
+                                <th scope="col">Akcje</th>
+                            </tr>
+                            </thead>
+                            <tbody id="image-table-body">
+                            <c:forEach items="${product.productImages}" var="productImage">
+                                <tr>
+                                    <td>
+                                        <img height="100" src="<c:out value="${productImage.imageFileName}"/>"
+                                             alt="ProductImage"/>
+                                    </td>
+                                    <td>
+                                        <c:if test="${productImage.mainImage}"><i data-id=${productImage.id}
+                                                                                          class="icon-line-square-check">
+                                        </i>
+                                        </c:if>
+                                        <c:if test="${!productImage.mainImage}"><i data-id=${productImage.id}
+                                                                                           class="icon-line-square-cross">
+                                        </i>
+                                        </c:if>
+                                    </td>
+                                    <td>
+                                        <button class="button button-mini button-blue button-3d action-button"
+                                                data-action="DELETE"
+                                                data-main=${productImage.mainImage}
+                                                        data-id=${productImage.id}>Usuń
+                                        </button>
+                                        <button class="button button-mini button-bliie button-3d action-button"
+                                                data-action="PUT"
+                                                data-main=${productImage.mainImage}
+                                                        data-id=${productImage.id}>Ustaw jako główne
+                                        </button>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+
+                        </table>
+
                     </div>
                 </div>
 
@@ -147,7 +197,7 @@ To change this template use File | Settings | File Templates.
 
 </div><!-- #wrapper end -->
 
-    <jsp:include page="../scripts.jsp"/>
-
+<jsp:include page="../scripts.jsp"/>
+<script src='<spring:url value="/js/restFunctions.js"/>'></script>
 </body>
 </html>

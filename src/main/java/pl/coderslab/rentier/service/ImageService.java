@@ -20,4 +20,5 @@ public interface ImageService {
     String getBlobName(String fileName);
     void deleteLocalFile(String fileName);
     String generateRandomName(int len);
+
 }
