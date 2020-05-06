@@ -41,13 +41,11 @@ $(() => {
                             .done(function () {
 
                                 buttons.each(function() {
-                                    console.log("Before: " + $(this).data('main'));
                                     if ($(this).data('id') === imageId) {
                                         $(this).data('main', true);
                                     } else {
                                         $(this).data('main', false);
                                     }
-                                    console.log("After: " + $(this).data('main'));
                                 });
 
                                 let icons = $('#image-table-body i');
