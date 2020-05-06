@@ -75,12 +75,10 @@ To change this template use File | Settings | File Templates.
                                 <form:input path="priceGrossFrom" type="number" step="1" min="0"/>
                                 <form:label path="priceGrossTo">Cena od</form:label>
                                 <form:input path="priceGrossTo" type="number" step="1" min="0"/>
-                                <br/>
                                 <form:label path="active">Aktywny</form:label>
                                 <form:checkbox path="active" value="true"/>
                                 <form:label path="availableOnline">Dostępny na www</form:label>
                                 <form:checkbox path="availableOnline" value="true"/>
-                                <br/>
                                 <button type="submit" class="button button-mini button-blue button-3d"
                                         value="Submit">Filtruj
                                 </button>

@@ -59,6 +59,7 @@ To change this template use File | Settings | File Templates.
                     <div class="col-lg-12">
                         <form:form class="row" method="post"
                                    id="productAddForm" modelAttribute="product" enctype="multipart/form-data">
+                            <input type="hidden" id="contextPath" value="${pageContext.request.contextPath}" readonly/>
                             <form:hidden path="id"/>
                             <form:hidden path="createdDate"/>
                             <form:hidden path="updatedDate"/>
@@ -164,7 +165,7 @@ To change this template use File | Settings | File Templates.
                                                 data-main=${productImage.mainImage}
                                                         data-id=${productImage.id}>Usuń
                                         </button>
-                                        <button class="button button-mini button-bliie button-3d action-button"
+                                        <button class="button button-mini button-blue button-3d action-button"
                                                 data-action="PUT"
                                                 data-main=${productImage.mainImage}
                                                         data-id=${productImage.id}>Ustaw jako główne
