@@ -38,3 +38,6 @@ build/
 /src/main/resources/static/js/backup/
 /src/main/resources/static/images/brands/
 /src/main/resources/static/images/products/
+
+/src/main/resources/application.properties
+/src/main/resources/application-LOCAL.properties
