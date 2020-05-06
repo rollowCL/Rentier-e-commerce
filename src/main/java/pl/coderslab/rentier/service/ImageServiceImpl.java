@@ -50,69 +50,57 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public boolean isValidFile(MultipartFile filePart) throws IOException {
+    public void isValidFile(MultipartFile filePart) throws InvalidFileException {
 
         if (filePart.getSize() > 1024 * 1024) {
-            return false;
+            throw new InvalidFileException("Błędny rozmiar pliku ");
         }
 
         String regexp = ".*(jpe?g|png|bmp)$";
         Pattern pattern = Pattern.compile(regexp);
         Matcher matcher = pattern.matcher(Objects.requireNonNull(filePart.getOriginalFilename()));
 
-        return matcher.matches();
+        if (!matcher.matches()) {
+            throw new InvalidFileException("Błędny format pliku ");
+        }
+
     }
 
     @Override
     public String saveImageToPath(MultipartFile filePart, String filePrefix, String uploadPath)
-            throws InvalidFileException, IOException {
+            throws IOException {
         CloudBlockBlob blob = null;
 
-        if (isValidFile(filePart)) {
+        try {
+            CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageConnectionString);
+            CloudBlobClient blobClient = storageAccount.createCloudBlobClient();
+            CloudBlobContainer container = blobClient.getContainerReference("rentier");
+            String fileSuffix = "." + FilenameUtils.getExtension(filePart.getOriginalFilename());
+            String blobName = generateRandomName(20) + fileSuffix;
+            blob = container.getBlockBlobReference(uploadPath + blobName);
+            blob.upload(filePart.getInputStream(), filePart.getSize());
 
-            try {
-                CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageConnectionString);
-                CloudBlobClient blobClient = storageAccount.createCloudBlobClient();
-                CloudBlobContainer container = blobClient.getContainerReference("rentier");
-                String fileSuffix = "." + FilenameUtils.getExtension(filePart.getOriginalFilename());
-                String blobName = generateRandomName(20) + fileSuffix;
-                blob = container.getBlockBlobReference(uploadPath + blobName);
-                blob.upload(filePart.getInputStream(), filePart.getSize());
-                logger.info(String.valueOf(blob.getUri()));
-
-            } catch (StorageException | URISyntaxException | InvalidKeyException e) {
-                e.printStackTrace();
-            }
-
-        } else {
-
-            throw new InvalidFileException("Błędny plik");
+        } catch (StorageException | URISyntaxException | InvalidKeyException e) {
+            e.printStackTrace();
         }
-
 
         return String.valueOf(blob.getUri());
     }
 
     @Override
-    public String saveImageToPathLocal(MultipartFile filePart, String filePrefix, String uploadPath, String resourcePath) throws InvalidFileException, IOException {
+    public String saveImageToPathLocal(MultipartFile filePart, String filePrefix, String uploadPath, String resourcePath) throws IOException {
 
         File newFile = null;
         String imageFileName = null;
 
-        if (isValidFile(filePart)) {
+        String fileSuffix = "." + FilenameUtils.getExtension(filePart.getOriginalFilename());
+        File uploads = new File(uploadPath);
+        newFile = File.createTempFile(filePrefix, fileSuffix, uploads);
+        imageFileName = resourcePath + newFile.getName();
 
-            String fileSuffix = "." + FilenameUtils.getExtension(filePart.getOriginalFilename());
-            File uploads = new File(uploadPath);
-            newFile = File.createTempFile(filePrefix, fileSuffix, uploads);
-            imageFileName = resourcePath + newFile.getName();
+        InputStream input = filePart.getInputStream();
+        Files.copy(input, newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-            InputStream input = filePart.getInputStream();
-            Files.copy(input, newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-
-        } else {
-
-            throw new InvalidFileException("Błędny plik");
-        }
 
         return imageFileName;
     }
@@ -135,7 +123,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public String getBlobName(String fileName) {
-        return fileName.substring(fileName.substring(0, (fileName.lastIndexOf('/'))).lastIndexOf('/')+1);
+        return fileName.substring(fileName.substring(0, (fileName.lastIndexOf('/'))).lastIndexOf('/') + 1);
     }
 
     @Override
@@ -163,7 +151,6 @@ public class ImageServiceImpl implements ImageService {
 
 
     }
-
 
 
 }

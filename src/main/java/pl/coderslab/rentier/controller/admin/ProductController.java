@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -114,76 +115,72 @@ public class ProductController {
                               @RequestParam(value = "files", required = false) MultipartFile[] files) {
 
         List<ProductImage> savedImages = new ArrayList<>();
+        List<ProductImage> newImages = new ArrayList<>();
 
         if (product.getId() == null) {
-
             product.setCreatedDate(LocalDateTime.now());
-
-            if (productRepository.existsByProductName(product.getProductName())) {
-                resultProduct.rejectValue("productName", "error.name", "Produkt o takiej nazwie już istnieje");
-
-            }
-
-
         } else {
-
             product.setUpdatedDate(LocalDateTime.now());
-            savedImages = product.getProductImages();
+            savedImages = productImageRepository.findAllByProduct_Id(product.getId());
+            product.setProductImages(savedImages);
         }
 
+        Optional<Product> exisingProductByName = productRepository.findFirstByProductName(product.getProductName());
+        if (exisingProductByName.isPresent()) {
+            if (!exisingProductByName.get().getId().equals(product.getId())) {
+                resultProduct.rejectValue("productName", "error.name", "Produkt o takiej nazwie już istnieje");
+            }
+        }
 
-        boolean productHasMainImage = productImageRepository.existsProductImagesByMainImageAndProduct_Id(true, product.getId());
-        int counter = 1;
+        int newImagesCount = 0;
+        if (files.length > 1 || (files.length == 1 && !"".equals(files[0].getOriginalFilename()))) {
+            newImagesCount = files.length;
+        }
 
-        if (files.length + savedImages.size() > productMaxImagesCount) {
+        if (newImagesCount + savedImages.size() > productMaxImagesCount) {
             resultProduct.rejectValue("productImages", "error.files", "Możesz dodać maksymalnie " + productMaxImagesCount + " zdjęć");
         }
+
 
         for (MultipartFile imageFile : files) {
             if (!"".equals(imageFile.getOriginalFilename())) {
                 try {
-                    String savedFileName = productService.saveProductImage(imageFile, product);
-                    ProductImage productImage = new ProductImage();
-                    productImage.setImageFileName(savedFileName);
-                    productImage.setProduct(product);
-                    if (!productHasMainImage && counter == 1) {
-                        productImage.setMainImage(true);
-                    } else {
-                        productImage.setMainImage(false);
-                    }
-
-                    savedImages.add(productImage);
-                    logger.info("Saved image " + savedFileName);
+                    imageService.isValidFile(imageFile);
                 } catch (InvalidFileException e) {
-                    resultProduct.rejectValue("productImages", "error.fileName", "Niepoprawny plik(i) " + imageFile.getOriginalFilename());
-                } catch (IOException e) {
-                    resultProduct.rejectValue("productImages", "error.fileName", "Błąd odczytu/zapisu pliku " + imageFile.getOriginalFilename());
+                    resultProduct.rejectValue("productImages", "error.fileName", e.getMessage() + imageFile.getOriginalFilename());
                 }
             }
-            counter++;
-        }
-
-
-        if (savedImages.size() > 0) {
-            logger.info("Saving productImages");
-            product.setProductImages(savedImages);
-        }
-
-
-        if (product.getId() != null && (files.length > 0 || (files.length == 0 && "".equals(files[0].getOriginalFilename())))) {
-            product.setProductImages(productImageRepository.findAllByProduct_Id(product.getId()));
         }
 
         if (resultProduct.hasErrors()) {
-            product.setProductImages(new ArrayList<>());
-            if (savedImages.size() > 0) {
-                logger.info("Images to delete: " + savedImages.toString());
-                savedImages.forEach(s -> productService.deleteProductImage(s.getImageFileName()));
-            }
-
             return "admin/productForm";
 
         } else {
+            boolean productHasMainImage = productImageRepository.existsProductImagesByMainImageAndProduct_Id(true, product.getId());
+            int counter = 1;
+            for (MultipartFile imageFile : files) {
+                if (!"".equals(imageFile.getOriginalFilename())) {
+
+                    try {
+                        ProductImage productImage = new ProductImage();
+                        productImage.setImageFileName(productService.saveProductImage(imageFile, product));
+                        productImage.setProduct(product);
+                        if (!productHasMainImage && counter == 1) {
+                            productImage.setMainImage(true);
+                        } else {
+                            productImage.setMainImage(false);
+                        }
+                        logger.info("Saved new image " + productImage.getImageFileName());
+                        newImages.add(productImage);
+
+                    } catch (IOException e) {
+                        resultProduct.rejectValue("productImages", "error.fileName", "Błąd odczytu/zapisu pliku " + imageFile.getOriginalFilename());
+                        return "admin/productForm";
+                    }
+                }
+                counter++;
+            }
+            savedImages.addAll(newImages);
             product.setProductImages(savedImages);
             productRepository.save(product);
             savedImages.forEach(s -> productImageRepository.save(s));

@@ -41,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public String saveProductImage(MultipartFile file, Product product) throws IOException, InvalidFileException {
+    public String saveProductImage(MultipartFile file, Product product) throws IOException {
         String fileName = null;
 
         if (dataSource.equals("AZURE")) {

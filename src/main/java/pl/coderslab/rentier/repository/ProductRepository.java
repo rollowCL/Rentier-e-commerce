@@ -6,10 +6,11 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import pl.coderslab.rentier.entity.Product;
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long>, QuerydslPredicateExecutor<Product> {
 
-
+    Optional<Product> findFirstByProductName(String productName);
     boolean existsByProductName(String productName);
     List<Product> findByProductCategoryId(Long id);
     List<Product> findByProductNameContaining(String productNameSearch);
