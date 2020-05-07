@@ -7,6 +7,7 @@ import pl.coderslab.rentier.entity.User;
 import pl.coderslab.rentier.repository.TokenRepository;
 import pl.coderslab.rentier.repository.UserRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @Service
@@ -29,7 +30,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 
 
     @Override
-    public void resetPasswordProcess(String email) {
+    public void resetPasswordProcess(String email, HttpServletRequest request) {
 
         Optional<User> user = userRepository.findByEmailAndActiveTrue(email);
 
@@ -37,7 +38,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 
             String generatedToken = tokenService.generateToken(30);
             tokenService.saveToken(user.get(), generatedToken, tokenTypePasswordReset);
-            emailService.sendPasswordReminderEmail(user.get(), generatedToken);
+            emailService.sendPasswordReminderEmail(user.get(), generatedToken, request);
 
         }
 

@@ -16,6 +16,7 @@ import pl.coderslab.rentier.service.TokenServiceImpl;
 import pl.coderslab.rentier.service.UserServiceImpl;
 import pl.coderslab.rentier.validation.UserPasswordValidation;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -50,11 +51,11 @@ public class ForgotPasswordController {
 
 
     @PostMapping("/forgotpassword")
-    public String remindPassword(@RequestParam String email) {
+    public String remindPassword(@RequestParam String email, HttpServletRequest request) {
 
         if (userRepository.existsByEmail(email)) {
 
-            forgotPasswordService.resetPasswordProcess(email);
+            forgotPasswordService.resetPasswordProcess(email, request);
 
 
         }

@@ -7,6 +7,7 @@ import pl.coderslab.rentier.entity.User;
 import pl.coderslab.rentier.repository.TokenRepository;
 import pl.coderslab.rentier.utils.EmailUtil;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -40,11 +41,13 @@ public class EmailServiceImpl implements EmailService {
     }
 
 
-    @Override
-    public void sendPasswordReminderEmail(User user, String generatedToken) {
 
-        String msgBody = "<h3>Przyponienie hasła</h3><br>" +
-                "http://localhost:8080/resetpassword?token=" + generatedToken;
+    @Override
+    public void sendPasswordReminderEmail(User user, String generatedToken, HttpServletRequest request) {
+        String link = getURL(request) + "/resetpassword?token=" + generatedToken;
+
+        String msgBody = "<h3>Przypomnienie hasła</h3><br>" +
+                "<a href=\"" + link + "\">" + link + "</a>";
 
 
         EmailUtil.createEmail(user.getEmail(),
@@ -57,15 +60,16 @@ public class EmailServiceImpl implements EmailService {
                 mailPersonal
         );
 
-
     }
 
     @Override
-    public void sendActivationEmail(User user, String generatedToken)  {
+    public void sendActivationEmail(User user, String generatedToken, HttpServletRequest request)  {
+        String link = getURL(request) + "/activate?token=" + generatedToken;
 
         String msgBody = "<h3>Potwierdzenie rejestracji</h3><br>" +
                 "Witaj " + user.getFirstName() + " musisz aktywować konto klikając w link<br>" +
-                "http://localhost:8080/activate?token=" + generatedToken;
+                "<a href=\"" + link + "\">" + link + "</a>";
+
 
         EmailUtil.createEmail(user.getEmail(),
                 "Witamy w sklepie Rentier",
@@ -79,4 +83,11 @@ public class EmailServiceImpl implements EmailService {
 
 
     }
+
+    @Override
+    public String getURL(HttpServletRequest request) {
+        String url = request.getRequestURL().toString();
+        return url.substring(0, url.lastIndexOf('/'));
+    }
+
 }

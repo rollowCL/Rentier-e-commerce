@@ -19,6 +19,7 @@ import pl.coderslab.rentier.repository.UserRepository;
 import pl.coderslab.rentier.service.TokenServiceImpl;
 import pl.coderslab.rentier.validation.UserBasicValidation;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -49,7 +50,8 @@ public class RegisterController {
 
     @PostMapping("/register")
     public String registerStepOne(@ModelAttribute @Validated({UserBasicValidation.class}) User user, BindingResult resultUser,
-                                  @ModelAttribute(binding = false) Login login, BindingResult resultLogin) {
+                                  @ModelAttribute(binding = false) Login login, BindingResult resultLogin,
+                                  HttpServletRequest request) {
 
 
         if (userRepository.existsByEmail(user.getEmail())) {
@@ -74,7 +76,7 @@ public class RegisterController {
             user.setActive(true);
             user.setVerified(false);
             user.setRegisterDate(LocalDateTime.now());
-            registerService.registerUser(user);
+            registerService.registerUser(user, request);
             return "login/registerSuccess";
         }
 

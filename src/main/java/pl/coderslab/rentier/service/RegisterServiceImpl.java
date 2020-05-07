@@ -9,6 +9,7 @@ import pl.coderslab.rentier.repository.TokenRepository;
 import pl.coderslab.rentier.repository.UserRepository;
 import pl.coderslab.rentier.utils.BCrypt;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 
 @Service
@@ -31,12 +32,12 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public void registerUser(User user) {
+    public void registerUser(User user, HttpServletRequest request) {
         user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
         userRepository.save(user);
         String generatedToken = tokenService.generateToken(30);
         tokenService.saveToken(user, generatedToken, tokenTypeActivation);
-        emailService.sendActivationEmail(user, generatedToken);
+        emailService.sendActivationEmail(user, generatedToken, request);
     }
 
 

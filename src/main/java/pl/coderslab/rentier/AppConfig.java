@@ -116,80 +116,17 @@ public class AppConfig implements WebMvcConfigurer {
 
 
 //    @Bean
-//    public FilterRegistrationBean<adminURLFilter> adminFilterRegistrationBean() {
-//        FilterRegistrationBean<adminURLFilter> registrationBean = new FilterRegistrationBean();
-//        adminURLFilter customURLFilter = new adminURLFilter();
-//
-//        registrationBean.setFilter(customURLFilter);
-//        registrationBean.addUrlPatterns("/admin/*");
-//        registrationBean.setOrder(2); //set precedence
-//        return registrationBean;
-//    }
-//
-//    @Bean
-//    public FilterRegistrationBean<userURLFilter> userFilterRegistrationBean() {
-//        FilterRegistrationBean<userURLFilter> registrationBean = new FilterRegistrationBean();
-//        userURLFilter customURLFilter = new userURLFilter();
-//
-//        registrationBean.setFilter(customURLFilter);
-//        registrationBean.addUrlPatterns("/user/*");
-//        registrationBean.setOrder(2); //set precedence
-//        return registrationBean;
+//    public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory>
+//    webServerFactoryCustomizer() {
+//        return factory -> factory.setContextPath("/rentier");
 //    }
 
-    @Bean
-    public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory>
-    webServerFactoryCustomizer() {
-        return factory -> factory.setContextPath("/rentier");
-    }
 
-//    @Bean
-//    public LocalEntityManagerFactoryBean entityManagerFactory() {
-//        LocalEntityManagerFactoryBean entityManagerFactoryBean = new LocalEntityManagerFactoryBean();
-//        entityManagerFactoryBean.setPersistenceUnitName("rentierPersistenceUnit");
-//        return entityManagerFactoryBean;
-//    }
-//
-//    @Bean
-//    public JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
-//        JpaTransactionManager jpaTransactionManager = new JpaTransactionManager(entityManagerFactory);
-//        return jpaTransactionManager;
-//    }
-
-//    @Bean
-//    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-//        LocalContainerEntityManagerFactoryBean factory =
-//                new LocalContainerEntityManagerFactoryBean();
-//        factory.setPersistenceProviderClass(HibernatePersistenceProvider.class);
-//        return factory;
-//    }
-//
-//    @Bean
-//    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
-//        JpaTransactionManager txManager = new JpaTransactionManager();
-//        txManager.setEntityManagerFactory(entityManagerFactory);
-//        return txManager;
-//    }
-
-    @Bean(name = "multipartResolver ")
+    @Bean(name = "multipartResolver")
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
         multipartResolver.setMaxUploadSize(1148576);
         return multipartResolver;
     }
-
-
-//    @Bean
-//    public Validator validator() {
-//        return new LocalValidatorFactoryBean();
-//
-//    }
-//
-//    @Bean(name="localeResolver")
-//    public LocaleContextResolver getLocaleContextResolver() {
-//        SessionLocaleResolver localeResolver = new SessionLocaleResolver();
-//        localeResolver.setDefaultLocale(new Locale("pl","PL"));
-//        return localeResolver;
-//    }
 
 }
