@@ -107,9 +107,9 @@ To change this template use File | Settings | File Templates.
                     <div class="w-100 bottommargin"></div>
                     <div class="col-lg-6">
                         <h4 class="card-title">Wybierz sposób dostawy</h4>
-                            <form:select path="deliveryMethod" class="form-control">
+                            <form:select path="deliveryMethod" class="form-control" id="deliveryMethodSelect">
                                 <form:option value="0" label="wybierz..."/>
-                                <form:options items="${deliveryMethods}" itemValue="id"
+                                <form:options items="${deliveryMethods}" itemValue="deliveryMethodCost"
                                               itemLabel="deliveryMethodNameAndCost"/>
                             </form:select>
                             <form:errors path="deliveryMethod" cssClass="error"/>
@@ -121,13 +121,6 @@ To change this template use File | Settings | File Templates.
                             </form:select>
                             <form:errors path="paymentMethod" cssClass="error"/>
 
-                            <h4 class="card-title">Wybierz sklep</h4>
-                            <form:select path="pickupShop" class="form-control">
-                                <form:option value="0" label="wybierz..."/>
-                                <form:options items="${shops}" itemValue="id"
-                                              itemLabel="shopName"/>
-                            </form:select>
-                            <form:errors path="pickupShop" cssClass="error"/>
                     </div>
                     <div class="col-lg-6">
                         <h4>Podsumowanie</h4>
@@ -140,27 +133,25 @@ To change this template use File | Settings | File Templates.
                                     </td>
 
                                     <td class="cart-product-name">
-                                        <span class="amount">${sessionScope.cart.totalValue} zł</span>
+                                        <span class="amount" id="sumProductsCost">${sessionScope.cart.totalValue}</span> zł
                                     </td>
                                 </tr>
-<%--                                <tr class="cart_item">--%>
-<%--                                    <td class="cart-totals-tag">--%>
-<%--                                        <strong id="deliveryCost">Koszt dostawy</strong>--%>
-<%--                                    </td>--%>
-
-<%--                                    <td class="cart-product-name">--%>
-<%--                                        <span class="amount deliveryCost">0 zł</span>--%>
-<%--                                    </td>--%>
-<%--                                </tr>--%>
-<%--                                <tr class="cart_item">--%>
-<%--                                    <td class="cart-totals-tag">--%>
-<%--                                        <strong>Razem</strong>--%>
-<%--                                    </td>--%>
-
-<%--                                    <td class="cart-product-name">--%>
-<%--                                        <span class="amount color lead"><strong id="totalValue">${sessionScope.cart.totalValue} zł</strong></span>--%>
-<%--                                    </td>--%>
-<%--                                </tr>--%>
+                                <tr class="cart_item">
+                                    <td class="cart-totals-tag">
+                                        <strong id="deliveryCost">Koszt dostawy</strong>
+                                    </td>
+                                    <td class="cart-product-name">
+                                        <span class="amount deliveryCost" id="sumDeliveryCost">0</span> zł
+                                    </td>
+                                </tr>
+                                <tr class="cart_item">
+                                    <td class="cart-totals-tag">
+                                        <strong>Razem</strong>
+                                    </td>
+                                    <td class="cart-product-name">
+                                        <span class="amount color lead"><strong id="totalValue">${sessionScope.cart.totalValue}</strong> zł</span>
+                                    </td>
+                                </tr>
                                 </tbody>
 
                             </table>

@@ -72,7 +72,7 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<ProductShop> productShops = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<ProductImage> productImages = new ArrayList<>();
 
     public Long getId() {

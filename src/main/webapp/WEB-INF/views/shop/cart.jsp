@@ -77,9 +77,15 @@ To change this template use File | Settings | File Templates.
                                 </td>
 
                                 <td class="cart-product-thumbnail">
-                                    <a href="${pageContext.request.contextPath}/product?productId=${cartItem.product.id}"><img height="64" width="auto"
-                                                                                             src="<c:out value="${cartItem.product.imageFileName}"/>"
-                                                                                             alt="<c:out value="${cartItem.product.productName}"/>"></a>
+                                    <a href="${pageContext.request.contextPath}/product?productId=${cartItem.product.id}">
+                                        <c:forEach items="${cartItem.product.productImages}" var="productImage">
+                                            <c:if test="${productImage.mainImage}">
+                                            <img height="64" width="auto"
+                                                 src="<c:out value="${productImage.imageFileName}"/>"
+                                                 alt="<c:out value="${cartItem.product.productName}"/>">
+                                            </c:if>
+                                        </c:forEach>
+                                    </a>
                                 </td>
 
                                 <td class="cart-product-name">

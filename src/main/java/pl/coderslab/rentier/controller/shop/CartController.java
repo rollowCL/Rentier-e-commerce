@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.coderslab.rentier.exception.ProductQuantityExceededException;
 import pl.coderslab.rentier.beans.Cart;
 import pl.coderslab.rentier.entity.ProductCategory;
+import pl.coderslab.rentier.pojo.CartItem;
 import pl.coderslab.rentier.repository.ProductCategoryRepository;
 import pl.coderslab.rentier.service.CartServiceImpl;
 
@@ -51,7 +52,7 @@ public class CartController {
 
     @RequestMapping("")
 
-    public String viewCart() {
+    public String viewCart(Model model) {
 
         return "shop/cart";
     }
