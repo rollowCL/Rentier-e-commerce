@@ -17,6 +17,11 @@ public interface ProductShopRepository extends JpaRepository<ProductShop, Long> 
 
     List<ProductShop> findByProductId(Long id);
 
+    @Query(value = "SELECT ps.* FROM products_shops ps JOIN product_sizes p on ps.product_size_id = p.id \n" +
+            "            JOIN shops s on ps.shop_id = s.id \n" +
+            "            WHERE ps.product_id =:productId ORDER BY s.shop_name, p.size_name", nativeQuery = true)
+    List<ProductShop> customFindByProductId(@Param("productId") Long id);
+
     boolean existsByProductIdAndShopIdAndProductSizeId(Long productId, Long shopId, Long productSizeId);
 
     @Query(value = "SELECT * FROM products_shops ps JOIN product_sizes p on ps.product_size_id = p.id JOIN products p2 on ps.product_id = p2.id " +

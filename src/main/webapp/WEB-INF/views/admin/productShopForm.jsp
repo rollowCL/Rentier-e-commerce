@@ -42,7 +42,7 @@ To change this template use File | Settings | File Templates.
     <section id="page-title">
 
         <div class="container clearfix">
-            <h1>Nowy stan magazynowy dla produktu ${product.productName}</h1>
+            <h1>Stanem magazynowy dla produktu ${product.productName}</h1>
         </div>
 
     </section><!-- #page-title end -->
@@ -58,7 +58,43 @@ To change this template use File | Settings | File Templates.
 
                     <div class="col-lg-12">
                         <div class="row">
-                            <div class="col-4">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Sklep</th>
+                                    <th scope="col">Rozmiar</th>
+                                    <th scope="col">Dostępna ilość</th>
+                                    <th scope="col">Akcje</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach items="${existingProductShops}" var="existingProductShop">
+                                    <tr>
+                                        <td><c:out value="${existingProductShop.shop.shopName}"/></td>
+                                        <td align="center"><c:out value="${existingProductShop.productSize.sizeName}"/></td>
+                                        <td align="center"><c:out value="${existingProductShop.quantity}"/></td>
+                                        <td>
+                                            <form action="${pageContext.request.contextPath}/admin/productShops/update"
+                                                  method="post">
+                                                <input type="hidden" name="productShopId"
+                                                       value="${existingProductShop.id}"/>
+                                                <input type="number" step="1" min="1" max="999"
+                                                       value="${existingProductShop.quantity}" name="newQuantity"/>
+                                                <button type="submit"
+                                                        class="button button-mini button-blue button-3d"
+                                                        value="Submit">Aktualizuj
+                                                </button>
+                                                <a class="button button-mini button-red button-3d"
+                                                   href="${pageContext.request.contextPath}/admin/productShops/del?productShopId=${existingProductShop.id}">Usuń
+                                                </a>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+
+                            </table>
+                            <div class="col-3">
                                 <form:form class="row" method="post"
                                            id="productAddForm" modelAttribute="productShop">
                                 <form:hidden path="id"/>
@@ -69,7 +105,7 @@ To change this template use File | Settings | File Templates.
                                     <form:options items="${shops}" itemValue="id" itemLabel="shopName"/>
                                 </form:select>
                             </div>
-                            <div class="col-4">
+                            <div class="col-3">
                                 <form:errors path="shop" cssClass="error"/>
                                 <label for="productSize">Wybierz rozmiar </label>
                                 <form:select path="productSize" class="formElement">
@@ -78,23 +114,22 @@ To change this template use File | Settings | File Templates.
                                 </form:select>
                                 <form:errors path="productSize" cssClass="error"/>
                             </div>
-                            <div class="col-4">
+                            <div class="col-3">
                                 <label for="quantity">Dostępna ilość</label>
                                 <form:input type="number" step="1" min="1" max="999" path="quantity" id="quantity"
-                                            class="form-control"
+                                            class="formElement"
                                             maxlength="100"/>
                                 <form:errors path="quantity" cssClass="error"/>
                             </div>
-                            <div class="col-12">
+                            <div class="col-3">
                                 <button type="submit"
                                         class="button button-mini button-blue button-3d"
-                                        value="Submit">Zapisz
+                                        value="Submit">Dodaj
                                 </button>
-                                <a href="javascript:window.history.back()" class="button button-mini button-blue button-3d">Wstecz</a>
-
                             </div>
                         </div>
                         </form:form>
+
                     </div>
                 </div>
 

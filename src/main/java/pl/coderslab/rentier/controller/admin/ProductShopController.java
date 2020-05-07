@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import pl.coderslab.rentier.entity.*;
 import pl.coderslab.rentier.repository.*;
 
@@ -42,7 +43,7 @@ public class ProductShopController {
 
         if (productId != null) {
 
-            model.addAttribute("productShops", productShopRepository.findByProductId(productId));
+            model.addAttribute("productShops", productShopRepository.customFindByProductId(productId));
         }
 
         ProductCategory productCategoryFilter = new ProductCategory();
@@ -55,7 +56,7 @@ public class ProductShopController {
 
     @PostMapping("/filterProductCategories")
     public String showFilteredProductShops(Model model, @ModelAttribute("productCategoryFilter") ProductCategory productCategoryFilter,
-                                    BindingResult result) {
+                                           BindingResult result) {
 
         if (productCategoryFilter.getId() == 0) {
 
@@ -71,8 +72,8 @@ public class ProductShopController {
 
     @PostMapping("/filterProductsName")
     public String showFilteredProductShopsByName(Model model, @RequestParam String productNameSearch,
-                                          @ModelAttribute(binding = false, name = "productCategoryFilter") ProductCategory productCategoryFilter,
-                                          BindingResult result) {
+                                                 @ModelAttribute(binding = false, name = "productCategoryFilter") ProductCategory productCategoryFilter,
+                                                 BindingResult result) {
 
         model.addAttribute("productShops", productShopRepository.findByProductProductNameContaining(productNameSearch));
 
@@ -90,6 +91,7 @@ public class ProductShopController {
             productShop.setProduct(product.get());
             model.addAttribute("productSizes", productSizeRepository.findByProductCategory(product.get().getProductCategory()));
             model.addAttribute("productShop", productShop);
+            model.addAttribute("existingProductShops", productShopRepository.customFindByProductId(product.get().getId()));
             model.addAttribute("product", product.get());
 
         }
@@ -99,7 +101,7 @@ public class ProductShopController {
 
     @PostMapping("/form")
     public String saveProductShop(Model model, @ModelAttribute @Valid ProductShop productShop,
-                                  BindingResult resultProductShop) {
+                                  BindingResult resultProductShop, @RequestParam Long productId) {
 
         if (productShopRepository.existsByProductIdAndShopIdAndProductSizeId(productShop.getProduct().getId(),
                 productShop.getShop().getId(), productShop.getProductSize().getId())) {
@@ -112,12 +114,13 @@ public class ProductShopController {
         if (resultProductShop.hasErrors()) {
             Product product = productShop.getProduct();
             model.addAttribute("productSizes", productSizeRepository.findByProductCategory(product.getProductCategory()));
+            model.addAttribute("existingProductShops", productShopRepository.customFindByProductId(product.getId()));
             return "admin/productShopForm";
 
         } else {
 
             productShopRepository.save(productShop);
-            return "redirect:/admin/productShops";
+            return "redirect:/admin/productShops/form?productId=" + productShop.getProduct().getId();
         }
 
 
@@ -127,24 +130,32 @@ public class ProductShopController {
     public String saveProductShop(Model model, @RequestParam Long productShopId, @RequestParam int newQuantity) {
 
         Optional<ProductShop> productShop = productShopRepository.findById(productShopId);
+        Product product = new Product();
 
         if (productShop.isPresent()) {
-
             productShopRepository.customUpdateQuantityForProductShopId(productShopId, newQuantity);
-
+            product = productShop.get().getProduct();
+            model.addAttribute("productSizes", productSizeRepository.findByProductCategory(product.getProductCategory()));
+            model.addAttribute("existingProductShops", productShopRepository.customFindByProductId(product.getId()));
         }
 
-        return "redirect:/admin/productShops";
+        return "redirect:/admin/productShops/form?productId=" + product.getId();
     }
 
     @GetMapping("/del")
     public String confirmDelete(Model model, @RequestParam Long productShopId) {
+        Optional<ProductShop> productShop = productShopRepository.findById(productShopId);
+        Product product = new Product();
 
-        if (productShopRepository.findById(productShopId).isPresent()) {
-            model.addAttribute("productShop", productShopRepository.findById(productShopId).get());
+        if (productShop.isPresent()) {
+            product = productShop.get().getProduct();
+            productShopRepository.delete(productShop.get());
+            model.addAttribute("productSizes", productSizeRepository.findByProductCategory(product.getProductCategory()));
+            model.addAttribute("existingProductShops", productShopRepository.customFindByProductId(product.getId()));
+            model.addAttribute("productShop", productShop);
         }
 
-        return "admin/del";
+        return "redirect:/admin/productShops/form?productId=" + product.getId();
     }
 
     @PostMapping("/del")

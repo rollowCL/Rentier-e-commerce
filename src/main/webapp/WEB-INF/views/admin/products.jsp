@@ -137,10 +137,7 @@ To change this template use File | Settings | File Templates.
                                                href="${pageContext.request.contextPath}/admin/products/form?productId=${product.id}">Edytuj
                                             </a>
                                             <a class="button button-mini button-blue button-3d"
-                                               href="${pageContext.request.contextPath}/admin/productShops/?productId=${product.id}">Stan sprawdź
-                                            </a>
-                                            <a class="button button-mini button-blue button-3d"
-                                               href="${pageContext.request.contextPath}/admin/productShops/form?productId=${product.id}">Stan dodaj
+                                               href="${pageContext.request.contextPath}/admin/productShops/form?productId=${product.id}">Magazyn
                                             </a>
                                         </td>
                                     </tr>
