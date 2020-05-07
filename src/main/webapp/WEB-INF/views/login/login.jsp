@@ -83,7 +83,9 @@ To change this template use File | Settings | File Templates.
                                 </button>
                             </div>
                         </form:form>
-
+                        <c:if test="${error}">
+                            <h3>Błąd logowania</h3>
+                        </c:if>
                     </div>
 
                 </div>

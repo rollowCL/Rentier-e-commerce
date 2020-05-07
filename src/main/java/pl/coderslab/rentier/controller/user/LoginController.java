@@ -56,10 +56,10 @@ public class LoginController {
     }
 
 
-    @GetMapping("/loginSuccess")
-    public String showLoginSuccess() {
+    @GetMapping("/loginError")
+    public String showLoginError() {
 
-        return "login/loginSuccess";
+        return "login/loginError";
     }
 
     @ModelAttribute("productCategories")
