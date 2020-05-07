@@ -107,5 +107,10 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    @Override
+    public int getNewOrdersCount() {
+        return orderRepository.countAllByOrderStatus_OrderStatusName(orderStartStatus);
+    }
+
 
 }

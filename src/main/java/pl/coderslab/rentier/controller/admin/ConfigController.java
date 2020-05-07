@@ -11,6 +11,7 @@ import pl.coderslab.rentier.exception.InvalidFileException;
 import pl.coderslab.rentier.repository.*;
 import pl.coderslab.rentier.service.BrandServiceImpl;
 import pl.coderslab.rentier.service.ImageServiceImpl;
+import pl.coderslab.rentier.service.OrderServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -37,13 +38,14 @@ public class ConfigController extends HttpServlet {
     private final ProductShopRepository productShopRepository;
     private final ImageServiceImpl imageService;
     private final BrandServiceImpl brandService;
+    private final OrderServiceImpl orderService;
 
     public ConfigController(ProductCategoryRepository productCategoryRepository,
                             BrandRepository brandRepository, DeliveryMethodRepository deliveryMethodRepository,
                             PaymentMethodRepository paymentMethodRepository, ShopRepository shopRepository,
                             ProductSizeRepository productSizeRepository, OrderStatusRepository orderStatusRepository,
                             ProductRepository productRepository, ProductShopRepository productShopRepository,
-                            ImageServiceImpl imageService, BrandServiceImpl brandService) {
+                            ImageServiceImpl imageService, BrandServiceImpl brandService, OrderServiceImpl orderService) {
         this.productCategoryRepository = productCategoryRepository;
         this.brandRepository = brandRepository;
         this.deliveryMethodRepository = deliveryMethodRepository;
@@ -55,6 +57,7 @@ public class ConfigController extends HttpServlet {
         this.productShopRepository = productShopRepository;
         this.imageService = imageService;
         this.brandService = brandService;
+        this.orderService = orderService;
     }
 
 
@@ -608,6 +611,14 @@ public class ConfigController extends HttpServlet {
     public List<OrderStatus> getOrderStatuses() {
 
         return orderStatusRepository.findAllByOrderByDeliveryMethod();
+    }
+
+    @ModelAttribute("newOrders")
+    public int getNewOrders() {
+        int newOrders = 0;
+        newOrders = orderService.getNewOrdersCount();
+
+        return newOrders;
     }
 
 }

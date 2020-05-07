@@ -10,6 +10,7 @@ import pl.coderslab.rentier.entity.User;
 import pl.coderslab.rentier.repository.RoleRepository;
 import pl.coderslab.rentier.repository.ShopRepository;
 import pl.coderslab.rentier.repository.UserRepository;
+import pl.coderslab.rentier.service.OrderServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +24,13 @@ public class UserController {
     private final UserRepository userRepository;
     private final RoleRepository userRoleRepository;
     private final ShopRepository shopRepository;
+    private final OrderServiceImpl orderService;
 
-    public UserController(UserRepository userRepository, RoleRepository userRoleRepository, ShopRepository shopRepository) {
+    public UserController(UserRepository userRepository, RoleRepository userRoleRepository, ShopRepository shopRepository, OrderServiceImpl orderService) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.shopRepository = shopRepository;
+        this.orderService = orderService;
     }
 
 
@@ -183,5 +186,13 @@ public class UserController {
     public List<Shop> getShops() {
 
         return shopRepository.findAll();
+    }
+
+    @ModelAttribute("newOrders")
+    public int getNewOrders() {
+        int newOrders = 0;
+        newOrders = orderService.getNewOrdersCount();
+
+        return newOrders;
     }
 }

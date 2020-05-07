@@ -56,7 +56,7 @@
                     </li>
 
                     <li><a href="${pageContext.request.contextPath}/admin/orders">
-                        <div>Zamówienia</div>
+                        <div>Zamówienia <strong style="color:white; background:red">${newOrders}</strong></div>
                     </a>
                     </li>
 

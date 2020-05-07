@@ -15,6 +15,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Page<Order> findAllByOrderByOrderDateDesc(Pageable pageable);
     Page<Order> findByOrderNumberContainingOrderByOrderDateDesc(String search, Pageable pageable);
+    int countAllByOrderStatus_OrderStatusName(String status);
 
     @Modifying
     @Transactional

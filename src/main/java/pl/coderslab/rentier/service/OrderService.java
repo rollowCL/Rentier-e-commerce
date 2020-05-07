@@ -8,4 +8,5 @@ public interface OrderService {
     String placeOrder(Long id, Order order);
     Address createOrderAddress(Address userAddress);
     void resetCart(Cart cart);
+    int getNewOrdersCount();
 }

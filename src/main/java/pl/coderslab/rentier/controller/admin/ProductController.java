@@ -4,7 +4,6 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,6 +17,7 @@ import pl.coderslab.rentier.repository.ProductCategoryRepository;
 import pl.coderslab.rentier.repository.ProductImageRepository;
 import pl.coderslab.rentier.repository.ProductRepository;
 import pl.coderslab.rentier.service.ImageServiceImpl;
+import pl.coderslab.rentier.service.OrderServiceImpl;
 import pl.coderslab.rentier.service.ProductServiceImpl;
 
 import javax.validation.Valid;
@@ -43,16 +43,18 @@ public class ProductController {
     private final ProductServiceImpl productService;
     private final ImageServiceImpl imageService;
     private final ProductImageRepository productImageRepository;
+    private final OrderServiceImpl orderService;
 
     public ProductController(ProductRepository productRepository,
                              ProductCategoryRepository productCategoryRepository, BrandRepository brandRepository,
-                             ProductServiceImpl productService, ImageServiceImpl imageService, ProductImageRepository productImageRepository) {
+                             ProductServiceImpl productService, ImageServiceImpl imageService, ProductImageRepository productImageRepository, OrderServiceImpl orderService) {
         this.productRepository = productRepository;
         this.productCategoryRepository = productCategoryRepository;
         this.brandRepository = brandRepository;
         this.productService = productService;
         this.imageService = imageService;
         this.productImageRepository = productImageRepository;
+        this.orderService = orderService;
     }
 
 
@@ -260,6 +262,14 @@ public class ProductController {
     public int getMmaxImageCount() {
 
         return productMaxImagesCount;
+    }
+
+    @ModelAttribute("newOrders")
+    public int getNewOrders() {
+        int newOrders = 0;
+        newOrders = orderService.getNewOrdersCount();
+
+        return newOrders;
     }
 
 

@@ -4,9 +4,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import pl.coderslab.rentier.entity.*;
 import pl.coderslab.rentier.repository.*;
+import pl.coderslab.rentier.service.OrderServiceImpl;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -22,14 +22,16 @@ public class ProductShopController {
     private final ShopRepository shopRepository;
     private final ProductShopRepository productShopRepository;
     private final ProductCategoryRepository productCategoryRepository;
+    private final OrderServiceImpl orderService;
 
     public ProductShopController(ProductRepository productRepository, ProductSizeRepository productSizeRepository,
-                                 ShopRepository shopRepository, ProductShopRepository productShopRepository, ProductCategoryRepository productCategoryRepository) {
+                                 ShopRepository shopRepository, ProductShopRepository productShopRepository, ProductCategoryRepository productCategoryRepository, OrderServiceImpl orderService) {
         this.productRepository = productRepository;
         this.productSizeRepository = productSizeRepository;
         this.shopRepository = shopRepository;
         this.productShopRepository = productShopRepository;
         this.productCategoryRepository = productCategoryRepository;
+        this.orderService = orderService;
     }
 
 
@@ -200,6 +202,14 @@ public class ProductShopController {
     public List<ProductCategory> getProductCategories() {
 
         return productCategoryRepository.findAll();
+    }
+
+    @ModelAttribute("newOrders")
+    public int getNewOrders() {
+        int newOrders = 0;
+        newOrders = orderService.getNewOrdersCount();
+
+        return newOrders;
     }
 
 

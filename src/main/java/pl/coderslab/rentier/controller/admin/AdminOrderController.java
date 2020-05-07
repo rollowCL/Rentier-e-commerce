@@ -11,6 +11,8 @@ import pl.coderslab.rentier.entity.Order;
 import pl.coderslab.rentier.entity.OrderStatus;
 import pl.coderslab.rentier.repository.OrderRepository;
 import pl.coderslab.rentier.repository.OrderStatusRepository;
+import pl.coderslab.rentier.service.OrderServiceImpl;
+
 import java.time.LocalDateTime;
 
 @Controller
@@ -20,11 +22,13 @@ public class AdminOrderController {
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(AdminOrderController.class);
     private final OrderRepository orderRepository;
     private final OrderStatusRepository orderStatusRepository;
+    private final OrderServiceImpl orderService;
 
-    public AdminOrderController(OrderRepository orderRepository, OrderStatusRepository orderStatusRepository) {
+    public AdminOrderController(OrderRepository orderRepository, OrderStatusRepository orderStatusRepository, OrderServiceImpl orderService) {
 
         this.orderRepository = orderRepository;
         this.orderStatusRepository = orderStatusRepository;
+        this.orderService = orderService;
     }
 
 
@@ -74,6 +78,12 @@ public class AdminOrderController {
         return "redirect:/admin/orders";
     }
 
+    @ModelAttribute("newOrders")
+    public int getNewOrders() {
+        int newOrders = 0;
+        newOrders = orderService.getNewOrdersCount();
 
+        return newOrders;
+    }
 
 }
