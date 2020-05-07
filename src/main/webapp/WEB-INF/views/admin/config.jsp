@@ -58,7 +58,7 @@ To change this template use File | Settings | File Templates.
 
                     <div class="col-lg-12">
 
-                        <div class="tabs tabs-alt clearfix" id="tabs-profile">
+                        <div class="tabs tabs-alt clearfix" id="tabs">
 
                             <ul class="tab-nav clearfix">
                                 <li>
@@ -74,12 +74,12 @@ To change this template use File | Settings | File Templates.
                                     <a href="#tab-admin-sizes"><i class="icon-resize-full"></i> Rozmiary</a>
                                 </li>
                                 <li>
-                                    <a href="#tab-admin-pay-methods"><i class="icon-credit"></i> Metody
-                                        płatności</a>
-                                </li>
-                                <li>
                                     <a href="#tab-admin-ship-methods"><i class="icon-luggage-cart"></i> Metody
                                         dostawy</a>
+                                </li>
+                                <li>
+                                    <a href="#tab-admin-pay-methods"><i class="icon-credit"></i> Metody
+                                        płatności</a>
                                 </li>
                                 <li>
                                     <a href="#tab-admin-order-statuses"><i class="icon-file3"></i> Statusy zamówień</a>
@@ -139,6 +139,7 @@ To change this template use File | Settings | File Templates.
                                             <form:form class="row" method="post" action="${pageContext.request.contextPath}/admin/config/shop/add"
                                                        id="addForm" modelAttribute="shop">
                                                 <form:hidden path="id"/>
+                                                <input id="tab" type="hidden" value="${tab}"/>
                                                 <div class="col-md-6 form-group">
                                                     <label for="shopName">Nazwa sklepu </label>
                                                     <form:input path="shopName" id="shopName" class="form-control"
@@ -435,6 +436,77 @@ To change this template use File | Settings | File Templates.
                                     </div>
                                 </div>
 
+                                <div class="tab-content clearfix" id="tab-admin-ship-methods">
+                                    <div class="card-body">
+
+                                        <div class="col-md-7">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col">Nazwa</th>
+                                                    <th scope="col">Koszt</th>
+                                                    <th scope="col">Aktywny</th>
+                                                    <th scope="col">Akcje</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <c:forEach items="${deliveryMethods}" var="deliveryMethod">
+                                                    <tr>
+                                                        <td><c:out value="${deliveryMethod.deliveryMethodName}"/></td>
+                                                        <td><c:out value="${fn:replace(deliveryMethod.deliveryMethodCost, '.', ',')}"/> zł</td>
+                                                        <td>
+                                                            <c:if test="${deliveryMethod.active}"><i
+                                                                    class="icon-line-square-check"></i></c:if>
+                                                            <c:if test="${!deliveryMethod.active}"><i
+                                                                    class="icon-line-square-cross"></i></c:if>
+                                                        </td>
+                                                        <td>
+                                                            <a class="button button-mini button-blue button-3d"
+                                                               href="${pageContext.request.contextPath}/admin/config?deliveryMethodId=${deliveryMethod.id}">Edytuj
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                                </tbody>
+                                            </table>
+                                            <div class="w-100 line divider-line"></div>
+                                            <h4 class="card-title">
+                                                <c:if test="${empty deliveryMethod.id}">Dodaj nowy sposób dostawy</c:if>
+                                                <c:if test="${not empty deliveryMethod.id}">Edytuj sposób dostawy</c:if>
+                                            </h4>
+                                            <form:form class="row" method="post" action="${pageContext.request.contextPath}/admin/config/deliveryMethod/add"
+                                                       id="deliveryMethodAddForm" modelAttribute="deliveryMethod">
+                                                <form:hidden path="id"/>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="deliveryMethodName">Nazwa </label>
+                                                    <form:input path="deliveryMethodName" id="deliveryMethodName" class="form-control"
+                                                                maxlength="50"/>
+                                                    <form:errors path="deliveryMethodName" cssClass="error"/>
+                                                </div>
+                                                <div class="col-md-2 form-group">
+                                                    <label for="deliveryMethodCost">Koszt </label>
+                                                    <form:input path="deliveryMethodCost" id="deliveryMethodCost" class="form-control"
+                                                                maxlength="50"/>
+                                                    <form:errors path="deliveryMethodCost" cssClass="error"/>
+                                                </div>
+                                                <div class="col-md-2 form-group">
+                                                    <label for="active">Aktywny </label>
+                                                    <form:checkbox path="active" id="active" class="form-control"/>
+                                                    <form:errors path="active" cssClass="error"/>
+                                                </div>
+                                                <div class="col-12">
+                                                    <button type="submit"
+                                                            class="button button-mini button-blue button-3d"
+                                                            value="Submit">Zapisz
+                                                    </button>
+                                                </div>
+                                            </form:form>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
                                 <div class="tab-content clearfix" id="tab-admin-pay-methods">
                                     <div class="card-body">
 
@@ -498,76 +570,7 @@ To change this template use File | Settings | File Templates.
                                     </div>
                                 </div>
 
-                                <div class="tab-content clearfix" id="tab-admin-ship-methods">
-                                    <div class="card-body">
 
-                                        <div class="col-md-7">
-                                            <table class="table table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">Nazwa</th>
-                                                        <th scope="col">Koszt</th>
-                                                        <th scope="col">Aktywny</th>
-                                                        <th scope="col">Akcje</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                <c:forEach items="${deliveryMethods}" var="deliveryMethod">
-                                                    <tr>
-                                                        <td><c:out value="${deliveryMethod.deliveryMethodName}"/></td>
-                                                        <td><c:out value="${fn:replace(deliveryMethod.deliveryMethodCost, '.', ',')}"/> zł</td>
-                                                        <td>
-                                                            <c:if test="${deliveryMethod.active}"><i
-                                                                    class="icon-line-square-check"></i></c:if>
-                                                            <c:if test="${!deliveryMethod.active}"><i
-                                                                    class="icon-line-square-cross"></i></c:if>
-                                                        </td>
-                                                        <td>
-                                                            <a class="button button-mini button-blue button-3d"
-                                                               href="${pageContext.request.contextPath}/admin/config?deliveryMethodId=${deliveryMethod.id}">Edytuj
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                </c:forEach>
-                                                </tbody>
-                                            </table>
-                                            <div class="w-100 line divider-line"></div>
-                                            <h4 class="card-title">
-                                                <c:if test="${empty deliveryMethod.id}">Dodaj nowy sposób dostawy</c:if>
-                                                <c:if test="${not empty deliveryMethod.id}">Edytuj sposób dostawy</c:if>
-                                            </h4>
-                                            <form:form class="row" method="post" action="${pageContext.request.contextPath}/admin/config/deliveryMethod/add"
-                                                       id="deliveryMethodAddForm" modelAttribute="deliveryMethod">
-                                                <form:hidden path="id"/>
-                                                <div class="col-md-6 form-group">
-                                                    <label for="deliveryMethodName">Nazwa </label>
-                                                    <form:input path="deliveryMethodName" id="deliveryMethodName" class="form-control"
-                                                                maxlength="50"/>
-                                                    <form:errors path="deliveryMethodName" cssClass="error"/>
-                                                </div>
-                                                <div class="col-md-2 form-group">
-                                                    <label for="deliveryMethodCost">Koszt </label>
-                                                    <form:input path="deliveryMethodCost" id="deliveryMethodCost" class="form-control"
-                                                                maxlength="50"/>
-                                                    <form:errors path="deliveryMethodCost" cssClass="error"/>
-                                                </div>
-                                                <div class="col-md-2 form-group">
-                                                    <label for="active">Aktywny </label>
-                                                    <form:checkbox path="active" id="active" class="form-control"/>
-                                                    <form:errors path="active" cssClass="error"/>
-                                                </div>
-                                                <div class="col-12">
-                                                    <button type="submit"
-                                                            class="button button-mini button-blue button-3d"
-                                                            value="Submit">Zapisz
-                                                    </button>
-                                                </div>
-                                            </form:form>
-                                        </div>
-
-
-                                    </div>
-                                </div>
 
                                 <div class="tab-content clearfix" id="tab-admin-order-statuses">
                                     <div class="card-body">
@@ -665,7 +668,7 @@ To change this template use File | Settings | File Templates.
 
 </div><!-- #wrapper end -->
 
-    <jsp:include page="../scripts.jsp"/>
-
+<jsp:include page="../scripts.jsp"/>
+<script src='<spring:url value="/js/configReturn.js"/>'></script>
 </body>
 </html>

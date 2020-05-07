@@ -1,9 +1,7 @@
 $(() => {
 
-    let returnToTag = "#" + $('#returnToTag').text();
-
-    let index = $('#tabs-profile a[href=returnToTag]').parent().index();
-    $('#tabs-profile').tabs({ active: index - 2});
-
+    let tab = "#" + $('#tab').val();
+    console.log(tab);
+    $('a[href="' + tab + '"]').click();
 
 });

@@ -66,8 +66,8 @@ public class ConfigController extends HttpServlet {
                              @RequestParam(required = false) Long productSizeId,
                              @RequestParam(required = false) Long paymentMethodId,
                              @RequestParam(required = false) Long deliveryMethodId,
-                             @RequestParam(required = false) Long orderStatusId
-    ) {
+                             @RequestParam(required = false) Long orderStatusId,
+                             @RequestParam(required = false) String tab) {
         Shop shop = null;
 
         if (shopId == null) {
@@ -152,6 +152,7 @@ public class ConfigController extends HttpServlet {
         model.addAttribute("paymentMethod", paymentMethod);
         model.addAttribute("deliveryMethod", deliveryMethod);
         model.addAttribute("orderStatus", orderStatus);
+        model.addAttribute("tab", tab);
 
         return "admin/config";
     }
@@ -172,6 +173,7 @@ public class ConfigController extends HttpServlet {
             if (shopRepository.findById(shopId).isPresent()) {
                 Shop shop = shopRepository.findById(shopId).get();
                 model.addAttribute("shop", shop);
+                model.addAttribute("tab", "tab-admin-shops");
             }
         }
 
@@ -179,6 +181,7 @@ public class ConfigController extends HttpServlet {
             if (brandRepository.findById(brandId).isPresent()) {
                 Brand brand = brandRepository.findById(brandId).get();
                 model.addAttribute("brand", brand);
+                model.addAttribute("tab", "tab-admin-brands");
             }
         }
 
@@ -186,6 +189,7 @@ public class ConfigController extends HttpServlet {
             if (productCategoryRepository.findById(productCategoryId).isPresent()) {
                 ProductCategory productCategory = productCategoryRepository.findById(productCategoryId).get();
                 model.addAttribute("productCategory", productCategory);
+                model.addAttribute("tab", "tab-admin-categories");
             }
         }
 
@@ -193,6 +197,7 @@ public class ConfigController extends HttpServlet {
             if (productSizeRepository.findById(productSizeId).isPresent()) {
                 ProductSize productSize = productSizeRepository.findById(productSizeId).get();
                 model.addAttribute("productSize", productSize);
+                model.addAttribute("tab", "tab-admin-sizes");
             }
         }
 
@@ -200,6 +205,7 @@ public class ConfigController extends HttpServlet {
             if (paymentMethodRepository.findById(paymentMethodId).isPresent()) {
                 PaymentMethod paymentMethod = paymentMethodRepository.findById(paymentMethodId).get();
                 model.addAttribute("paymentMethod", paymentMethod);
+                model.addAttribute("tab", "tab-admin-pay-methods");
             }
         }
 
@@ -207,6 +213,7 @@ public class ConfigController extends HttpServlet {
             if (deliveryMethodRepository.findById(deliveryMethodId).isPresent()) {
                 DeliveryMethod deliveryMethod = deliveryMethodRepository.findById(deliveryMethodId).get();
                 model.addAttribute("deliveryMethod", deliveryMethod);
+                model.addAttribute("tab", "tab-admin-ship-methods");
             }
         }
 
@@ -214,6 +221,7 @@ public class ConfigController extends HttpServlet {
             if (orderStatusRepository.findById(orderStatusId).isPresent()) {
                 OrderStatus orderStatus = orderStatusRepository.findById(orderStatusId).get();
                 model.addAttribute("orderStatus", orderStatus);
+                model.addAttribute("tab", "tab-admin-order-statuses");
             }
         }
 
@@ -243,17 +251,15 @@ public class ConfigController extends HttpServlet {
                                @RequestParam(required = false) Long deliveryMethodId,
                                @RequestParam(required = false) Long orderStatusId,
                                @RequestParam(required = false) Long productId,
-                               @RequestParam(required = false) Long productShopId,
-                               Model model
-    ) {
+                               @RequestParam(required = false) Long productShopId) {
 
-        String returnToTag = null;
+        String tab = null;
 
         if (shopId != null) {
             if (shopRepository.findById(shopId).isPresent()) {
                 Shop shop = shopRepository.findById(shopId).get();
                 shopRepository.delete(shop);
-
+                tab = "tab-admin-shops";
             }
         }
 
@@ -262,7 +268,7 @@ public class ConfigController extends HttpServlet {
                 Brand brand = brandRepository.findById(brandId).get();
                 brandService.deleteBrandLogo(brand.getLogoFileName());
                 brandRepository.delete(brand);
-
+                tab = "tab-admin-brands";
             }
         }
 
@@ -281,6 +287,7 @@ public class ConfigController extends HttpServlet {
                     }
                 }
                 productCategoryRepository.delete(productCategory);
+                tab = "tab-admin-categories";
             }
         }
 
@@ -289,9 +296,8 @@ public class ConfigController extends HttpServlet {
 
                 ProductSize productSize = productSizeRepository.findById(productSizeId).get();
                 productSizeRepository.delete(productSize);
-
+                tab = "tab-admin-sizes";
             }
-            returnToTag = "tab-admin-sizes";
         }
 
         if (paymentMethodId != null) {
@@ -299,6 +305,7 @@ public class ConfigController extends HttpServlet {
 
                 PaymentMethod paymentMethod = paymentMethodRepository.findById(paymentMethodId).get();
                 paymentMethodRepository.delete(paymentMethod);
+                tab = "tab-admin-pay-methods";
             }
         }
 
@@ -307,6 +314,7 @@ public class ConfigController extends HttpServlet {
 
                 DeliveryMethod deliveryMethod = deliveryMethodRepository.findById(deliveryMethodId).get();
                 deliveryMethodRepository.delete(deliveryMethod);
+                tab = "tab-admin-ship-methods";
             }
         }
 
@@ -315,6 +323,7 @@ public class ConfigController extends HttpServlet {
 
                 OrderStatus orderStatus = orderStatusRepository.findById(orderStatusId).get();
                 orderStatusRepository.delete(orderStatus);
+                tab = "tab-admin-order-statuses";
             }
         }
 
@@ -336,8 +345,7 @@ public class ConfigController extends HttpServlet {
             return "redirect:/admin/productShops";
         }
 
-        model.addAttribute("returnToTag", returnToTag);
-        return "redirect:/admin/config";
+        return "redirect:/admin/config?tab=" + tab;
     }
 
 
@@ -348,17 +356,18 @@ public class ConfigController extends HttpServlet {
                           @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
                           @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
                           @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod,
-                          @ModelAttribute(binding = false) OrderStatus orderStatus, BindingResult resultOrderStatus
+                          @ModelAttribute(binding = false) OrderStatus orderStatus, BindingResult resultOrderStatus,
+                          Model model
     ) {
 
         if (resultShop.hasErrors()) {
-
+            model.addAttribute("tab", "tab-admin-shops");
             return "admin/config";
 
         } else {
 
             shopRepository.save(shop);
-            return "redirect:/admin/config";
+            return "redirect:/admin/config?tab=tab-admin-shops";
         }
 
     }
@@ -371,7 +380,8 @@ public class ConfigController extends HttpServlet {
                           @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
                           @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod,
                           @ModelAttribute(binding = false) OrderStatus orderStatus, BindingResult resultOrderStatus,
-                          @RequestParam(value = "file", required = false) MultipartFile file) throws IOException, ServletException {
+                          @RequestParam(value = "file", required = false) MultipartFile file,
+                          Model model) throws IOException, ServletException {
 
 
         if (brand.getId() == null && brandRepository.existsByName(brand.getName())) {
@@ -398,12 +408,13 @@ public class ConfigController extends HttpServlet {
 
         if (resultBrand.hasErrors()) {
             brandService.deleteBrandLogo(savedFileName);
+            model.addAttribute("tab", "tab-admin-brands");
             return "admin/config";
 
         } else {
 
             brandRepository.save(brand);
-            return "redirect:/admin/config";
+            return "redirect:/admin/config?tab=tab-admin-brands";
         }
 
     }
@@ -415,7 +426,8 @@ public class ConfigController extends HttpServlet {
                                      @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
                                      @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
                                      @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod,
-                                     @ModelAttribute(binding = false) OrderStatus orderStatus, BindingResult resultOrderStatus
+                                     @ModelAttribute(binding = false) OrderStatus orderStatus, BindingResult resultOrderStatus,
+                                     Model model
     ) {
 
         if (productCategory.getId() == null && productCategoryRepository.existsByCategoryOrder(productCategory.getCategoryOrder())) {
@@ -430,12 +442,13 @@ public class ConfigController extends HttpServlet {
 
         if (resultProductCategory.hasErrors()) {
 
+            model.addAttribute("tab", "tab-admin-categories");
             return "admin/config";
 
         } else {
 
             productCategoryRepository.save(productCategory);
-            return "redirect:/admin/config";
+            return "redirect:/admin/config?tab=tab-admin-categories";
         }
 
     }
@@ -447,8 +460,8 @@ public class ConfigController extends HttpServlet {
                                  @ModelAttribute @Valid ProductSize productSize, BindingResult resultProductSize,
                                  @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
                                  @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod,
-                                 @ModelAttribute(binding = false) OrderStatus orderStatus, BindingResult resultOrderStatus
-    ) {
+                                 @ModelAttribute(binding = false) OrderStatus orderStatus, BindingResult resultOrderStatus,
+                                 Model model) {
 
 
         if (productSize.getId() == null && productSizeRepository.existsBySizeNameAndProductCategory(
@@ -459,13 +472,13 @@ public class ConfigController extends HttpServlet {
 
 
         if (resultProductSize.hasErrors()) {
-
+            model.addAttribute("tab", "tab-admin-sizes");
             return "admin/config";
 
         } else {
 
             productSizeRepository.save(productSize);
-            return "redirect:/admin/config";
+            return "redirect:/admin/config?tab=tab-admin-sizes";
         }
 
     }
@@ -477,7 +490,8 @@ public class ConfigController extends HttpServlet {
                                    @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
                                    @ModelAttribute @Valid PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
                                    @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod,
-                                   @ModelAttribute(binding = false) OrderStatus orderStatus, BindingResult resultOrderStatus
+                                   @ModelAttribute(binding = false) OrderStatus orderStatus, BindingResult resultOrderStatus,
+                                   Model model
     ) {
 
         if (paymentMethod.getId() == null && paymentMethodRepository.existsByPaymentMethodName(paymentMethod.getPaymentMethodName())) {
@@ -486,13 +500,13 @@ public class ConfigController extends HttpServlet {
         }
 
         if (resultPaymentMethod.hasErrors()) {
-
+            model.addAttribute("tab", "tab-admin-pay-methods");
             return "admin/config";
 
         } else {
 
             paymentMethodRepository.save(paymentMethod);
-            return "redirect:/admin/config";
+            return "redirect:/admin/config?tab=tab-admin-pay-methods";
         }
 
     }
@@ -504,7 +518,8 @@ public class ConfigController extends HttpServlet {
                                     @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
                                     @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
                                     @ModelAttribute @Valid DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod,
-                                    @ModelAttribute(binding = false) OrderStatus orderStatus, BindingResult resultOrderStatus) {
+                                    @ModelAttribute(binding = false) OrderStatus orderStatus, BindingResult resultOrderStatus,
+                                    Model model) {
 
 
         if (deliveryMethod.getId() == null && deliveryMethodRepository.existsByDeliveryMethodName(deliveryMethod.getDeliveryMethodName())) {
@@ -513,12 +528,13 @@ public class ConfigController extends HttpServlet {
         }
 
         if (resultDeliveryMethod.hasErrors()) {
+            model.addAttribute("tab", "tab-admin-ship-methods");
             return "admin/config";
 
         } else {
 
             deliveryMethodRepository.save(deliveryMethod);
-            return "redirect:/admin/config";
+            return "redirect:/admin/config?tab=tab-admin-ship-methods";
         }
 
     }
@@ -530,7 +546,8 @@ public class ConfigController extends HttpServlet {
                                  @ModelAttribute(binding = false) ProductSize productSize, BindingResult resultProductSize,
                                  @ModelAttribute(binding = false) PaymentMethod paymentMethod, BindingResult resultPaymentMethod,
                                  @ModelAttribute(binding = false) DeliveryMethod deliveryMethod, BindingResult resultDeliveryMethod,
-                                 @ModelAttribute @Valid OrderStatus orderStatus, BindingResult resultOrderStatus) {
+                                 @ModelAttribute @Valid OrderStatus orderStatus, BindingResult resultOrderStatus,
+                                 Model model) {
 
 
         if (orderStatus.getId() == null && orderStatusRepository.existsByOrderStatusNameAndDeliveryMethod(
@@ -540,12 +557,13 @@ public class ConfigController extends HttpServlet {
         }
 
         if (resultOrderStatus.hasErrors()) {
+            model.addAttribute("tab", "tab-admin-order-statuses");
             return "admin/config";
 
         } else {
 
             orderStatusRepository.save(orderStatus);
-            return "redirect:/admin/config";
+            return "redirect:/admin/config?tab=tab-admin-order-statuses";
         }
 
     }
@@ -583,7 +601,7 @@ public class ConfigController extends HttpServlet {
     @ModelAttribute("productSizes")
     public List<ProductSize> getProductSizes() {
 
-        return productSizeRepository.findAll();
+        return productSizeRepository.customFindAllOrderByCategoryAndSizeName();
     }
 
     @ModelAttribute("orderStatuses")

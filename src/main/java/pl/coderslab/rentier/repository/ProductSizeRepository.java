@@ -20,5 +20,9 @@ public interface ProductSizeRepository extends JpaRepository<ProductSize, Long> 
             "            AND ps.product_id =:productId", nativeQuery = true)
     List<ProductSize> customFindDistinctProductSizesActiveForShopByProductId(@Param("productId") Long id);
 
+    @Query(value = "SELECT p.* FROM product_sizes p JOIN product_categories pc ON p.product_category_id = pc.id\n" +
+            "ORDER BY pc.category_Order, p.size_name", nativeQuery = true)
+    List<ProductSize> customFindAllOrderByCategoryAndSizeName();
+
 
 }
