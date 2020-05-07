@@ -35,7 +35,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
         Optional<User> user = userRepository.findByEmailAndActiveTrue(email);
 
         if (user.isPresent()) {
-
+            tokenService.invalidateAllUserResetTokens(user.get());
             String generatedToken = tokenService.generateToken(30);
             tokenService.saveToken(user.get(), generatedToken, tokenTypePasswordReset);
             emailService.sendPasswordReminderEmail(user.get(), generatedToken, request);

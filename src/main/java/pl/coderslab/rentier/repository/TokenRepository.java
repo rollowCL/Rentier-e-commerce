@@ -21,4 +21,9 @@ public interface TokenRepository extends JpaRepository<Token, Long> {
     @Transactional
     @Query(value = "UPDATE tokens t SET t.valid = false WHERE t.token_value =:tokenValue", nativeQuery = true)
     void invalidateToken(@Param("tokenValue") String tokenValue);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE tokens t SET t.valid = false WHERE t.user_id =:userId AND t.token_type =:tokenType", nativeQuery = true)
+    void invalidateUserTokens(@Param("userId") Long userId, @Param("tokenType") int tokenType);
 }

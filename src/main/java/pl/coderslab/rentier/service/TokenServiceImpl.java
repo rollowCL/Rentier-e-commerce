@@ -1,6 +1,7 @@
 package pl.coderslab.rentier.service;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pl.coderslab.rentier.entity.Token;
 import pl.coderslab.rentier.entity.User;
@@ -13,6 +14,10 @@ import java.time.LocalDateTime;
 public class TokenServiceImpl implements TokenService {
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(TokenServiceImpl.class);
     private final TokenRepository tokenRepository;
+
+    @Value("${rentier.tokenTypePasswordReset}")
+    private int tokenTypePasswordReset;
+
 
     public TokenServiceImpl(TokenRepository tokenRepository) {
         this.tokenRepository = tokenRepository;
@@ -30,6 +35,13 @@ public class TokenServiceImpl implements TokenService {
             sb.append(AB.charAt(rnd.nextInt(AB.length())));
 
         return sb.toString();
+    }
+
+    @Override
+    public void invalidateAllUserResetTokens(User user) {
+
+        tokenRepository.invalidateUserTokens(user.getId(), tokenTypePasswordReset);
+
     }
 
     @Override

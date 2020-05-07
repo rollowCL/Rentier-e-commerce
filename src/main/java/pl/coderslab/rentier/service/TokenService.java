@@ -9,4 +9,5 @@ public interface TokenService {
     void invalidateToken(String token);
     User getUserForToken(String token);
     String generateToken(int len);
+    void invalidateAllUserResetTokens(User user);
 }
