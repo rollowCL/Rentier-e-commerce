@@ -22,6 +22,6 @@ public interface ProductShopService {
     boolean isValidAction(String column);
     String getCellData(Cell cell);
     String getDateString();
-    FileOutputStream createAzureLogFile(String fileName);
+    FileOutputStream createAzureLogFile(String fileName, Long size);
     java.io.FileOutputStream createLocalLogFile(String fileName) throws FileNotFoundException;
 }

@@ -192,7 +192,6 @@ public class ProductShopController {
                 return "admin/productShops";
             }
         } catch (IOException e) {
-            e.printStackTrace();
             errors++;
             model.addAttribute("stockFileMessage", "Bład odczytu/zapisu pliku");
             return "admin/productShops";

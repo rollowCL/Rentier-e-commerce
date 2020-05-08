@@ -1,5 +1,11 @@
 package pl.coderslab.rentier.service;
 
+import com.microsoft.azure.storage.CloudStorageAccount;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.file.CloudFile;
+import com.microsoft.azure.storage.file.CloudFileClient;
+import com.microsoft.azure.storage.file.CloudFileDirectory;
+import com.microsoft.azure.storage.file.CloudFileShare;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.LoggerFactory;
@@ -18,7 +24,9 @@ import pl.coderslab.rentier.repository.ProductShopRepository;
 import pl.coderslab.rentier.repository.ProductSizeRepository;
 import pl.coderslab.rentier.repository.ShopRepository;
 
+import javax.management.openmbean.InvalidKeyException;
 import java.io.*;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -35,6 +43,9 @@ public class ProductShopServiceImpl implements ProductShopService {
 
     @Value("${rentier.dataSource}")
     private String dataSource;
+
+    @Value("${rentier.storageConnectionString}")
+    private String storageConnectionString;
 
     public ProductShopServiceImpl(ProductShopRepository productShopRepository, ProductRepository productRepository, ProductSizeRepository productSizeRepository, ShopRepository shopRepository) {
         this.productShopRepository = productShopRepository;
@@ -84,8 +95,14 @@ public class ProductShopServiceImpl implements ProductShopService {
         String logFileName = getDateString() + "_" + file.getOriginalFilename().concat(".txt");
         logger.info("Creating log file: " + logFileName);
 
-        FileOutputStream fileOutputStream = createLocalLogFile(logFileName);
-        OutputStreamWriter writer = new OutputStreamWriter(fileOutputStream);
+        OutputStreamWriter writer = null;
+        if (dataSource.equals("LOCAL")) {
+            FileOutputStream fileOutputStream = createLocalLogFile(logFileName);
+            writer = new OutputStreamWriter(fileOutputStream);
+        } else if (dataSource.equals("AZURE")) {
+            com.microsoft.azure.storage.file.FileOutputStream fileOutputStream = createAzureLogFile(logFileName, file.getSize());
+            writer = new OutputStreamWriter(fileOutputStream);
+        }
 
         int errors = 0;
         for (Row row : sheet) {
@@ -257,7 +274,34 @@ public class ProductShopServiceImpl implements ProductShopService {
     }
 
     @Override
-    public com.microsoft.azure.storage.file.FileOutputStream createAzureLogFile(String fileName) {
+    public com.microsoft.azure.storage.file.FileOutputStream createAzureLogFile(String fileName, Long size) {
+        try {
+
+            CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageConnectionString);
+            CloudFileClient fileClient = storageAccount.createCloudFileClient();
+            CloudFileShare share = fileClient.getShareReference("rentier");
+
+            if (share.createIfNotExists()) {
+                System.out.println("New share created");
+            }
+
+            CloudFileDirectory rootDir = share.getRootDirectoryReference();
+            CloudFileDirectory logsDir = rootDir.getDirectoryReference("logs");
+
+            if (logsDir.createIfNotExists()) {
+                System.out.println("logsDir created");
+            } else {
+                System.out.println("logsDir already exists");
+            }
+
+            CloudFile cloudFile = logsDir.getFileReference(fileName);
+            return cloudFile.openWriteNew(size);
+
+        } catch (InvalidKeyException invalidKey) {
+            // Handle the exception
+        } catch (java.security.InvalidKeyException | URISyntaxException | StorageException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
