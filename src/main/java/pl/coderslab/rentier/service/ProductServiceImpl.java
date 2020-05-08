@@ -81,6 +81,8 @@ public class ProductServiceImpl implements ProductService {
         BooleanBuilder where = new BooleanBuilder();
         where.and(product.brand.active.eq(true));
         where.and(product.productCategory.active.eq(true));
+        where.and(product.active.eq(true));
+        where.and(product.availableOnline.eq(true));
 
         return performProductSearch(product, where, productSearch);
     }
@@ -90,6 +92,10 @@ public class ProductServiceImpl implements ProductService {
 
         if (productSearch.getProductName() != null) {
             where.and(product.productName.containsIgnoreCase(productSearch.getProductName()));
+        }
+
+        if (productSearch.getProductCode() != null) {
+            where.and(product.productCode.containsIgnoreCase(productSearch.getProductCode()));
         }
 
         if (productSearch.getBrand() != null) {

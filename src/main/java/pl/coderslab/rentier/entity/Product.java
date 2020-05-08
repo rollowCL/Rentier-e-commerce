@@ -32,8 +32,8 @@ public class Product {
 
     @NotBlank
     @Size(max = 50)
-    @Column(name = "product_text")
-    private String productText;
+    @Column(name = "product_code")
+    private String productCode;
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
@@ -99,12 +99,12 @@ public class Product {
         this.productDesc = productDesc;
     }
 
-    public String getProductText() {
-        return productText;
+    public String getProductCode() {
+        return productCode;
     }
 
-    public void setProductText(String productText) {
-        this.productText = productText;
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
     }
 
     public Brand getBrand() {
@@ -205,6 +205,7 @@ public class Product {
         return "Product{" +
                 "id=" + id +
                 ", productName='" + productName + '\'' +
+                ", productCode='" + productCode + '\'' +
                 ", productCategory=" + productCategory +
                 ", createdDate=" + createdDate +
                 ", updatedDate=" + updatedDate +

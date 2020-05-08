@@ -19,6 +19,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Optional;
 
 
 @Controller
@@ -362,6 +363,16 @@ public class ConfigController extends HttpServlet {
                           @ModelAttribute(binding = false) OrderStatus orderStatus, BindingResult resultOrderStatus,
                           Model model
     ) {
+        Optional<Shop> exisingShopByName = shopRepository.findFirstByShopName(shop.getShopName());
+        Optional<Shop> exisingShopByCode = shopRepository.findFirstByShopCode(shop.getShopCode());
+
+        if (exisingShopByCode.isPresent() && !exisingShopByCode.get().getId().equals(shop.getId())) {
+            resultShop.rejectValue("shopCode", "error.shopCode", "Taka kod sklepu już istnieje");
+        }
+
+        if (exisingShopByName.isPresent() && !exisingShopByName.get().getId().equals(shop.getId())) {
+            resultShop.rejectValue("shopName", "error.shopName", "Taka nazwa sklepu już istnieje");
+        }
 
         if (resultShop.hasErrors()) {
             model.addAttribute("tab", "tab-admin-shops");

@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long>, QuerydslPredicateExecutor<Product> {
 
     Optional<Product> findFirstByProductName(String productName);
+    Optional<Product> findFirstByProductCode(String productCode);
     boolean existsByProductName(String productName);
     List<Product> findByProductCategoryId(Long id);
     List<Product> findByProductNameContaining(String productNameSearch);

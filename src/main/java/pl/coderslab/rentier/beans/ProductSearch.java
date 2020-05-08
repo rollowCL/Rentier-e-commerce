@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class ProductSearch {
 
     private String productName;
+    private String productCode;
     private String productDesc;
     private Brand brand;
     private ProductCategory productCategory;
@@ -33,6 +34,14 @@ public class ProductSearch {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
     }
 
     public String getProductDesc() {

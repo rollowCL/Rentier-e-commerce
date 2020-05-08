@@ -35,7 +35,7 @@ CREATE TABLE products
     id BIGINT AUTO_INCREMENT NOT NULL,
     product_name VARCHAR(255) NOT NULL,
     product_desc TEXT,
-    product_text VARCHAR(255),
+    product_code VARCHAR(50),
     product_brand_text VARCHAR(255),
     brand_id BIGINT NOT NULL,
     product_category_id BIGINT NOT NULL,
@@ -65,6 +65,7 @@ CREATE TABLE shops
 (
     id BIGINT AUTO_INCREMENT NOT NULL,
     shop_name VARCHAR(255) NOT NULL,
+    shop_code VARCHAR(5) NOT NULL,
     address_id BIGINT NOT NULL,
     phone VARCHAR(20),
     email VARCHAR(255),

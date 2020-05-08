@@ -127,11 +127,15 @@ public class ProductController {
             product.setProductImages(savedImages);
         }
 
-        Optional<Product> exisingProductByName = productRepository.findFirstByProductName(product.getProductName());
-        if (exisingProductByName.isPresent()) {
-            if (!exisingProductByName.get().getId().equals(product.getId())) {
-                resultProduct.rejectValue("productName", "error.name", "Produkt o takiej nazwie już istnieje");
-            }
+        Optional<Product> existingProductByName = productRepository.findFirstByProductName(product.getProductName());
+        Optional<Product> existingProductByCode = productRepository.findFirstByProductCode(product.getProductCode());
+
+        if (existingProductByName.isPresent() && !existingProductByName.get().getId().equals(product.getId())) {
+            resultProduct.rejectValue("productName", "error.name", "Produkt o takiej nazwie już istnieje");
+        }
+
+        if (existingProductByCode.isPresent() && !existingProductByCode.get().getId().equals(product.getId())) {
+            resultProduct.rejectValue("productCode", "error.code", "Produkt o takim kodzie już istnieje");
         }
 
         int newImagesCount = 0;

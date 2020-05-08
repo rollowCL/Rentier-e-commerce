@@ -124,7 +124,7 @@ To change this template use File | Settings | File Templates.
                                 ============================================= -->
                                 <div class="card product-meta">
                                     <div class="card-body">
-                                        <span itemprop="productID" class="sku_wrapper">Kod produktu: <span class="sku"><c:out value="${product.productText}"/></span></span><br/>
+                                        <span itemprop="productID" class="sku_wrapper">Kod produktu: <span class="sku"><c:out value="${product.productCode}"/></span></span><br/>
                                         <span class="posted_in">Kategoria: <a href="${pageContext.request.contextPath}/?categoryId=<c:out value="${product.productCategory.id}"/>" rel="tag"><c:out value="${product.productCategory.categoryName}"/></a>.</span>
                                     </div>
                                 </div><!-- Product Single - Meta End -->

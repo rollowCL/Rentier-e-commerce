@@ -97,6 +97,7 @@ To change this template use File | Settings | File Templates.
                                                 <thead>
                                                     <tr>
                                                         <th scope="col">Nazwa sklepu</th>
+                                                        <th scope="col">Kod sklepu</th>
                                                         <th scope="col">Kod pocztowy</th>
                                                         <th scope="col">Miasto</th>
                                                         <th scope="col">Ulica</th>
@@ -109,6 +110,7 @@ To change this template use File | Settings | File Templates.
                                                 <c:forEach items="${shops}" var="shop">
                                                     <tr>
                                                         <td><c:out value="${shop.shopName}"/></td>
+                                                        <td><c:out value="${shop.shopCode}"/></td>
                                                         <td><c:out value="${shop.address.zipCode}"/></td>
                                                         <td><c:out value="${shop.address.city}"/></td>
                                                         <td><c:out value="${shop.address.street}"/></td>
@@ -145,6 +147,12 @@ To change this template use File | Settings | File Templates.
                                                     <form:input path="shopName" id="shopName" class="form-control"
                                                                 maxlength="100"/>
                                                     <form:errors path="shopName" cssClass="error"/>
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="shopCode">Kod sklepu </label>
+                                                    <form:input path="shopCode" id="shopCode" class="form-control"
+                                                                maxlength="100"/>
+                                                    <form:errors path="shopCode" cssClass="error"/>
                                                 </div>
                                                 <div class="col-md-12 form-group"></div>
                                                 <div class="col-md-2 form-group">
@@ -183,9 +191,9 @@ To change this template use File | Settings | File Templates.
                                                                 maxlength="50"/>
                                                     <form:errors path="email" cssClass="error"/>
                                                 </div>
-                                                <div class="col-md-4 form-group">
+                                                <div class="col-md-1 form-group">
                                                     <label for="active">Aktywny </label>
-                                                    <form:checkbox path="active" checked="checked" id="active" class="form-control"/>
+                                                    <form:checkbox path="active" checked="checked" id="active" class="sm-form-control"/>
                                                     <form:errors path="active" cssClass="error"/>
                                                 </div>
                                                 <div class="col-12">
@@ -266,9 +274,9 @@ To change this template use File | Settings | File Templates.
                                                                 maxlength="50"/>
                                                     <form:errors path="email" cssClass="error"/>
                                                 </div>
-                                                <div class="col-md-2 form-group">
+                                                <div class="col-md-1 form-group">
                                                     <label for="active">Aktywny </label>
-                                                    <form:checkbox path="active" id="active" class="form-control"/>
+                                                    <form:checkbox path="active" id="active" class="sm-form-control"/>
                                                     <form:errors path="active" cssClass="error"/>
                                                 </div>
                                                 <div class="col-md-6 form-group">
@@ -344,9 +352,9 @@ To change this template use File | Settings | File Templates.
                                                                 maxlength="100"/>
                                                     <form:errors path="categoryOrder" cssClass="error"/>
                                                 </div>
-                                                <div class="col-md-2 form-group">
+                                                <div class="col-md-1 form-group">
                                                     <label for="active">Aktywny </label>
-                                                    <form:checkbox path="active" checked="checked" id="active" class="form-control"/>
+                                                    <form:checkbox path="active" checked="checked" id="active" class="sm-form-control"/>
                                                     <form:errors path="active" cssClass="error"/>
                                                 </div>
                                                 <div class="col-12">
@@ -418,9 +426,9 @@ To change this template use File | Settings | File Templates.
                                                     </form:select>
                                                     <form:errors path="productCategory" cssClass="error"/>
                                                 </div>
-                                                <div class="col-md-2 form-group">
+                                                <div class="col-md-1 form-group">
                                                     <label for="active">Aktywny </label>
-                                                    <form:checkbox path="active" id="active" class="form-control"/>
+                                                    <form:checkbox path="active" id="active" class="sm-form-control"/>
                                                     <form:errors path="active" cssClass="error"/>
                                                 </div>
                                                 <div class="col-12">
@@ -489,9 +497,9 @@ To change this template use File | Settings | File Templates.
                                                                 maxlength="50"/>
                                                     <form:errors path="deliveryMethodCost" cssClass="error"/>
                                                 </div>
-                                                <div class="col-md-2 form-group">
+                                                <div class="col-md-1 form-group">
                                                     <label for="active">Aktywny </label>
-                                                    <form:checkbox path="active" id="active" class="form-control"/>
+                                                    <form:checkbox path="active" id="active" class="sm-form-control"/>
                                                     <form:errors path="active" cssClass="error"/>
                                                 </div>
                                                 <div class="col-12">
@@ -552,9 +560,9 @@ To change this template use File | Settings | File Templates.
                                                                 maxlength="50"/>
                                                     <form:errors path="paymentMethodName" cssClass="error"/>
                                                 </div>
-                                                <div class="col-md-2 form-group">
+                                                <div class="col-md-1 form-group">
                                                     <label for="active">Aktywny </label>
-                                                    <form:checkbox path="active" id="active" class="form-control"/>
+                                                    <form:checkbox path="active" id="active" class="sm-form-control"/>
                                                     <form:errors path="active" cssClass="error"/>
                                                 </div>
                                                 <div class="col-12">
@@ -627,9 +635,9 @@ To change this template use File | Settings | File Templates.
                                                     </form:select>
                                                     <form:errors path="deliveryMethod" cssClass="error"/>
                                                 </div>
-                                                <div class="col-md-2 form-group">
+                                                <div class="col-md-1 form-group">
                                                     <label for="active">Aktywny </label>
-                                                    <form:checkbox path="active" id="active" class="form-control"/>
+                                                    <form:checkbox path="active" id="active" class="sm-form-control"/>
                                                     <form:errors path="active" cssClass="error"/>
                                                 </div>
                                                 <div class="col-12">

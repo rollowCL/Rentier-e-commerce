@@ -99,10 +99,10 @@ To change this template use File | Settings | File Templates.
                                 <form:errors path="productDesc" cssClass="error"/>
                             </div>
                             <div class="col-md-6 form-group">
-                                <label for="productText">Kod produktu</label>
-                                <form:input path="productText" id="productText" class="form-control"
+                                <label for="productCode">Kod produktu</label>
+                                <form:input path="productCode" id="productCode" class="form-control"
                                             maxlength="50"/>
-                                <form:errors path="productText" cssClass="error"/>
+                                <form:errors path="productCode" cssClass="error"/>
                             </div>
                             <div class="col-md-3 form-group">
                                 <label for="priceGross">Cena brutto</label>
@@ -112,12 +112,12 @@ To change this template use File | Settings | File Templates.
                             </div>
                             <div class="col-md-1 form-group">
                                 <label for="active">Aktywny </label>
-                                <form:checkbox path="active" id="active" class="form-control"/>
+                                <form:checkbox path="active" id="active" class="sm-form-control"/>
                                 <form:errors path="active" cssClass="error"/>
                             </div>
                             <div class="col-md-1 form-group">
                                 <label for="availableOnline">Dostępny na www </label>
-                                <form:checkbox path="availableOnline" id="availableOnline" class="form-control"/>
+                                <form:checkbox path="availableOnline" id="availableOnline" class="sm-form-control"/>
                                 <form:errors path="availableOnline" cssClass="error"/>
                             </div>
                             <div class="col-12">

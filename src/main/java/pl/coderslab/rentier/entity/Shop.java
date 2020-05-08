@@ -20,6 +20,11 @@ public class Shop {
     @Column(name = "shop_name")
     private String shopName;
 
+    @NotBlank
+    @Size(max = 5)
+    @Column(name = "shop_code")
+    private String shopCode;
+
     @Valid
     @NotNull
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -59,6 +64,14 @@ public class Shop {
 
     public void setShopName(String shopName) {
         this.shopName = shopName;
+    }
+
+    public String getShopCode() {
+        return shopCode;
+    }
+
+    public void setShopCode(String shopCode) {
+        this.shopCode = shopCode;
     }
 
     public Address getAddress() {
@@ -127,6 +140,7 @@ public class Shop {
         return "Shop{" +
                 "id=" + id +
                 ", shopName='" + shopName + '\'' +
+                ", shopCode='" + shopCode + '\'' +
                 ", address=" + address +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
