@@ -19,6 +19,10 @@
     float: left;
 }
 
+.myFormCenter {
+    display: inline-block;
+}
+
 .myFormRight {
     float: right;
 }

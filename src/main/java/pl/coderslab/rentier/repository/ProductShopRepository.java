@@ -7,9 +7,11 @@ import org.springframework.data.repository.query.Param;
 import pl.coderslab.rentier.entity.Product;
 import pl.coderslab.rentier.entity.ProductShop;
 import pl.coderslab.rentier.entity.ProductSize;
+import pl.coderslab.rentier.entity.Shop;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductShopRepository extends JpaRepository<ProductShop, Long> {
 
@@ -35,6 +37,8 @@ public interface ProductShopRepository extends JpaRepository<ProductShop, Long> 
     List<ProductShop> customFindAllProductShopsActiveForShopByProductId(@Param("productId") Long id);
 
     List<ProductShop> findByProductAndProductSizeOrderByShopId(Product product, ProductSize productSize);
+
+    Optional<ProductShop> findFirstByProductAndProductSizeAndShop(Product product, ProductSize productSize, Shop shop);
 
     @Query(value = "SELECT SUM(ps.quantity) AS available FROM products_shops ps JOIN product_sizes p on ps.product_size_id = p.id " +
             "JOIN products p2 on ps.product_id = p2.id " +

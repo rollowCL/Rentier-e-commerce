@@ -59,13 +59,22 @@ To change this template use File | Settings | File Templates.
                     <div class="col-lg-12">
 
                         <div class="filterForm">
-                            <form:form class="myFormLeft" action="/admin/productShops/filterProductCategories" method="post" modelAttribute="productCategoryFilter">
-                                <form:radiobutton path="id" value="0" label="Wszystkie"/>
-                                <form:radiobuttons path="id" items="${productCategories}" itemLabel="categoryName" itemValue="id"/>
+                            <form:form class="myFormLeft" action="${pageContext.request.contextPath}/admin/productShops/filterProductCategories" method="post" modelAttribute="productCategoryFilter">
+                                <label for="categorySelect">Kategoria</label>
+                                <form:select path="id" name="categorySelect">
+                                    <form:option value="0" label="Wszystkie"/>
+                                    <form:options items="${productCategories}" itemValue="id" itemLabel="categoryName"/>
+                                </form:select>
                                 <button type="submit" class="button button-mini button-blue button-3d"
                                         value="Submit">Filtruj
                                 </button>
                             </form:form>
+                            <form class="myFormRight" enctype="multipart/form-data" action="${pageContext.request.contextPath}/admin/productShops/loadFromFile" method="post">
+                                <input accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" type="file" id="stockFile" name="stockFile"/>
+                                <button type="submit" class="button button-mini button-blue button-3d"
+                                        value="Submit">Załaduj
+                                </button>
+                            </form>
                             <form class="myFormRight" action="${pageContext.request.contextPath}/admin/productShops/filterProductsName" method="post">
                                 <label for="productNameSearch">Szukaj</label>
                                 <input type="text" size="30" placeholder="podaj fragment nazwy produktu" minlength="3" name="productNameSearch" id="productNameSearch" maxlength="50"/>
@@ -75,13 +84,13 @@ To change this template use File | Settings | File Templates.
                             </form>
                             <a href="javascript:window.history.back()" class="button button-mini button-blue button-3d">Wstecz</a>
                         </div>
-
-
+                        <span style="color:red; float: right">${stockFileMessage}</span>
                         <table class="table">
                             <thead>
                             <tr>
                                 <th scope="col">Sklep</th>
-                                <th scope="col">Produkt</th>
+                                <th scope="col">Nazwa</th>
+                                <th scope="col">Kod</th>
                                 <th scope="col">Rozmiar</th>
                                 <th scope="col">Dostępna ilość</th>
                                 <th scope="col">Akcje</th>
@@ -92,6 +101,7 @@ To change this template use File | Settings | File Templates.
                                 <tr>
                                     <td><c:out value="${productShop.shop.shopName}"/></td>
                                     <td><c:out value="${productShop.product.productName}"/></td>
+                                    <td><c:out value="${productShop.product.productCode}"/></td>
                                     <td><c:out value="${productShop.productSize.sizeName}"/></td>
                                     <td><c:out value="${productShop.quantity}"/></td>
                                     <td>

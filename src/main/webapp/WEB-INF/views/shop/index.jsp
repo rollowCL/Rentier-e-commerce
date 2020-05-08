@@ -55,7 +55,7 @@ To change this template use File | Settings | File Templates.
             <div class="container clearfix">
                 <div class="row">
                     <div class="filterForm">
-                        <form:form class="myFormLeft" action="/search" method="post" modelAttribute="productSearch">
+                        <form:form class="myFormLeft" action="${pageContext.request.contextPath}/search" method="post" modelAttribute="productSearch">
                             <form:label path="productName">Nazwa produktu</form:label>
                             <form:input path="productName"/>
                             <form:label path="brand">Marka</form:label>

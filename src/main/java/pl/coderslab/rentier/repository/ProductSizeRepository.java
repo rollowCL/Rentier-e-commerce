@@ -7,10 +7,12 @@ import pl.coderslab.rentier.entity.ProductCategory;
 import pl.coderslab.rentier.entity.ProductSize;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductSizeRepository extends JpaRepository<ProductSize, Long> {
 
     boolean existsBySizeNameAndProductCategory(String sizeName, ProductCategory productCategory);
+    Optional<ProductSize> findFirstBySizeNameAndProductCategory(String sizeName, ProductCategory productCategory);
 
     List<ProductSize> findByProductCategory(ProductCategory productCategory);
 

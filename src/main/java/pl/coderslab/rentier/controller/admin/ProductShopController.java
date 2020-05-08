@@ -1,14 +1,18 @@
 package pl.coderslab.rentier.controller.admin;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import pl.coderslab.rentier.entity.*;
 import pl.coderslab.rentier.repository.*;
 import pl.coderslab.rentier.service.OrderServiceImpl;
+import pl.coderslab.rentier.service.ProductShopServiceImpl;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,15 +27,18 @@ public class ProductShopController {
     private final ProductShopRepository productShopRepository;
     private final ProductCategoryRepository productCategoryRepository;
     private final OrderServiceImpl orderService;
+    private final ProductShopServiceImpl productShopService;
+    private final org.slf4j.Logger logger = LoggerFactory.getLogger(ProductShopController.class);
 
     public ProductShopController(ProductRepository productRepository, ProductSizeRepository productSizeRepository,
-                                 ShopRepository shopRepository, ProductShopRepository productShopRepository, ProductCategoryRepository productCategoryRepository, OrderServiceImpl orderService) {
+                                 ShopRepository shopRepository, ProductShopRepository productShopRepository, ProductCategoryRepository productCategoryRepository, OrderServiceImpl orderService, ProductShopServiceImpl productShopService) {
         this.productRepository = productRepository;
         this.productSizeRepository = productSizeRepository;
         this.shopRepository = shopRepository;
         this.productShopRepository = productShopRepository;
         this.productCategoryRepository = productCategoryRepository;
         this.orderService = orderService;
+        this.productShopService = productShopService;
     }
 
 
@@ -171,6 +178,30 @@ public class ProductShopController {
         }
 
         return "redirect:/admin/productShops";
+    }
+
+    @PostMapping("/loadFromFile")
+    public String loadFromFile(Model model, @RequestParam(value = "stockFile") MultipartFile stockFile,
+                               @ModelAttribute(binding = false, name = "productCategoryFilter") ProductCategory productCategoryFilter
+    ) {
+
+        logger.info(stockFile.getOriginalFilename());
+
+        try {
+            int errors = productShopService.readFile(stockFile);
+            if (errors > 0) {
+                model.addAttribute("stockFileMessage", "Błędy w pliku wejściowym. Sprawdź log. Liczba błędów: " + errors);
+                return "admin/productShops";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            model.addAttribute("stockFileMessage", "Bład odczytu/zapisu pliku");
+            return "admin/productShops";
+        }
+
+
+        model.addAttribute("stockFileMessage", "Poprawnie załadowano plik");
+        return "admin/productShops";
     }
 
 

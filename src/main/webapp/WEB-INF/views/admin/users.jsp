@@ -59,7 +59,7 @@ To change this template use File | Settings | File Templates.
 
                     <div class="col-lg-12">
                         <div class="filterForm">
-                            <form:form class="myFormLeft" action="/admin/users/filterUsers" method="post" modelAttribute="userRoleFilter">
+                            <form:form class="myFormLeft" action="${pageContext.request.contextPath}/admin/users/filterUsers" method="post" modelAttribute="userRoleFilter">
                                 <form:radiobutton path="id" value="0" label="Wszystkie"/>
                                 <form:radiobuttons path="id" items="${userRoles}" itemLabel="roleName" itemValue="id"/>
                                 <button type="submit" class="button button-mini button-blue button-3d"

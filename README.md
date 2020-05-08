@@ -24,7 +24,7 @@ clothing shops.
 - [ ] User Panel
 - [x] Multi Image for Products
 - [ ] Product reviews
-- [ ] Stock file operations
+- [x] Stock file operations
 - [ ] Orders with invoice option
 - [x] Sorting in views (QueryDSL)
 - [x] Multi condition filters in views (QueryDSL)
