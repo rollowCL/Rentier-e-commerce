@@ -71,7 +71,7 @@ To change this template use File | Settings | File Templates.
                             </form:form>
                             <form class="myFormRight" enctype="multipart/form-data" action="${pageContext.request.contextPath}/admin/productShops/loadFromFile" method="post">
                                 <input accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" type="file" id="stockFile" name="stockFile"/>
-                                <button type="submit" class="button button-mini button-blue button-3d"
+                                <button id="stockFileConfirm" type="submit" class="button button-mini button-blue button-3d"
                                         value="Submit">Załaduj
                                 </button>
                             </form>
@@ -142,6 +142,6 @@ To change this template use File | Settings | File Templates.
 </div><!-- #wrapper end -->
 
     <jsp:include page="../scripts.jsp"/>
-
+    <script src='<spring:url value="/js/stockFileConfirm.js"/>'></script>
 </body>
 </html>

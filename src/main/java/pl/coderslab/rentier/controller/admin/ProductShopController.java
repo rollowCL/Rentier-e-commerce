@@ -184,24 +184,29 @@ public class ProductShopController {
     public String loadFromFile(Model model, @RequestParam(value = "stockFile") MultipartFile stockFile,
                                @ModelAttribute(binding = false, name = "productCategoryFilter") ProductCategory productCategoryFilter
     ) {
-
-        logger.info(stockFile.getOriginalFilename());
-
+        int errors = 0;
         try {
-            int errors = productShopService.readFile(stockFile);
+            errors = productShopService.readFile(stockFile);
             if (errors > 0) {
                 model.addAttribute("stockFileMessage", "Błędy w pliku wejściowym. Sprawdź log. Liczba błędów: " + errors);
                 return "admin/productShops";
             }
         } catch (IOException e) {
             e.printStackTrace();
+            errors++;
             model.addAttribute("stockFileMessage", "Bład odczytu/zapisu pliku");
             return "admin/productShops";
         }
 
+        if (errors == 0) {
+            model.addAttribute("stockFileMessage", "Poprawnie załadowano plik");
+            model.addAttribute("productShops", productShopRepository.customFindAllOrderByShopProductSize());
+            return "admin/productShops";
+        } else {
+            return "admin/productShops";
+        }
 
-        model.addAttribute("stockFileMessage", "Poprawnie załadowano plik");
-        return "admin/productShops";
+
     }
 
 

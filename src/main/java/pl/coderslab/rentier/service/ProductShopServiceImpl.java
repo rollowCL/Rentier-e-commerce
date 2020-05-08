@@ -3,6 +3,7 @@ package pl.coderslab.rentier.service;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,10 +19,9 @@ import pl.coderslab.rentier.repository.ProductSizeRepository;
 import pl.coderslab.rentier.repository.ShopRepository;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 public class ProductShopServiceImpl implements ProductShopService {
@@ -32,6 +32,9 @@ public class ProductShopServiceImpl implements ProductShopService {
     private final ProductSizeRepository productSizeRepository;
     private final ShopRepository shopRepository;
     private final List<String> acceptedActions = Arrays.asList("D", "U", "N");
+
+    @Value("${rentier.dataSource}")
+    private String dataSource;
 
     public ProductShopServiceImpl(ProductShopRepository productShopRepository, ProductRepository productRepository, ProductSizeRepository productSizeRepository, ShopRepository shopRepository) {
         this.productShopRepository = productShopRepository;
@@ -76,8 +79,37 @@ public class ProductShopServiceImpl implements ProductShopService {
     }
 
     @Override
-    public boolean validateFile(MultipartFile file) throws InvalidFileException {
-        return false;
+    public int validateFile(MultipartFile file, Sheet sheet) throws IOException {
+
+        String logFileName = getDateString() + "_" + file.getOriginalFilename().concat(".txt");
+        logger.info("Creating log file: " + logFileName);
+
+        FileOutputStream fileOutputStream = createLocalLogFile(logFileName);
+        OutputStreamWriter writer = new OutputStreamWriter(fileOutputStream);
+
+        int errors = 0;
+        for (Row row : sheet) {
+            Cell firstCell = row.getCell(0, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
+            if (!(firstCell == null)) {
+                logger.info("Walidacja wiersza row: " + row.getRowNum());
+                String rowValid = validateRow(row);
+                if (!rowValid.equals("OK")) {
+                    errors++;
+                }
+                logger.info(rowValid);
+                writer.write("Wiersz: " + (row.getRowNum() + 1) + " - " + rowValid + "\n");
+            }
+
+        }
+        writer.close();
+
+        if (errors > 0) {
+            logger.info("Walidacja pliku zakończyła się błędami: " + errors);
+        } else {
+            logger.info("Walidacja pliku zakończyła się brakiem błędów");
+        }
+
+        return errors;
     }
 
     @Override
@@ -86,41 +118,14 @@ public class ProductShopServiceImpl implements ProductShopService {
         InputStream fileInputStream = file.getInputStream();
         Workbook workbook = new XSSFWorkbook(fileInputStream);
         Sheet sheet = workbook.getSheetAt(0);
-        FileOutputStream fileStream;
-        OutputStreamWriter writer;
-        String logFileName = file.getOriginalFilename().concat(".txt");
-        int errors = 0;
-        logger.info("Creating log file: " + logFileName);
-        try {
-            fileStream = new FileOutputStream(new File(logFileName));
-            writer = new OutputStreamWriter(fileStream);
 
+        int errors = validateFile(file, sheet);
+
+        if (errors == 0) {
             for (Row row : sheet) {
-                Cell firstCell = row.getCell(0, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
-                if (!(firstCell == null)) {
-                    logger.info("Walidacja wiersza row: " + row.getRowNum());
-                    String rowValid = validateRow(row);
-                    if (!rowValid.equals("OK")) {
-                        errors++;
-                    }
-                    logger.info(rowValid);
-                    writer.write("Wiersz: " + (row.getRowNum() + 1) + " - " + rowValid + "\n");
-                }
-
+                logger.info("Procesowanie wiersza: " + row.getRowNum());
+                processRow(row);
             }
-            writer.close();
-
-            if (errors == 0) {
-                for (Row row : sheet) {
-                    logger.info("Procesowanie wiersza: " + row.getRowNum());
-                    processRow(row);
-                }
-            } else {
-                logger.info("Walidacja pliku zakończyła się błędami: " + errors);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         return errors;
@@ -234,6 +239,31 @@ public class ProductShopServiceImpl implements ProductShopService {
     public String getCellData(Cell cell) {
         DataFormatter formatter = new DataFormatter();
         return formatter.formatCellValue(cell);
+    }
+
+    @Override
+    public String getDateString() {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        StringBuilder sb = new StringBuilder();
+        sb.append(localDateTime.getYear())
+                .append(localDateTime.getMonth())
+                .append(localDateTime.getDayOfMonth())
+                .append(localDateTime.getHour())
+                .append(localDateTime.getMinute())
+                .append(localDateTime.getSecond());
+
+        return sb.toString();
+
+    }
+
+    @Override
+    public com.microsoft.azure.storage.file.FileOutputStream createAzureLogFile(String fileName) {
+        return null;
+    }
+
+    @Override
+    public FileOutputStream createLocalLogFile(String fileName) throws FileNotFoundException {
+        return new FileOutputStream(new File(fileName));
     }
 
 }
