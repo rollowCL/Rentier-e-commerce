@@ -184,7 +184,7 @@ public class ProductShopController {
     public String loadFromFile(Model model, @RequestParam(value = "stockFile") MultipartFile stockFile,
                                @ModelAttribute(binding = false, name = "productCategoryFilter") ProductCategory productCategoryFilter
     ) {
-        int errors = 0;
+        int errors;
         try {
             errors = productShopService.readFile(stockFile);
             if (errors > 0) {
@@ -192,7 +192,6 @@ public class ProductShopController {
                 return "admin/productShops";
             }
         } catch (IOException e) {
-            errors++;
             model.addAttribute("stockFileMessage", "Bład odczytu/zapisu pliku");
             return "admin/productShops";
         }

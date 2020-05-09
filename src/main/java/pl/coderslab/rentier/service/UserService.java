@@ -8,5 +8,6 @@ public interface UserService {
     void updateUserBillAddress(User user, Address sourceBillAddress);
     void updateUserShipAddress(User user, Address sourceShipAddress);
     void updateUserPassword(User user);
+    User getLoggedUser();
 
 }

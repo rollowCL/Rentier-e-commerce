@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import pl.coderslab.rentier.entity.*;
 import pl.coderslab.rentier.repository.*;
 import pl.coderslab.rentier.service.OrderServiceImpl;
+import pl.coderslab.rentier.service.UserServiceImpl;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/user")
@@ -26,25 +26,24 @@ public class OrderController {
     private final DeliveryMethodRepository deliveryMethodRepository;
     private final ShopRepository shopRepository;
     private final OrderServiceImpl orderService;
+    private final UserServiceImpl userService;
 
-    public OrderController(ProductCategoryRepository productCategoryRepository, UserRepository userRepository, PaymentMethodRepository paymentMethodRepository, DeliveryMethodRepository deliveryMethodRepository, ShopRepository shopRepository, OrderServiceImpl orderService) {
+    public OrderController(ProductCategoryRepository productCategoryRepository, UserRepository userRepository, PaymentMethodRepository paymentMethodRepository, DeliveryMethodRepository deliveryMethodRepository, ShopRepository shopRepository, OrderServiceImpl orderService, UserServiceImpl userService) {
         this.productCategoryRepository = productCategoryRepository;
         this.userRepository = userRepository;
         this.paymentMethodRepository = paymentMethodRepository;
         this.deliveryMethodRepository = deliveryMethodRepository;
         this.shopRepository = shopRepository;
         this.orderService = orderService;
+        this.userService = userService;
     }
 
 
     @GetMapping("/order/checkout")
     public String showCheckout(Model model) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-
+        User user = userService.getLoggedUser();
         Order order = new Order();
-        User user = userRepository.findByUserName(currentPrincipalName);
 
         if (user.getBillAddress() != null) {
             Address userBillAddress = user.getBillAddress();

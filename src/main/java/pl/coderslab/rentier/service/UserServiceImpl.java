@@ -1,7 +1,10 @@
 package pl.coderslab.rentier.service;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.coderslab.rentier.entity.Address;
+import pl.coderslab.rentier.entity.Order;
 import pl.coderslab.rentier.entity.User;
 import pl.coderslab.rentier.repository.AddressRepository;
 import pl.coderslab.rentier.repository.UserRepository;
@@ -61,5 +64,12 @@ public class UserServiceImpl implements UserService {
     public void updateUserPassword(User user) {
         user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
         userRepository.updateUserPassword(user.getId(), user.getPassword());
+    }
+
+    @Override
+    public User getLoggedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        return userRepository.findByUserName(currentPrincipalName);
     }
 }

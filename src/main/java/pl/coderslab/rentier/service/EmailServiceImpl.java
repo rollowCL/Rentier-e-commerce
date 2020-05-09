@@ -1,22 +1,25 @@
 package pl.coderslab.rentier.service;
 
+import org.apache.jasper.tagplugins.jstl.core.Url;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import pl.coderslab.rentier.entity.Order;
 import pl.coderslab.rentier.entity.User;
 import pl.coderslab.rentier.repository.TokenRepository;
+import pl.coderslab.rentier.repository.UserRepository;
 import pl.coderslab.rentier.utils.EmailUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import java.net.URL;
 
 @Service
 public class EmailServiceImpl implements EmailService {
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(EmailServiceImpl.class);
     private final TokenRepository tokenRepository;
+    private final UserRepository userRepository;
 
     @Value("${rentier.mailHostName}")
     private String mailHostName;
@@ -36,8 +39,9 @@ public class EmailServiceImpl implements EmailService {
     @Value("${rentier.mailPersonal}")
     private String mailPersonal;
 
-    public EmailServiceImpl(TokenRepository tokenRepository) {
+    public EmailServiceImpl(TokenRepository tokenRepository, UserRepository userRepository) {
         this.tokenRepository = tokenRepository;
+        this.userRepository = userRepository;
     }
 
 
@@ -82,6 +86,20 @@ public class EmailServiceImpl implements EmailService {
         );
 
 
+    }
+
+    @Override
+    public void sendEmailWithAttachment(User user, URL url, String fileName) {
+        EmailUtil.createEmailWithAttachment(user.getEmail(),
+                "Log z ładowania pliku",
+                mailFrom,
+                mailPassword,
+                mailSMTP,
+                mailPort,
+                mailPersonal,
+                url,
+                fileName
+        );
     }
 
     @Override

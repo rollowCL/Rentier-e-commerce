@@ -10,14 +10,9 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import pl.coderslab.rentier.entity.Product;
-import pl.coderslab.rentier.entity.ProductShop;
-import pl.coderslab.rentier.entity.ProductSize;
-import pl.coderslab.rentier.entity.Shop;
-import pl.coderslab.rentier.exception.InvalidFileException;
+import pl.coderslab.rentier.entity.*;
 import pl.coderslab.rentier.pojo.CartItem;
 import pl.coderslab.rentier.repository.ProductRepository;
 import pl.coderslab.rentier.repository.ProductShopRepository;
@@ -26,8 +21,9 @@ import pl.coderslab.rentier.repository.ShopRepository;
 
 import javax.management.openmbean.InvalidKeyException;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.time.LocalDate;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -39,7 +35,9 @@ public class ProductShopServiceImpl implements ProductShopService {
     private final ProductRepository productRepository;
     private final ProductSizeRepository productSizeRepository;
     private final ShopRepository shopRepository;
+    private final EmailServiceImpl emailService;
     private final List<String> acceptedActions = Arrays.asList("D", "U", "N");
+    private final UserServiceImpl userService;
 
     @Value("${rentier.dataSource}")
     private String dataSource;
@@ -47,11 +45,13 @@ public class ProductShopServiceImpl implements ProductShopService {
     @Value("${rentier.storageConnectionString}")
     private String storageConnectionString;
 
-    public ProductShopServiceImpl(ProductShopRepository productShopRepository, ProductRepository productRepository, ProductSizeRepository productSizeRepository, ShopRepository shopRepository) {
+    public ProductShopServiceImpl(ProductShopRepository productShopRepository, ProductRepository productRepository, ProductSizeRepository productSizeRepository, ShopRepository shopRepository, EmailServiceImpl emailService, UserServiceImpl userService) {
         this.productShopRepository = productShopRepository;
         this.productRepository = productRepository;
         this.productSizeRepository = productSizeRepository;
         this.shopRepository = shopRepository;
+        this.emailService = emailService;
+        this.userService = userService;
     }
 
     @Override
@@ -119,6 +119,7 @@ public class ProductShopServiceImpl implements ProductShopService {
 
         }
         writer.close();
+        emailService.sendEmailWithAttachment(userService.getLoggedUser(), getAzureUri(logFileName), logFileName);
 
         if (errors > 0) {
             logger.info("Walidacja pliku zakończyła się błędami: " + errors);
@@ -149,32 +150,36 @@ public class ProductShopServiceImpl implements ProductShopService {
     }
 
     @Override
+    public List<String> readRow(Row row) {
+        List<String> result = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            result.add(getCellData(row.getCell(i)));
+        }
+       return result;
+    }
+
+    @Override
     public String validateRow(Row row) {
 
-        String columnAString = getCellData(row.getCell(0));
-        String columnBString = getCellData(row.getCell(1));
-        String columnCString = getCellData(row.getCell(2));
-        String columnDString = getCellData(row.getCell(3));
-        String columnEString = getCellData(row.getCell(4));
+        List<String> rowData = readRow(row);
 
-        Optional<Product> product = productRepository.findFirstByProductCode(columnAString);
+        Optional<Product> product = getProductFromRowData(rowData);
         if (!product.isPresent()) {
-            return "Brak produktu o kodzie " + columnAString;
+            return "Brak produktu o kodzie " + rowData.get(0);
         }
 
-        Optional<Shop> shop = shopRepository.findFirstByShopCode(columnBString);
+        Optional<Shop> shop = getShopFromRowData(rowData);
         if (!shop.isPresent()) {
-            return "Brak sklepu o kodzie " + columnBString;
+            return "Brak sklepu o kodzie " + rowData.get(1);
         }
 
-        Optional<ProductSize> productSize = productSizeRepository.findFirstBySizeNameAndProductCategory(
-                columnCString, product.get().getProductCategory());
+        Optional<ProductSize> productSize = getProductSizeFromRowData(rowData, product.get().getProductCategory());
         if (!productSize.isPresent()) {
-            return "Brak rozmiaru o nazwie " + columnCString + " dla kategorii " + product.get().getProductCategory().getCategoryName();
+            return "Brak rozmiaru o nazwie " + rowData.get(2) + " dla kategorii " + product.get().getProductCategory().getCategoryName();
         }
 
         try {
-            Integer.parseInt(columnDString);
+            Integer.parseInt(rowData.get(3));
         } catch (NumberFormatException e) {
             return "Kolumna D ma błędny format - powinna być liczba";
         }
@@ -183,11 +188,11 @@ public class ProductShopServiceImpl implements ProductShopService {
             return "Kolumna E ma błędny format";
         }
 
-        if (columnEString.length() != 1) {
-            return "Kolumna E powinna mieć jeden znak a ma " + columnEString.length();
+        if (rowData.get(4).length() != 1) {
+            return "Kolumna E powinna mieć jeden znak a ma " + rowData.get(4).length();
         }
 
-        if (!isValidAction(columnEString)) {
+        if (!isValidAction(rowData.get(4))) {
             return "Nie rozpoznana akcja";
         }
 
@@ -196,21 +201,15 @@ public class ProductShopServiceImpl implements ProductShopService {
 
     @Override
     public void processRow(Row row) {
-        String columnAString = getCellData(row.getCell(0));
-        String columnBString = getCellData(row.getCell(1));
-        String columnCString = getCellData(row.getCell(2));
-        String columnDString = getCellData(row.getCell(3));
-        String columnEString = getCellData(row.getCell(4));
+        List<String> rowData = readRow(row);
 
-        Optional<Product> product = productRepository.findFirstByProductCode(columnAString);
-        Optional<Shop> shop = shopRepository.findFirstByShopCode(columnBString);
-        Optional<ProductSize> productSize = productSizeRepository.findFirstBySizeNameAndProductCategory(
-                columnCString, product.get().getProductCategory());
+        Optional<Product> product = getProductFromRowData(rowData);
+        Optional<Shop> shop = getShopFromRowData(rowData);
+        Optional<ProductSize> productSize = getProductSizeFromRowData(rowData, product.get().getProductCategory());
 
         ProductShop productShop = new ProductShop();
         int currentQuantity = 0;
-        Optional<ProductShop> existingProductShop = productShopRepository.findFirstByProductAndProductSizeAndShop(
-                product.get(), productSize.get(), shop.get());
+        Optional<ProductShop> existingProductShop = getExistingProductShopForRowData(product.get(), productSize.get(), shop.get());
 
         if (existingProductShop.isPresent()) {
             productShop = existingProductShop.get();
@@ -221,10 +220,10 @@ public class ProductShopServiceImpl implements ProductShopService {
             productShop.setShop(shop.get());
             productShop.setQuantity(currentQuantity);
         }
-        int quantityFromFile = Integer.parseInt(columnDString);
+        int quantityFromFile = Integer.parseInt(rowData.get(3));
 
-        logger.info("Akcja " + columnEString);
-        switch (columnEString) {
+        logger.info("Akcja " + rowData.get(4));
+        switch (rowData.get(4)) {
             case "D":
                 logger.info("current " + currentQuantity + " from file " + quantityFromFile);
                 productShop.setQuantity(currentQuantity + quantityFromFile);
@@ -263,7 +262,7 @@ public class ProductShopServiceImpl implements ProductShopService {
         LocalDateTime localDateTime = LocalDateTime.now();
         StringBuilder sb = new StringBuilder();
         sb.append(localDateTime.getYear())
-                .append(localDateTime.getMonth())
+                .append(localDateTime.getMonthValue())
                 .append(localDateTime.getDayOfMonth())
                 .append(localDateTime.getHour())
                 .append(localDateTime.getMinute())
@@ -297,9 +296,7 @@ public class ProductShopServiceImpl implements ProductShopService {
             CloudFile cloudFile = logsDir.getFileReference(fileName);
             return cloudFile.openWriteNew(size);
 
-        } catch (InvalidKeyException invalidKey) {
-            // Handle the exception
-        } catch (java.security.InvalidKeyException | URISyntaxException | StorageException e) {
+        } catch (InvalidKeyException | java.security.InvalidKeyException | URISyntaxException | StorageException e) {
             e.printStackTrace();
         }
         return null;
@@ -308,6 +305,46 @@ public class ProductShopServiceImpl implements ProductShopService {
     @Override
     public FileOutputStream createLocalLogFile(String fileName) throws FileNotFoundException {
         return new FileOutputStream(new File(fileName));
+    }
+
+    @Override
+    public Optional<Product> getProductFromRowData(List<String> rowData) {
+        return productRepository.findFirstByProductCode(rowData.get(0));
+    }
+
+    @Override
+    public Optional<Shop> getShopFromRowData(List<String> rowData) {
+        return shopRepository.findFirstByShopCode(rowData.get(1));
+    }
+
+    @Override
+    public Optional<ProductSize> getProductSizeFromRowData(List<String> rowData, ProductCategory productCategory) {
+        return productSizeRepository.findFirstBySizeNameAndProductCategory(
+                rowData.get(2), productCategory);
+    }
+
+    @Override
+    public Optional<ProductShop> getExistingProductShopForRowData(Product product, ProductSize productSize, Shop shop) {
+        return productShopRepository.findFirstByProductAndProductSizeAndShop(
+                product, productSize, shop);
+    }
+
+    @Override
+    public URL getAzureUri(String fileName) {
+        try {
+
+            CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageConnectionString);
+            CloudFileClient fileClient = storageAccount.createCloudFileClient();
+            CloudFileShare share = fileClient.getShareReference("rentier");
+            CloudFileDirectory rootDir = share.getRootDirectoryReference();
+            CloudFileDirectory logsDir = rootDir.getDirectoryReference("logs");
+            CloudFile cloudFile = logsDir.getFileReference(fileName);
+            return cloudFile.getUri().toURL();
+
+        } catch (InvalidKeyException | java.security.InvalidKeyException | URISyntaxException | StorageException | MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }
