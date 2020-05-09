@@ -2,6 +2,10 @@ package pl.coderslab.rentier.service;
 
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.blob.BlobOutputStream;
+import com.microsoft.azure.storage.blob.CloudBlobClient;
+import com.microsoft.azure.storage.blob.CloudBlobContainer;
+import com.microsoft.azure.storage.blob.CloudBlockBlob;
 import com.microsoft.azure.storage.file.CloudFile;
 import com.microsoft.azure.storage.file.CloudFileClient;
 import com.microsoft.azure.storage.file.CloudFileDirectory;
@@ -21,7 +25,7 @@ import pl.coderslab.rentier.repository.ShopRepository;
 
 import javax.management.openmbean.InvalidKeyException;
 import java.io.*;
-import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -119,7 +123,7 @@ public class ProductShopServiceImpl implements ProductShopService {
 
         }
         writer.close();
-        emailService.sendEmailWithAttachment(userService.getLoggedUser(), getAzureUri(logFileName), logFileName);
+        emailService.sendEmailWithAttachment(userService.getLoggedUser(), copyCloudFileToBlob(logFileName), logFileName);
 
         if (errors > 0) {
             logger.info("Walidacja pliku zakończyła się błędami: " + errors);
@@ -329,22 +333,35 @@ public class ProductShopServiceImpl implements ProductShopService {
                 product, productSize, shop);
     }
 
-    @Override
-    public URL getAzureUri(String fileName) {
-        try {
 
+    @Override
+    public URL copyCloudFileToBlob(String fileName) {
+        try {
             CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageConnectionString);
             CloudFileClient fileClient = storageAccount.createCloudFileClient();
             CloudFileShare share = fileClient.getShareReference("rentier");
             CloudFileDirectory rootDir = share.getRootDirectoryReference();
             CloudFileDirectory logsDir = rootDir.getDirectoryReference("logs");
             CloudFile cloudFile = logsDir.getFileReference(fileName);
-            return cloudFile.getUri().toURL();
+            InputStream cloudFileInputStream = cloudFile.openRead();
 
-        } catch (InvalidKeyException | java.security.InvalidKeyException | URISyntaxException | StorageException | MalformedURLException e) {
+            CloudBlobClient blobClient = storageAccount.createCloudBlobClient();
+            CloudBlobContainer container = blobClient.getContainerReference("rentier");
+            CloudBlockBlob blob = container.getBlockBlobReference(fileName);
+            BlobOutputStream blobOutputStream = blob.openOutputStream();
+            int next = -1;
+            while((next = cloudFileInputStream.read()) != -1) {
+                blobOutputStream.write(next);
+            }
+            blobOutputStream.close();
+            cloudFileInputStream.close();
+            return blob.getUri().toURL();
+
+        } catch (InvalidKeyException | java.security.InvalidKeyException | URISyntaxException | StorageException | IOException e) {
             e.printStackTrace();
         }
         return null;
     }
+
 
 }

@@ -91,7 +91,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendEmailWithAttachment(User user, URL url, String fileName) {
         EmailUtil.createEmailWithAttachment(user.getEmail(),
-                "Log z ładowania pliku",
+                "Log z ładowania pliku " + fileName,
                 mailFrom,
                 mailPassword,
                 mailSMTP,
