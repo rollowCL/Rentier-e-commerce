@@ -265,9 +265,9 @@ public class ProductShopServiceImpl implements ProductShopService {
     public String getDateString() {
         LocalDateTime localDateTime = LocalDateTime.now();
         StringBuilder sb = new StringBuilder();
-        sb.append(localDateTime.getYear())
-                .append(localDateTime.getMonthValue())
-                .append(localDateTime.getDayOfMonth())
+        sb.append(localDateTime.getYear()).append("_")
+                .append(localDateTime.getMonthValue()).append("_")
+                .append(localDateTime.getDayOfMonth()).append("_")
                 .append(localDateTime.getHour())
                 .append(localDateTime.getMinute())
                 .append(localDateTime.getSecond());
@@ -347,7 +347,7 @@ public class ProductShopServiceImpl implements ProductShopService {
 
             CloudBlobClient blobClient = storageAccount.createCloudBlobClient();
             CloudBlobContainer container = blobClient.getContainerReference("rentier");
-            CloudBlockBlob blob = container.getBlockBlobReference(fileName);
+            CloudBlockBlob blob = container.getBlockBlobReference("/logs/" + fileName);
             BlobOutputStream blobOutputStream = blob.openOutputStream();
             int next = -1;
             while((next = cloudFileInputStream.read()) != -1) {
