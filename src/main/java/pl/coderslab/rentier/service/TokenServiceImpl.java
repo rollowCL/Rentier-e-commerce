@@ -9,6 +9,7 @@ import pl.coderslab.rentier.repository.TokenRepository;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Service
 public class TokenServiceImpl implements TokenService {
@@ -49,7 +50,7 @@ public class TokenServiceImpl implements TokenService {
 
         Token token = new Token();
         token.setTokenType(tokenType);
-        token.setCreateDate(LocalDateTime.now());
+        token.setCreateDate(LocalDateTime.now(ZoneId.of("Europe/Paris")));
         token.setExpiryDate(token.getCreateDate().plusHours(1));
         token.setValid(true);
         token.setUser(user);
@@ -63,7 +64,7 @@ public class TokenServiceImpl implements TokenService {
     public boolean validateToken(String token, int tokenType) {
 
         return tokenRepository.existsTokenByTokenValueEqualsAndValidTrueAndExpiryDateAfterAndTokenType
-                (token, LocalDateTime.now(), tokenType);
+                (token, LocalDateTime.now(ZoneId.of("Europe/Paris")), tokenType);
     }
 
     @Override

@@ -21,6 +21,7 @@ import pl.coderslab.rentier.validation.UserBasicValidation;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Controller
@@ -75,7 +76,7 @@ public class RegisterController {
             user.setUserRole(userRole);
             user.setActive(true);
             user.setVerified(false);
-            user.setRegisterDate(LocalDateTime.now());
+            user.setRegisterDate(LocalDateTime.now(ZoneId.of("Europe/Paris")));
             registerService.registerUser(user, request);
             return "login/registerSuccess";
         }

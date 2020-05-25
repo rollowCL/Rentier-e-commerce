@@ -29,6 +29,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -263,7 +264,7 @@ public class ProductShopServiceImpl implements ProductShopService {
 
     @Override
     public String getDateString() {
-        LocalDateTime localDateTime = LocalDateTime.now();
+        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris"));
         StringBuilder sb = new StringBuilder();
         sb.append(localDateTime.getYear()).append("_")
                 .append(localDateTime.getMonthValue()).append("_")

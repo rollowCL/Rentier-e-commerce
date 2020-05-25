@@ -11,6 +11,7 @@ import pl.coderslab.rentier.repository.*;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Optional;
 
 @SessionAttributes({"cart"})
@@ -48,7 +49,7 @@ public class OrderServiceImpl implements OrderService {
     public String placeOrder(Long id, Order order) {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
-            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime now = LocalDateTime.now(ZoneId.of("Europe/Paris"));
 
             order.setOrderDate(now);
             order.setOrderStatusDate(now);

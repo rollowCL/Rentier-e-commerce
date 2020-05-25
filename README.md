@@ -12,6 +12,7 @@ clothing shops.
 * JQuery
 * MySQL
 * Canvas HTML Template (https://themeforest.net/item/canvas-the-multipurpose-html5-template/9228123)
+* JUnit
 
 ## Status
 
@@ -35,6 +36,8 @@ clothing shops.
 - [x] Microsoft Azzure MySQL support
 - [x] Microsoft Azzure Storage support
 - [x] Separate properties for local and azzure env.
+- [x] Added JUnit test
+
 
 
 

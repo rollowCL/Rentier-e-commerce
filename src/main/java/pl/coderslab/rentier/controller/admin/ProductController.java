@@ -23,6 +23,7 @@ import pl.coderslab.rentier.service.ProductServiceImpl;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -120,9 +121,9 @@ public class ProductController {
         List<ProductImage> newImages = new ArrayList<>();
 
         if (product.getId() == null) {
-            product.setCreatedDate(LocalDateTime.now());
+            product.setCreatedDate(LocalDateTime.now(ZoneId.of("Europe/Paris")));
         } else {
-            product.setUpdatedDate(LocalDateTime.now());
+            product.setUpdatedDate(LocalDateTime.now(ZoneId.of("Europe/Paris")));
             savedImages = productImageRepository.findAllByProduct_Id(product.getId());
             product.setProductImages(savedImages);
         }

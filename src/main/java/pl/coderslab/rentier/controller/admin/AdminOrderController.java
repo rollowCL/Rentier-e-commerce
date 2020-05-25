@@ -14,6 +14,7 @@ import pl.coderslab.rentier.repository.OrderStatusRepository;
 import pl.coderslab.rentier.service.OrderServiceImpl;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Controller
 @RequestMapping("/admin/orders")
@@ -73,7 +74,7 @@ public class AdminOrderController {
     @PostMapping("/changeStatus")
     public String changeOrderStatus(@RequestParam Long orderId, @RequestParam Long orderStatusId) {
         logger.warn("orderId: " +orderId +", orderStatusId: " + orderStatusId);
-        orderRepository.customUpdateOrderStatus(orderId, orderStatusId, LocalDateTime.now());
+        orderRepository.customUpdateOrderStatus(orderId, orderStatusId, LocalDateTime.now(ZoneId.of("Europe/Paris")));
 
         return "redirect:/admin/orders";
     }
