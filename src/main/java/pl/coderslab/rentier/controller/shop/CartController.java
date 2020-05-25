@@ -4,6 +4,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import pl.coderslab.rentier.exception.ProductNotInCartException;
 import pl.coderslab.rentier.exception.ProductQuantityExceededException;
 import pl.coderslab.rentier.beans.Cart;
 import pl.coderslab.rentier.entity.ProductCategory;
@@ -59,7 +60,7 @@ public class CartController {
 
 
     @RequestMapping("/remove")
-    public String removeFromCart(Model model, @RequestParam Long productId, @RequestParam Long productSizeId) {
+    public String removeFromCart(Model model, @RequestParam Long productId, @RequestParam Long productSizeId) throws ProductNotInCartException {
 
         cartService.cartRemove(productId, productSizeId, cart);
         return "shop/cart";

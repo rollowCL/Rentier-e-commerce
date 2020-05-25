@@ -1,29 +1,85 @@
 package pl.coderslab.rentier.service;
 
+import org.junit.Before;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import static org.junit.Assert.*;
+import org.junit.runner.RunWith;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.transaction.annotation.Transactional;
+import pl.coderslab.rentier.InMemoryTestConfig;
 import pl.coderslab.rentier.entity.User;
+import pl.coderslab.rentier.repository.TokenRepository;
 import pl.coderslab.rentier.repository.UserRepository;
+import javax.annotation.Resource;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.time.LocalDateTime;
 
-import java.util.List;
-import java.util.Optional;
 
-import static junit.framework.TestCase.*;
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(
+        classes = {InMemoryTestConfig.class},
+        loader = AnnotationConfigContextLoader.class)
+public class RegisterServiceImplTest {
 
-class RegisterServiceImplTest {
+    private final org.slf4j.Logger logger = LoggerFactory.getLogger(RegisterServiceImplTest.class);
+    User user;
+    RegisterServiceImpl registerService;
 
+    @PersistenceContext
+    EntityManager entityManager;
+
+    @Resource
+    UserRepository userRepository;
+
+    @Resource
+    TokenRepository tokenRepository;
+
+    @Autowired
+    TokenServiceImpl tokenService;
+
+    @Autowired
+    EmailServiceImpl emailService;
+
+    @Before
+    public void setUp() {
+
+        registerService = new RegisterServiceImpl(userRepository, tokenRepository, tokenService, emailService);
+
+        user = new User();
+        user.setFirstName("Test");
+        user.setLastName("Test");
+        user.setPassword("Test");
+        user.setPassword2("Test");
+        user.setEmail("test@o2.pl");
+        user.setActive(true);
+        user.setVerified(false);
+        user.setPhone("123456789");
+        user.setRegisterDate(LocalDateTime.now());
+
+    }
 
     @Test
-    void makeUserVerified() {
-        Long id = 1L;
-        User user = new User();
-        assertFalse("Should't be verified", user.isVerified());
-        user.setVerified(true);
-        assertTrue("Should be verified", user.isVerified());
+    public void should_makeUserVerified_ResultOK() {
+        String token = registerService.registerUser(user);
+        registerService.makeUserVerified(token);
+        assertTrue(userRepository.findByUserName(user.getEmail()).isVerified());
     }
+
+    @Test
+    @Transactional
+    public void should_registerUser_ResultOK() {
+        assertNotNull(registerService.registerUser(user));
+        User storedUser = userRepository.findByUserName(user.getEmail());
+        assertTrue(storedUser.isActive());
+        assertFalse(storedUser.isVerified());
+    }
+
+
 }

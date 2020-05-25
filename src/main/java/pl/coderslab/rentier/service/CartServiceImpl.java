@@ -2,6 +2,7 @@ package pl.coderslab.rentier.service;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import pl.coderslab.rentier.exception.ProductNotInCartException;
 import pl.coderslab.rentier.exception.ProductQuantityExceededException;
 import pl.coderslab.rentier.beans.Cart;
 import pl.coderslab.rentier.entity.Product;
@@ -73,7 +74,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void cartRemove(Long productId, Long productSizeId, Cart cart) {
+    public void cartRemove(Long productId, Long productSizeId, Cart cart) throws ProductNotInCartException {
 
         int itemInCartIndex = checkCartProductIndex(productId, productSizeId, cart);
 
@@ -83,6 +84,8 @@ public class CartServiceImpl implements CartService {
             cart.setTotalValue();
             cart.setTotalQuantity();
 
+        } else {
+            throw new ProductNotInCartException("Brak produktu w koszyku");
         }
     }
 

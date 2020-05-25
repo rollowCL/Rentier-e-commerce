@@ -10,6 +10,7 @@ import pl.coderslab.rentier.entity.ProductCategory;
 import pl.coderslab.rentier.entity.Role;
 import pl.coderslab.rentier.repository.ProductCategoryRepository;
 import pl.coderslab.rentier.repository.RoleRepository;
+import pl.coderslab.rentier.service.EmailService;
 import pl.coderslab.rentier.service.RegisterServiceImpl;
 import pl.coderslab.rentier.pojo.Login;
 import pl.coderslab.rentier.entity.OrderType;
@@ -20,6 +21,7 @@ import pl.coderslab.rentier.service.TokenServiceImpl;
 import pl.coderslab.rentier.validation.UserBasicValidation;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
@@ -33,6 +35,7 @@ public class RegisterController {
     private final ProductCategoryRepository productCategoryRepository;
     private final RegisterServiceImpl registerService;
     private final TokenServiceImpl tokenService;
+    private final EmailService emailService;
 
     @Value("${rentier.tokenTypeActivation}")
     private int tokenTypeActivation;
@@ -40,19 +43,20 @@ public class RegisterController {
     public RegisterController(OrderTypeRepository orderTypeRepository,
                               RoleRepository userRoleRepository, UserRepository userRepository,
                               ProductCategoryRepository productCategoryRepository, RegisterServiceImpl registerService,
-                              TokenServiceImpl tokenService) {
+                              TokenServiceImpl tokenService, EmailService emailService) {
         this.orderTypeRepository = orderTypeRepository;
         this.userRoleRepository = userRoleRepository;
         this.userRepository = userRepository;
         this.productCategoryRepository = productCategoryRepository;
         this.registerService = registerService;
         this.tokenService = tokenService;
+        this.emailService = emailService;
     }
 
     @PostMapping("/register")
     public String registerStepOne(@ModelAttribute @Validated({UserBasicValidation.class}) User user, BindingResult resultUser,
                                   @ModelAttribute(binding = false) Login login, BindingResult resultLogin,
-                                  HttpServletRequest request) {
+                                  HttpServletRequest request) throws UnsupportedEncodingException {
 
 
         if (userRepository.existsByEmail(user.getEmail())) {
@@ -74,10 +78,9 @@ public class RegisterController {
             OrderType orderType = orderTypeRepository.findExternalOrderTypeIdByOrderTypeNameEquals("external");
             Role userRole = userRoleRepository.findByOrderTypeId(orderType.getId());
             user.setUserRole(userRole);
-            user.setActive(true);
-            user.setVerified(false);
             user.setRegisterDate(LocalDateTime.now(ZoneId.of("Europe/Paris")));
-            registerService.registerUser(user, request);
+            String token = registerService.registerUser(user);
+            emailService.sendActivationEmail(user, token, request);
             return "login/registerSuccess";
         }
 

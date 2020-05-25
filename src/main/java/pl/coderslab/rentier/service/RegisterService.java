@@ -8,7 +8,7 @@ import java.io.UnsupportedEncodingException;
 
 public interface RegisterService {
 
-    void registerUser(User user, HttpServletRequest request) throws UnsupportedEncodingException;
+    String registerUser(User user);
     void makeUserVerified(String token);
 
 

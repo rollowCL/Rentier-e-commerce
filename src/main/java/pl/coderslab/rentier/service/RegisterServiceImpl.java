@@ -32,12 +32,14 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public void registerUser(User user, HttpServletRequest request) {
+    public String registerUser(User user) {
+        user.setActive(true);
+        user.setVerified(false);
         user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
         userRepository.save(user);
         String generatedToken = tokenService.generateToken(30);
         tokenService.saveToken(user, generatedToken, tokenTypeActivation);
-        emailService.sendActivationEmail(user, generatedToken, request);
+        return generatedToken;
     }
 
 
