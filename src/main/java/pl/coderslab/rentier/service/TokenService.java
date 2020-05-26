@@ -1,6 +1,7 @@
 package pl.coderslab.rentier.service;
 
 import org.springframework.transaction.annotation.Transactional;
+import pl.coderslab.rentier.entity.Token;
 import pl.coderslab.rentier.entity.User;
 
 

@@ -8,6 +8,7 @@ import pl.coderslab.rentier.repository.TokenRepository;
 import pl.coderslab.rentier.repository.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -30,19 +31,19 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 
 
     @Override
-    public void resetPasswordProcess(String email, HttpServletRequest request) {
+    @Transactional
+    public String resetPasswordProcess(String email) {
 
         Optional<User> user = userRepository.findByEmailAndActiveTrue(email);
-
+        String generatedToken = null;
         if (user.isPresent()) {
             tokenService.invalidateAllUserResetTokens(user.get());
-            String generatedToken = tokenService.generateToken(30);
+            generatedToken = tokenService.generateToken(30);
             tokenService.saveToken(user.get(), generatedToken, tokenTypePasswordReset);
-            emailService.sendPasswordReminderEmail(user.get(), generatedToken, request);
 
         }
 
-
+        return generatedToken;
     }
 
 

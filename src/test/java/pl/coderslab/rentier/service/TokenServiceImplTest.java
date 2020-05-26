@@ -1,6 +1,5 @@
 package pl.coderslab.rentier.service;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,24 +7,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.test.annotation.Commit;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
-import org.springframework.test.context.transaction.AfterTransaction;
-import org.springframework.transaction.annotation.Transactional;
 import pl.coderslab.rentier.InMemoryTestConfig;
 import pl.coderslab.rentier.entity.Token;
 import pl.coderslab.rentier.entity.User;
 import pl.coderslab.rentier.repository.TokenRepository;
 import pl.coderslab.rentier.repository.UserRepository;
-
-import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
-
 import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
@@ -113,6 +107,8 @@ public class TokenServiceImplTest {
         tokenService.invalidateAllUserResetTokens(user);
 
         List<Token> tokenList = tokenRepository.findAll();
+
+        assertThat(tokenList, hasItems(token1, token2));
 
         for (Token token : tokenList) {
             if (token.getUser().equals(user)) {

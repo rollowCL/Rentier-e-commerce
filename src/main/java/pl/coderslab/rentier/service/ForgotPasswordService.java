@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface ForgotPasswordService {
 
-    void resetPasswordProcess(String email, HttpServletRequest request);
+    String resetPasswordProcess(String email);
 
 
 }

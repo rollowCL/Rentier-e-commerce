@@ -47,14 +47,14 @@ public class EmailServiceImpl implements EmailService {
 
 
     @Override
-    public void sendPasswordReminderEmail(User user, String generatedToken, HttpServletRequest request) {
+    public void sendPasswordReminderEmail(String email, String generatedToken, HttpServletRequest request) {
         String link = getURL(request) + "/resetpassword?token=" + generatedToken;
 
         String msgBody = "<h3>Przypomnienie hasła</h3><br>" +
                 "<a href=\"" + link + "\">" + link + "</a>";
 
 
-        EmailUtil.createEmail(user.getEmail(),
+        EmailUtil.createEmail(email,
                 "Przypomnienie hasła w sklepie Rentier",
                 msgBody,
                 mailFrom,

@@ -9,7 +9,7 @@ import java.net.URL;
 
 public interface EmailService {
 
-    void sendPasswordReminderEmail(User user, String generatedToken, HttpServletRequest request);
+    void sendPasswordReminderEmail(String email, String generatedToken, HttpServletRequest request);
     void sendActivationEmail(User user, String generatedToken, HttpServletRequest request) throws UnsupportedEncodingException;
     void sendEmailWithAttachment(User user, URL url, String fileName);
     String getURL(HttpServletRequest request);

@@ -11,6 +11,7 @@ import pl.coderslab.rentier.entity.ProductCategory;
 import pl.coderslab.rentier.entity.User;
 import pl.coderslab.rentier.repository.ProductCategoryRepository;
 import pl.coderslab.rentier.repository.UserRepository;
+import pl.coderslab.rentier.service.EmailServiceImpl;
 import pl.coderslab.rentier.service.ForgotPasswordServiceImpl;
 import pl.coderslab.rentier.service.TokenServiceImpl;
 import pl.coderslab.rentier.service.UserServiceImpl;
@@ -27,6 +28,7 @@ public class ForgotPasswordController {
     private final ForgotPasswordServiceImpl forgotPasswordService;
     private final TokenServiceImpl tokenService;
     private final UserServiceImpl userService;
+    private final EmailServiceImpl emailService;
 
     @Value("${rentier.tokenTypePasswordReset}")
     private int tokenTypePasswordReset;
@@ -34,12 +36,13 @@ public class ForgotPasswordController {
     public ForgotPasswordController(UserRepository userRepository,
                                     ProductCategoryRepository productCategoryRepository,
                                     ForgotPasswordServiceImpl forgotPasswordService,
-                                    TokenServiceImpl tokenService, UserServiceImpl userService) {
+                                    TokenServiceImpl tokenService, UserServiceImpl userService, EmailServiceImpl emailService) {
         this.userRepository = userRepository;
         this.productCategoryRepository = productCategoryRepository;
         this.forgotPasswordService = forgotPasswordService;
         this.tokenService = tokenService;
         this.userService = userService;
+        this.emailService = emailService;
     }
 
 
@@ -55,8 +58,10 @@ public class ForgotPasswordController {
 
         if (userRepository.existsByEmail(email)) {
 
-            forgotPasswordService.resetPasswordProcess(email, request);
-
+            String generatedToken = forgotPasswordService.resetPasswordProcess(email);
+            if (generatedToken != null) {
+                emailService.sendPasswordReminderEmail(email, generatedToken, request);
+            }
 
         }
 
