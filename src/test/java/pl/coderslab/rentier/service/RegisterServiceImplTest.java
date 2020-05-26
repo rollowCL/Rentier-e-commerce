@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -30,15 +31,11 @@ public class RegisterServiceImplTest {
 
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(RegisterServiceImplTest.class);
     User user;
-    RegisterServiceImpl registerService;
 
-    @PersistenceContext
-    EntityManager entityManager;
-
-    @Resource
+    @Autowired
     UserRepository userRepository;
 
-    @Resource
+    @Autowired
     TokenRepository tokenRepository;
 
     @Autowired
@@ -47,10 +44,11 @@ public class RegisterServiceImplTest {
     @Autowired
     EmailServiceImpl emailService;
 
+    @Autowired
+    RegisterServiceImpl registerService;
+
     @Before
     public void setUp() {
-
-        registerService = new RegisterServiceImpl(userRepository, tokenRepository, tokenService, emailService);
 
         user = new User();
         user.setFirstName("Test");

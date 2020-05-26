@@ -1,6 +1,7 @@
 package pl.coderslab.rentier.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -22,6 +23,7 @@ public class Token {
     LocalDateTime createDate;
 
     @NotNull
+    @FutureOrPresent
     @Column(name = "expiry_date")
     LocalDateTime expiryDate;
 
@@ -104,5 +106,18 @@ public class Token {
     @Override
     public int hashCode() {
         return Objects.hash(Id);
+    }
+
+    @Override
+    public String toString() {
+        return "Token{" +
+                "Id=" + Id +
+                ", tokenType=" + tokenType +
+                ", createDate=" + createDate +
+                ", expiryDate=" + expiryDate +
+                ", valid=" + valid +
+                ", user=" + user +
+                ", tokenValue='" + tokenValue + '\'' +
+                '}';
     }
 }

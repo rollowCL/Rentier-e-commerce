@@ -17,7 +17,6 @@ public interface OrderNumberRepository extends JpaRepository<OrderNumber, Long> 
 
 
     @Modifying
-    @Transactional
     @Query(value = "INSERT INTO order_numbers(year, number) VALUES (:year, :number)", nativeQuery = true)
     void insertNewOrderNumber(@Param("year") int year, @Param("number") int number);
 
