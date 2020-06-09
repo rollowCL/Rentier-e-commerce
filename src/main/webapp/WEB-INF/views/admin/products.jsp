@@ -117,7 +117,7 @@ To change this template use File | Settings | File Templates.
                                         <td><c:out value="${product.productCategory.categoryName}"/></td>
                                         <td><c:out value="${product.productName}"/></td>
                                         <td><c:out value="${product.productCode}"/></td>
-                                        <td>${product.productDesc}</td>
+                                        <td>${fn:substring(product.productDesc, 0, 50)}<c:if test="${fn:length(product.productDesc) > 50}">(...)</c:if></td>
                                         <td>
                                             <c:out value="${fn:replace(product.priceGross, '.', ',')} zł"/>
                                         </td>

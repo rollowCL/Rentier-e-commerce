@@ -100,4 +100,8 @@ input[type=number]{
     width: 40px;
 }
 
+#editor {
+    height: 100px;
+}
+
 

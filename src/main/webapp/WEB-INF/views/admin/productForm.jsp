@@ -20,6 +20,7 @@ To change this template use File | Settings | File Templates.
     <!-- Stylesheets
     ============================================= -->
     <jsp:include page="../styles.jsp"/>
+    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
 
     <!-- Document Title
     ============================================= -->
@@ -93,10 +94,10 @@ To change this template use File | Settings | File Templates.
                             </div>
                             <div class="col-md-12 form-group">
                                 <label for="productDesc">Opis produktu </label>
-                                <form:textarea cols="20" rows="5" path="productDesc" id="productDesc"
-                                               class="form-control"
-                                               maxlength="1000"/>
+                                <form:textarea path="productDesc" id="productDesc" cssStyle="visibility: hidden"/>
                                 <form:errors path="productDesc" cssClass="error"/>
+                            </div>
+                            <div class="col-md-12 form-group" id="editor">
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="productCode">Kod produktu</label>
@@ -194,5 +195,33 @@ To change this template use File | Settings | File Templates.
 
 <jsp:include page="../scripts.jsp"/>
 <script src='<spring:url value="/js/restFunctions.js"/>'></script>
+
+<!-- Main Quill library -->
+<script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
+<script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+<!-- Initialize Quill editor -->
+<script>
+    var quill = new Quill('#editor', {
+        modules: {
+            toolbar: [
+                [{ header: [1, 2, false] }],
+                ['bold', 'italic', 'underline'],
+            ]
+        },
+        placeholder: 'Opis produktu',
+        theme: 'snow'
+    });
+
+    quill.clipboard.dangerouslyPasteHTML($('#productDesc').text());
+
+    var copy_editor_content = function () {
+        $("#productDesc").val($('.ql-editor').html());
+    };
+
+    $('#editor')
+        .keyup(copy_editor_content)
+        .blur(copy_editor_content);
+</script>
 </body>
 </html>
