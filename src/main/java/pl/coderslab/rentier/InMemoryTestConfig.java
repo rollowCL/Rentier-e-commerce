@@ -21,7 +21,7 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@PropertySource("application.properties")
+@PropertySource("classpath:application-TEST.properties")
 @EnableJpaRepositories(basePackages = "pl.coderslab.rentier.repository")
 @EnableTransactionManagement
 @ComponentScan(basePackages={"pl.coderslab.rentier"})

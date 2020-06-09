@@ -1,24 +1,25 @@
 package pl.coderslab.rentier.service;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
-import org.junit.runner.RunWith;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import pl.coderslab.rentier.InMemoryTestConfig;
 import pl.coderslab.rentier.entity.User;
 import pl.coderslab.rentier.repository.TokenRepository;
 import pl.coderslab.rentier.repository.UserRepository;
 import java.time.LocalDateTime;
-import java.util.List;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(
         classes = {InMemoryTestConfig.class},
         loader = AnnotationConfigContextLoader.class)

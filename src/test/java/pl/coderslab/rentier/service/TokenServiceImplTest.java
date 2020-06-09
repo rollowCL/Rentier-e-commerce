@@ -1,13 +1,19 @@
 package pl.coderslab.rentier.service;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import pl.coderslab.rentier.InMemoryTestConfig;
@@ -17,11 +23,9 @@ import pl.coderslab.rentier.repository.TokenRepository;
 import pl.coderslab.rentier.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(
         classes = {InMemoryTestConfig.class},
         loader = AnnotationConfigContextLoader.class
@@ -46,7 +50,7 @@ public class TokenServiceImplTest {
     @Value("${rentier.tokenTypeActivation}")
     private int tokenTypeActivation;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         user = new User();
         user.setFirstName("Test");
@@ -68,11 +72,11 @@ public class TokenServiceImplTest {
         assertEquals(0, tokenService.generateToken(len).length());
     }
 
-    @Test(expected = NegativeArraySizeException.class)
+    @Test
     public void should_generateToken_ThrowException_Negative() {
         int len = -1;
 
-        tokenService.generateToken(len);
+        assertThrows(NegativeArraySizeException.class, () -> tokenService.generateToken(len));
     }
 
     @Test
@@ -217,10 +221,10 @@ public class TokenServiceImplTest {
 
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void should_getUserForToken_ThrowNullPointer() {
 
-        tokenService.getUserForToken("103012930192301930");
+        assertThrows(NullPointerException.class, () -> tokenService.getUserForToken("103012930192301930"));
 
     }
 

@@ -1,15 +1,16 @@
 package pl.coderslab.rentier.service;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.transaction.annotation.Transactional;
 import pl.coderslab.rentier.InMemoryTestConfig;
@@ -24,7 +25,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(
         classes = {InMemoryTestConfig.class},
         loader = AnnotationConfigContextLoader.class)
@@ -66,7 +67,7 @@ public class CartServiceImplTest {
     @Resource
     BrandRepository brandRepository;
 
-    @Before
+    @BeforeEach
     public void setUpService() {
         service = new CartServiceImpl(productRepository, productSizeRepository, productShopRepository);
         cart = new Cart();
@@ -137,17 +138,19 @@ public class CartServiceImplTest {
     }
 
 
-    @Test(expected = ProductQuantityExceededException.class)
-    public void should_addToCart_ThrowException_ItemNotInCart() throws ProductQuantityExceededException {
+    @Test
+    public void should_addToCart_ThrowException_ItemNotInCart() {
 
         productShop.setQuantity(1);
         productShopRepository.save(productShop);
 
-        service.cartAdd(product.getId(), productSize.getId(), 6, cart);
+        assertThrows(ProductQuantityExceededException.class, () ->
+                service.cartAdd(product.getId(), productSize.getId(), 6, cart)
+        );
     }
 
-    @Test(expected = ProductQuantityExceededException.class)
-    public void should_addToCart_ThrowException_ItemInCart() throws ProductQuantityExceededException {
+    @Test
+    public void should_addToCart_ThrowException_ItemInCart()  {
 
         cartItem.setProduct(product);
         cartItem.setProductSize(productSize);
@@ -157,7 +160,10 @@ public class CartServiceImplTest {
         productShop.setQuantity(10);
         productShopRepository.save(productShop);
 
-        service.cartAdd(product.getId(), productSize.getId(), 7, cart);
+        assertThrows(ProductQuantityExceededException.class, () ->
+                service.cartAdd(product.getId(), productSize.getId(), 7, cart)
+        );
+
     }
 
     @Test
@@ -212,14 +218,15 @@ public class CartServiceImplTest {
         assertEquals(-1, service.checkCartProductIndex(product.getId(), productSize.getId(), cart));
     }
 
-    @Test(expected = ProductNotInCartException.class)
-    public void should_cartRemove_ThrowException() throws ProductNotInCartException {
+    @Test
+    public void should_cartRemove_ThrowException() {
         cartItem.setProduct(product);
         cartItem.setProductSize(productSize);
         cartItem.setQuantity(5);
         cart.addToCart(cartItem);
 
-        service.cartRemove(product1.getId(), productSize.getId(), cart);
+        assertThrows(ProductNotInCartException.class, () ->
+                service.cartRemove(product1.getId(), productSize.getId(), cart));
 
     }
 
@@ -245,7 +252,7 @@ public class CartServiceImplTest {
         cartItem.setQuantity(expectedQuantity);
         cart.addToCart(cartItem);
 
-        assertEquals("should be equal 10", expectedQuantity, service.checkCartProductQuantity(product.getId(), productSize.getId(), cart));
+        assertEquals(expectedQuantity, service.checkCartProductQuantity(product.getId(), productSize.getId(), cart));
 
     }
 
@@ -257,13 +264,14 @@ public class CartServiceImplTest {
         productShop.setQuantity(expectedQuantity);
         productShopRepository.save(productShop);
 
-        assertEquals("Should be equal " + expectedQuantity, expectedQuantity, service.checkStockProductAvailableQuantity(product.getId(), productSize.getId()));
+        assertEquals(expectedQuantity, expectedQuantity, service.checkStockProductAvailableQuantity(product.getId(), productSize.getId()));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void should_checkStockProductAvailableQuantity_ThrowException() {
 
-        assertEquals("Should be equal " + 0, 0, service.checkStockProductAvailableQuantity(product.getId(), productSize.getId()));
+        assertThrows(NullPointerException.class, () ->
+                service.checkStockProductAvailableQuantity(product.getId(), productSize.getId()));
     }
 
     @Test
