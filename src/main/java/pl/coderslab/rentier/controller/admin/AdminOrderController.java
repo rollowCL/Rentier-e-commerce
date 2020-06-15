@@ -11,8 +11,10 @@ import pl.coderslab.rentier.entity.Order;
 import pl.coderslab.rentier.entity.OrderStatus;
 import pl.coderslab.rentier.repository.OrderRepository;
 import pl.coderslab.rentier.repository.OrderStatusRepository;
+import pl.coderslab.rentier.service.EmailServiceImpl;
 import pl.coderslab.rentier.service.OrderServiceImpl;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
@@ -25,7 +27,9 @@ public class AdminOrderController {
     private final OrderStatusRepository orderStatusRepository;
     private final OrderServiceImpl orderService;
 
-    public AdminOrderController(OrderRepository orderRepository, OrderStatusRepository orderStatusRepository, OrderServiceImpl orderService) {
+
+    public AdminOrderController(OrderRepository orderRepository, OrderStatusRepository orderStatusRepository,
+                                OrderServiceImpl orderService) {
 
         this.orderRepository = orderRepository;
         this.orderStatusRepository = orderStatusRepository;
@@ -73,8 +77,8 @@ public class AdminOrderController {
 
     @PostMapping("/changeStatus")
     public String changeOrderStatus(@RequestParam Long orderId, @RequestParam Long orderStatusId) {
-        logger.warn("orderId: " +orderId +", orderStatusId: " + orderStatusId);
-        orderRepository.customUpdateOrderStatus(orderId, orderStatusId, LocalDateTime.now(ZoneId.of("Europe/Paris")));
+
+        orderService.changeOrderStatus(orderId, orderStatusId);
 
         return "redirect:/admin/orders";
     }

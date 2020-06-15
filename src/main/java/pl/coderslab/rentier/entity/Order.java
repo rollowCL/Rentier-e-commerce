@@ -1,19 +1,19 @@
 package pl.coderslab.rentier.entity;
 
 import org.springframework.format.annotation.NumberFormat;
+import pl.coderslab.rentier.observer.Observable;
+import pl.coderslab.rentier.observer.Observer;
 
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "orders")
-public class Order {
+public class Order implements Observable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -78,6 +78,9 @@ public class Order {
     @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "########.##")
     @Column(name = "total_value")
     private BigDecimal totalValue;
+
+    @Transient
+    private Set<Observer> observers = new HashSet<>();
 
 
     public Long getId() {
@@ -242,4 +245,28 @@ public class Order {
                 ", totalValue=" + totalValue +
                 '}';
     }
+
+    @Override
+    public void registerObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void unregisterObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (Observer observer: observers) {
+            observer.update(this);
+        }
+    }
+
+    public void changeOrderStatus(OrderStatus orderStatus) {
+        setOrderStatus(orderStatus);
+        notifyObservers();
+
+    }
+
 }

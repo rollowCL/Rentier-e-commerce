@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.coderslab.rentier.entity.Order;
 import pl.coderslab.rentier.entity.User;
+import pl.coderslab.rentier.observer.Observer;
 import pl.coderslab.rentier.repository.TokenRepository;
 import pl.coderslab.rentier.repository.UserRepository;
 import pl.coderslab.rentier.utils.EmailUtil;
@@ -16,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.net.URL;
 
 @Service
-public class EmailServiceImpl implements EmailService {
+public class EmailServiceImpl implements EmailService, Observer {
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(EmailServiceImpl.class);
     private final TokenRepository tokenRepository;
     private final UserRepository userRepository;
@@ -108,4 +109,27 @@ public class EmailServiceImpl implements EmailService {
         return url.substring(0, url.lastIndexOf('/'));
     }
 
+    @Override
+    public void update(Order order) {
+
+
+
+
+        String msgBody = "<h3>Potwierdzenie zmiany statusu zamówienia</h3><br>" +
+                "Witaj " + order.getUser().getFirstName() + "<br> Twoje zamówienie numer " + order.getOrderNumber()
+                + " zmieniło status na: <strong>" + order.getOrderStatus().getOrderStatusName() + "</strong>";
+
+
+        EmailUtil.createEmail(order.getUser().getEmail(),
+                "Rentier - zmiana statusu zamówienia",
+                msgBody,
+                mailFrom,
+                mailPassword,
+                mailSMTP,
+                mailPort,
+                mailPersonal
+        );
+
+        logger.info("Zamówienie " + order.getOrderNumber() + " zmieniło status na " + order.getOrderStatus());
+    }
 }

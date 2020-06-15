@@ -28,12 +28,13 @@ public class OrderServiceImpl implements OrderService {
     private final UserServiceImpl userService;
     private final OrderNumberServiceImpl orderNumberService;
     private final OrderDetailServiceImpl orderDetailService;
+    private final EmailServiceImpl emailService;
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(ProductShopServiceImpl.class);
 
 
     public OrderServiceImpl(Cart cart, UserRepository userRepository, OrderStatusRepository orderStatusRepository,
                             OrderRepository orderRepository,
-                            UserServiceImpl userService, OrderNumberServiceImpl orderNumberService, OrderDetailServiceImpl orderDetailService) {
+                            UserServiceImpl userService, OrderNumberServiceImpl orderNumberService, OrderDetailServiceImpl orderDetailService, EmailServiceImpl emailService) {
         this.cart = cart;
         this.userRepository = userRepository;
         this.orderStatusRepository = orderStatusRepository;
@@ -41,6 +42,7 @@ public class OrderServiceImpl implements OrderService {
         this.userService = userService;
         this.orderNumberService = orderNumberService;
         this.orderDetailService = orderDetailService;
+        this.emailService = emailService;
     }
 
 
@@ -111,6 +113,17 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public int getNewOrdersCount() {
         return orderRepository.countAllByOrderStatus_OrderStatusName(orderStartStatus);
+    }
+
+    @Override
+    @Transactional
+    public void changeOrderStatus(Long orderId, Long orderStatusId) {
+        logger.warn("orderId: " +orderId +", orderStatusId: " + orderStatusId);
+        OrderStatus orderStatus = orderStatusRepository.getOne(orderStatusId);
+        Order order = orderRepository.getOne(orderId);
+        order.registerObserver(emailService);
+        orderRepository.customUpdateOrderStatus(orderId, orderStatusId, LocalDateTime.now(ZoneId.of("Europe/Paris")));
+        order.changeOrderStatus(orderStatus);
     }
 
 
