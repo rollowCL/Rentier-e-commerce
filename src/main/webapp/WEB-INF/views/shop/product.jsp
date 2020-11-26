@@ -68,7 +68,7 @@ To change this template use File | Settings | File Templates.
                                 <div class="product-single-image">
                                     <c:forEach items="${product.productImages}" var="productImage">
                                         <c:if test="${productImage.mainImage}">
-                                            <img id="mainImage" src="<c:out value="${productImage.imageFileName}"/>"
+                                            <img id="mainImage" src="<c:url value="${productImage.imageFileName}"/>"
                                                  alt="<c:out value="${product.productName}"/>">
                                         </c:if>
                                     </c:forEach>
@@ -76,7 +76,7 @@ To change this template use File | Settings | File Templates.
                                 <div>
                                     <c:forEach items="${product.productImages}" var="productImage">
                                         <c:if test="${!productImage.mainImage}">
-                                            <img class="product-multi-image" src="<c:out value="${productImage.imageFileName}"/>"
+                                            <img class="product-multi-image" src="<c:url value="${productImage.imageFileName}"/>"
                                                  alt="<c:out value="${product.productName}"/>">
                                         </c:if>
                                     </c:forEach>

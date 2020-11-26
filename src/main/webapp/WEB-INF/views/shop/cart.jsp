@@ -81,8 +81,8 @@ To change this template use File | Settings | File Templates.
                                         <c:forEach items="${cartItem.product.productImages}" var="productImage">
                                             <c:if test="${productImage.mainImage}">
                                             <img height="64" width="auto"
-                                                 src="<c:out value="${productImage.imageFileName}"/>"
-                                                 alt="<c:out value="${cartItem.product.productName}"/>">
+                                                 src="<c:url value="${productImage.imageFileName}"/>"
+                                                 alt="<c:url value="${cartItem.product.productName}"/>">
                                             </c:if>
                                         </c:forEach>
                                     </a>

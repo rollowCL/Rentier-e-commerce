@@ -230,7 +230,7 @@ To change this template use File | Settings | File Templates.
                                                     <tr>
                                                         <td>
                                                             <c:if test="${not empty brand.logoFileName}">
-                                                            <img height="90" width="380" src="<c:out value="${brand.logoFileName}"/>"
+                                                            <img height="90" width="380" src="<c:url value="${brand.logoFileName}"/>"
                                                                  alt="BrandLogo"/>
                                                             </c:if>
                                                         </td>

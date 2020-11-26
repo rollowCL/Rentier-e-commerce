@@ -95,7 +95,7 @@ To change this template use File | Settings | File Templates.
                                 <a href="${pageContext.request.contextPath}/product?productId=<c:out value="${product.id}"/>">
                                 <c:forEach items="${product.productImages}" var="productImage">
                                     <c:if test="${productImage.mainImage}">
-                                        <img src="<c:out value="${productImage.imageFileName}"/>"
+                                        <img src="<c:url value="${productImage.imageFileName}"/>"
                                         alt="<c:out value="${product.productName}"/>">
                                     </c:if>
                                 </c:forEach>
@@ -108,7 +108,7 @@ To change this template use File | Settings | File Templates.
                                 <div class="product-price"><c:out
                                         value="${fn:replace(product.priceGross, '.', ',')} zł"/></div>
                                 <div><img width="50%" height="50%"
-                                          src="<c:out value="${product.brand.logoFileName}"/>"/></div>
+                                          src="<c:url value="${product.brand.logoFileName}"/>"/></div>
                             </div>
                         </div>
 

@@ -108,7 +108,7 @@ To change this template use File | Settings | File Templates.
                                         <td>
                                             <c:forEach items="${product.productImages}" var="productImage">
                                                 <c:if test="${productImage.mainImage}">
-                                                    <img height="150" src="<c:out value="${productImage.imageFileName}"/>"
+                                                    <img height="150" src="<c:url value="${productImage.imageFileName}"/>"
                                                          alt="<c:out value="${product.productName}"/>">
                                                 </c:if>
                                             </c:forEach>
