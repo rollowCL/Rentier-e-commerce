@@ -2,6 +2,9 @@ package pl.coderslab.rentier.service;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
+import java.io.IOException;
+import java.util.Optional;
+import javax.persistence.EntityManager;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -10,13 +13,8 @@ import pl.coderslab.rentier.beans.ProductSearch;
 import pl.coderslab.rentier.entity.Product;
 import pl.coderslab.rentier.entity.ProductImage;
 import pl.coderslab.rentier.entity.QProduct;
-import pl.coderslab.rentier.exception.InvalidFileException;
 import pl.coderslab.rentier.repository.ProductImageRepository;
 import pl.coderslab.rentier.repository.ProductRepository;
-
-import javax.persistence.EntityManager;
-import java.io.IOException;
-import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {

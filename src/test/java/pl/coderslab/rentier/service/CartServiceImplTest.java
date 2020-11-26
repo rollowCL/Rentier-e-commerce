@@ -1,5 +1,6 @@
 package pl.coderslab.rentier.service;
 
+import static com.mysema.commons.lang.Assert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
